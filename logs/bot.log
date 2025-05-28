@@ -63,3 +63,12 @@ ImportError: cannot import name 'create_db_and_tables' from 'src.database.db' (C
 2025-05-28 11:42:20 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
 2025-05-28 11:42:20 - src.bot - INFO - Bot is ready and online!
 2025-05-28 11:43:08 - src.bot - INFO - User 798476548734844969 used /testsync command.
+2025-05-28 12:21:52 - main - INFO - Starting Nyxa Bot...
+2025-05-28 12:21:53 - src.bot - INFO - Running setup_hook...
+2025-05-28 12:21:53 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 12:21:53 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-28 12:21:53 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 12:21:53 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 12:21:53 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 12:21:55 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 12:21:55 - src.bot - INFO - Bot is ready and online!
