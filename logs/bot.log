@@ -1,0 +1,1553 @@
+2025-05-25 13:15:42 - main - CRITICAL - DISCORD_BOT_TOKEN not found in .env file. Please set it up.
+2025-05-25 13:16:27 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:16:27 - main - INFO - Starting Project X Bot...
+2025-05-25 13:16:28 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:16:28 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:16:52 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:16:52 - main - INFO - Starting Project X Bot...
+2025-05-25 13:16:52 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:16:52 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:18:55 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:18:55 - main - INFO - Starting Project X Bot...
+2025-05-25 13:18:55 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:18:55 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:20:16 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:20:16 - main - INFO - Starting Project X Bot...
+2025-05-25 13:20:17 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:20:17 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:22:25 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:22:25 - main - INFO - Starting Project X Bot...
+2025-05-25 13:22:25 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:22:25 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:23:39 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:23:39 - main - INFO - Starting Project X Bot...
+2025-05-25 13:23:39 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:23:39 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:23:39 - main - CRITICAL - An unexpected error occurred while running the bot: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 38, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\Project X\src\bot.py", line 43, in setup_hook
+    from src.database.db import create_db_and_tables
+ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:26:04 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:26:04 - main - INFO - Starting Project X Bot...
+2025-05-25 13:26:04 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:26:04 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:26:04 - main - CRITICAL - An unexpected error occurred while running the bot: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\Project X\src\bot.py", line 43, in setup_hook
+    from src.database.db import create_db_and_tables
+ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:26:41 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:26:41 - main - INFO - Starting Project X Bot...
+2025-05-25 13:26:42 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:26:42 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:26:42 - main - CRITICAL - An unexpected error occurred while running the bot: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\Project X\src\bot.py", line 43, in setup_hook
+    from src.database.db import create_db_and_tables
+ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:31:39 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:31:39 - main - INFO - Starting Project X Bot...
+2025-05-25 13:31:39 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:31:39 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+ModuleNotFoundError: No module named 'src.database'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:31:39 - main - CRITICAL - An unexpected error occurred while running the bot: No module named 'src.database'
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\Project X\src\bot.py", line 43, in setup_hook
+    from src.database.db import create_db_and_tables
+ModuleNotFoundError: No module named 'src.database'
+2025-05-25 13:35:59 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:35:59 - main - INFO - Starting Project X Bot...
+2025-05-25 13:36:00 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:36:01 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'aiosqlite'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+  File "C:\Project X\src\database\db.py", line 21, in <module>
+    engine = create_engine(DATABASE_URL, echo=True, connect_args={"check_same_thread": False})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in create_engine
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\util\deprecations.py", line 281, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\create.py", line 602, in create_engine
+    dbapi = dbapi_meth(**dbapi_args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 376, in import_dbapi
+    __import__("aiosqlite"), __import__("sqlite3")
+    ^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'aiosqlite'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'aiosqlite'
+2025-05-25 13:36:01 - main - CRITICAL - An unexpected error occurred while running the bot: No module named 'aiosqlite'
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\Project X\src\bot.py", line 43, in setup_hook
+    from src.database.db import create_db_and_tables
+  File "C:\Project X\src\database\db.py", line 21, in <module>
+    engine = create_engine(DATABASE_URL, echo=True, connect_args={"check_same_thread": False})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in create_engine
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\util\deprecations.py", line 281, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\create.py", line 602, in create_engine
+    dbapi = dbapi_meth(**dbapi_args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 376, in import_dbapi
+    __import__("aiosqlite"), __import__("sqlite3")
+    ^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'aiosqlite'
+2025-05-25 13:37:22 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:37:22 - main - INFO - Starting Project X Bot...
+2025-05-25 13:37:23 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:37:23 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ImportError: cannot import name 'ClassSelectionPaginatorView' from partially initialized module 'src.views.class_selection_views' (most likely due to a circular import) (C:\Project X\src\views\class_selection_views.py)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 10, in <module>
+    from src.views.class_selection_views import ClassSelectionPaginatorView
+  File "C:\Project X\src\views\class_selection_views.py", line 10, in <module>
+    from src.views.class_detail_view import ClassDetailView
+  File "C:\Project X\src\views\class_detail_view.py", line 13, in <module>
+    from src.views.class_selection_views import ClassSelectionPaginatorView
+ImportError: cannot import name 'ClassSelectionPaginatorView' from partially initialized module 'src.views.class_selection_views' (most likely due to a circular import) (C:\Project X\src\views\class_selection_views.py)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ImportError: cannot import name 'ClassSelectionPaginatorView' from partially initialized module 'src.views.class_selection_views' (most likely due to a circular import) (C:\Project X\src\views\class_selection_views.py)
+2025-05-25 13:37:23 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:37:23 - src.bot - ERROR - Failed to initialize database: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 45, in setup_hook
+    await create_db_and_tables()
+  File "C:\Project X\src\database\db.py", line 28, in create_db_and_tables
+    async with engine.begin() as conn:
+               ^^^^^^^^^^^^^^
+TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+2025-05-25 13:37:26 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:37:26 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:37:26 - src.bot - WARNING - TEST_GUILD_ID not found in .env. Slash commands not synced to a test guild.
+2025-05-25 13:39:27 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:39:27 - main - INFO - Starting Project X Bot...
+2025-05-25 13:39:27 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:39:27 - src.utils.config_manager - ERROR - Config file not found: C:\Project X\src\data\config\class_data.json
+2025-05-25 13:39:27 - src.cogs.start - ERROR - Failed to load class_data.json. Class selection might not work.
+2025-05-25 13:39:27 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 13:39:27 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:39:27 - src.bot - ERROR - Failed to initialize database: AsyncEngine expected, got Engine(sqlite+aiosqlite:///C:\Project X\nyxa.db)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 1440, in _get_sync_engine_or_connection
+    return async_engine.sync_engine
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Engine' object has no attribute 'sync_engine'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 45, in setup_hook
+    await create_db_and_tables()
+  File "C:\Project X\src\database\db.py", line 21, in create_db_and_tables
+    async with AsyncSession(engine) as session: # Use AsyncSession for context management
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 259, in __init__
+    sync_bind = engine._get_sync_engine_or_connection(bind)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 1442, in _get_sync_engine_or_connection
+    raise exc.ArgumentError(
+sqlalchemy.exc.ArgumentError: AsyncEngine expected, got Engine(sqlite+aiosqlite:///C:\Project X\nyxa.db)
+2025-05-25 13:39:30 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:39:30 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:39:30 - src.bot - WARNING - TEST_GUILD_ID not found in .env. Slash commands not synced to a test guild.
+2025-05-25 13:41:06 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:41:06 - main - INFO - Starting Project X Bot...
+2025-05-25 13:41:07 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:41:07 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'sqlmodel.ext.asyncio.create_async_engine'
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+  File "C:\Project X\src\database\db.py", line 6, in <module>
+    from sqlmodel.ext.asyncio.create_async_engine import create_async_engine # This is the correct import
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'sqlmodel.ext.asyncio.create_async_engine'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'sqlmodel.ext.asyncio.create_async_engine'
+2025-05-25 13:41:07 - main - CRITICAL - An unexpected error occurred while running the bot: No module named 'sqlmodel.ext.asyncio.create_async_engine'
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\Project X\src\bot.py", line 43, in setup_hook
+    from src.database.db import create_db_and_tables
+  File "C:\Project X\src\database\db.py", line 6, in <module>
+    from sqlmodel.ext.asyncio.create_async_engine import create_async_engine # This is the correct import
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'sqlmodel.ext.asyncio.create_async_engine'
+2025-05-25 13:41:56 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:41:56 - main - INFO - Starting Project X Bot...
+2025-05-25 13:41:57 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:41:57 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ImportError: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+  File "C:\Project X\src\database\db.py", line 4, in <module>
+    from sqlmodel import SQLModel, create_async_engine # <--- FIX HERE: Removed old import, added create_async_engine directly
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ImportError: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py). Did you mean: 'create_mock_engine'?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ImportError: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py)
+2025-05-25 13:41:57 - main - CRITICAL - An unexpected error occurred while running the bot: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py)
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\Project X\src\bot.py", line 43, in setup_hook
+    from src.database.db import create_db_and_tables
+  File "C:\Project X\src\database\db.py", line 4, in <module>
+    from sqlmodel import SQLModel, create_async_engine # <--- FIX HERE: Removed old import, added create_async_engine directly
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ImportError: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py). Did you mean: 'create_mock_engine'?
+2025-05-25 13:43:01 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:43:01 - main - INFO - Starting Project X Bot...
+2025-05-25 13:43:02 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:43:02 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 13:43:02 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 13:43:02 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:43:02 - src.bot - ERROR - Failed to initialize database: 'Session' object has no attribute '_run_ddl_visitor'
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 45, in setup_hook
+    await create_db_and_tables()
+  File "C:\Project X\src\database\db.py", line 22, in create_db_and_tables
+    await session.run_sync(SQLModel.metadata.create_all)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 398, in run_sync
+    return await greenlet_spawn(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\sql\schema.py", line 5924, in create_all
+    bind._run_ddl_visitor(
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute '_run_ddl_visitor'
+2025-05-25 13:43:04 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:43:04 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:43:04 - src.bot - WARNING - TEST_GUILD_ID not found in .env. Slash commands not synced to a test guild.
+2025-05-25 13:44:00 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:44:00 - main - INFO - Starting Project X Bot...
+2025-05-25 13:44:00 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:44:00 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: ImportError: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 3, in <module>
+    from src.database.db import get_session
+  File "C:\Project X\src\database\db.py", line 4, in <module>
+    from sqlmodel import SQLModel, create_async_engine
+ImportError: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py). Did you mean: 'create_mock_engine'?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 38, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ImportError: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py)
+2025-05-25 13:44:00 - main - CRITICAL - An unexpected error occurred while running the bot: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py)
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\Project X\src\bot.py", line 43, in setup_hook
+    from src.database.db import create_db_and_tables
+  File "C:\Project X\src\database\db.py", line 4, in <module>
+    from sqlmodel import SQLModel, create_async_engine
+ImportError: cannot import name 'create_async_engine' from 'sqlmodel' (C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlmodel\__init__.py). Did you mean: 'create_mock_engine'?
+2025-05-25 13:45:08 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:45:08 - main - INFO - Starting Project X Bot...
+2025-05-25 13:45:09 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:45:09 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 13:45:09 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 13:45:09 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:45:09 - src.bot - ERROR - Failed to initialize database: 'Session' object has no attribute '_run_ddl_visitor'
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 45, in setup_hook
+    await create_db_and_tables()
+  File "C:\Project X\src\database\db.py", line 22, in create_db_and_tables
+    await session.run_sync(SQLModel.metadata.create_all)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 398, in run_sync
+    return await greenlet_spawn(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\sql\schema.py", line 5924, in create_all
+    bind._run_ddl_visitor(
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute '_run_ddl_visitor'
+2025-05-25 13:45:11 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:45:11 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:45:11 - src.bot - WARNING - TEST_GUILD_ID not found in .env. Slash commands not synced to a test guild.
+2025-05-25 13:46:21 - main - WARNING - TEST_GUILD_ID not set in .env. Slash commands will only sync globally (slow).
+2025-05-25 13:46:21 - main - INFO - Starting Project X Bot...
+2025-05-25 13:46:21 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:46:21 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 13:46:21 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 13:46:21 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:46:21 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 13:46:21 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 13:46:24 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:46:24 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:46:24 - src.bot - WARNING - TEST_GUILD_ID not found in .env. Slash commands not synced to a test guild.
+2025-05-25 13:48:47 - main - INFO - Starting Project X Bot...
+2025-05-25 13:48:47 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:48:48 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 13:48:48 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 13:48:48 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:48:48 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 13:48:48 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 13:48:50 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:48:50 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:48:50 - src.bot - ERROR - Failed to sync slash commands: 'CommandTree' object has no attribute 'copy_global_commands'
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 62, in on_ready
+    self.tree.copy_global_commands(guild=guild)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CommandTree' object has no attribute 'copy_global_commands'. Did you mean: '_global_commands'?
+2025-05-25 13:50:16 - main - INFO - Starting Project X Bot...
+2025-05-25 13:50:16 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:50:16 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 13:50:16 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 13:50:16 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:50:16 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 13:50:16 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 13:50:19 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:50:19 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:50:19 - src.bot - INFO - Synced slash commands to test guild: 435610288277028865
+2025-05-25 13:51:20 - main - INFO - Starting Project X Bot...
+2025-05-25 13:51:20 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:51:20 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 13:51:20 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 13:51:20 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:51:20 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 13:51:20 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 13:51:23 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:51:23 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:51:23 - src.bot - INFO - Synced slash commands to test guild: 435610288277028865
+2025-05-25 13:54:35 - main - INFO - Starting Project X Bot...
+2025-05-25 13:54:35 - src.bot - INFO - Running setup_hook...
+2025-05-25 13:54:36 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 13:54:36 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 13:54:36 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 13:54:36 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 13:54:36 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 13:54:38 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 13:54:38 - src.bot - INFO - Bot is ready and online!
+2025-05-25 13:54:38 - src.bot - INFO - Synced slash commands to test guild: 435610288277028865
+2025-05-25 14:21:43 - main - INFO - Starting Project X Bot...
+2025-05-25 14:21:44 - src.bot - INFO - Running setup_hook...
+2025-05-25 14:21:44 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 14:21:44 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 14:21:44 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 14:21:44 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 14:21:44 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 14:21:46 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 14:21:46 - src.bot - INFO - Bot is ready and online!
+2025-05-25 14:21:46 - src.bot - INFO - Synced slash commands to test guild: 435610288277028865
+2025-05-25 14:32:06 - main - INFO - Starting Project X Bot...
+2025-05-25 14:32:06 - src.bot - INFO - Running setup_hook...
+2025-05-25 14:32:06 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 14:32:06 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 14:32:06 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 14:32:06 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 14:32:06 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 14:32:09 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 14:32:09 - src.bot - INFO - Bot is ready and online!
+2025-05-25 14:32:09 - src.bot - INFO - Synced slash commands to test guild: 435610288277028865
+2025-05-25 14:35:50 - main - INFO - Starting Project X Bot...
+2025-05-25 14:35:50 - src.bot - INFO - Running setup_hook...
+2025-05-25 14:35:50 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 14:35:50 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 14:35:50 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 14:35:50 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 14:35:50 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 14:35:53 - src.bot - INFO - Logged in as Nyxa#7116 (ID: 1374133960057290803)
+2025-05-25 14:35:53 - src.bot - INFO - Bot is ready and online!
+2025-05-25 14:35:53 - src.bot - INFO - Synced slash commands to test guild: 435610288277028865
+2025-05-25 14:37:57 - main - CRITICAL - An unexpected error occurred while running the bot: Shard ID None WebSocket closed with 4004
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 778, in start
+    await self.connect(reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 659, in connect
+    await self.ws.poll_event()
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 646, in poll_event
+    raise ConnectionClosed(self.socket, shard_id=self.shard_id, code=code) from None
+discord.errors.ConnectionClosed: Shard ID None WebSocket closed with 4004
+2025-05-25 14:40:18 - main - INFO - Starting Project X Bot...
+2025-05-25 14:40:18 - src.bot - INFO - Running setup_hook...
+2025-05-25 14:40:19 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 14:40:19 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 14:40:19 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 14:40:19 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 14:40:19 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 14:40:21 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 14:40:21 - src.bot - INFO - Bot is ready and online!
+2025-05-25 14:40:21 - src.bot - INFO - Synced slash commands to test guild: 435610288277028865
+2025-05-25 14:44:00 - main - INFO - Starting Project X Bot...
+2025-05-25 14:44:00 - src.bot - INFO - Running setup_hook...
+2025-05-25 14:44:00 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 14:44:00 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 14:44:00 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 14:44:00 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 14:44:00 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 14:44:03 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 14:44:03 - src.bot - INFO - Bot is ready and online!
+2025-05-25 14:44:03 - src.bot - INFO - DEBUG: TEST_GUILD_ID from .env: '435610288277028865'
+2025-05-25 14:44:03 - src.bot - INFO - Synced slash commands to test guild: 435610288277028865
+2025-05-25 14:45:59 - main - INFO - Starting Project X Bot...
+2025-05-25 14:46:00 - src.bot - INFO - Running setup_hook...
+2025-05-25 14:46:00 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 14:46:00 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 14:46:00 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 14:46:00 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 14:46:00 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 14:46:02 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 14:46:02 - src.bot - INFO - Bot is ready and online!
+2025-05-25 14:46:02 - src.bot - INFO - DEBUG: TEST_GUILD_ID from .env: '1369489835860955329'
+2025-05-25 14:46:04 - src.bot - INFO - Synced slash commands to test guild: 1369489835860955329
+2025-05-25 14:47:46 - main - INFO - Starting Project X Bot...
+2025-05-25 14:47:46 - src.bot - INFO - Running setup_hook...
+2025-05-25 14:47:46 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 14:47:46 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 14:47:46 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 14:47:46 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 14:47:46 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 14:47:49 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 14:47:49 - src.bot - INFO - Bot is ready and online!
+2025-05-25 14:47:49 - src.bot - INFO - DEBUG: TEST_GUILD_ID from .env: '1376315696098840636'
+2025-05-25 14:47:49 - src.bot - INFO - Synced slash commands to test guild: 1376315696098840636
+2025-05-25 15:01:21 - main - CRITICAL - An unexpected error occurred while running the bot: Shard ID None WebSocket closed with 4004
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 778, in start
+    await self.connect(reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 659, in connect
+    await self.ws.poll_event()
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 646, in poll_event
+    raise ConnectionClosed(self.socket, shard_id=self.shard_id, code=code) from None
+discord.errors.ConnectionClosed: Shard ID None WebSocket closed with 4004
+2025-05-25 15:02:20 - main - INFO - Starting Project X Bot...
+2025-05-25 15:02:20 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:02:21 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:02:21 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:02:21 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:02:21 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:02:21 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:02:23 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:02:23 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:02:23 - src.bot - INFO - DEBUG: TEST_GUILD_ID from .env: '1376315696098840636'
+2025-05-25 15:02:23 - src.bot - INFO - Synced slash commands to test guild: 1376315696098840636
+2025-05-25 15:09:36 - main - CRITICAL - An unexpected error occurred while running the bot: Shard ID None WebSocket closed with 4004
+Traceback (most recent call last):
+  File "C:\Project X\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 778, in start
+    await self.connect(reconnect=reconnect)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 659, in connect
+    await self.ws.poll_event()
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 646, in poll_event
+    raise ConnectionClosed(self.socket, shard_id=self.shard_id, code=code) from None
+discord.errors.ConnectionClosed: Shard ID None WebSocket closed with 4004
+2025-05-25 15:14:34 - main - INFO - Starting Project X Bot...
+2025-05-25 15:14:34 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:14:35 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:14:35 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:14:35 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:14:35 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:14:35 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:14:37 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:14:37 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:14:37 - src.bot - INFO - DEBUG: TEST_GUILD_ID from .env: '1376315696098840636'
+2025-05-25 15:14:37 - src.bot - INFO - DEBUG: Attempting to clear commands for guild 1376315696098840636...
+2025-05-25 15:14:37 - src.bot - INFO - DEBUG: Successfully cleared commands for guild 1376315696098840636.
+2025-05-25 15:14:37 - src.bot - INFO - DEBUG: Attempting to sync commands for guild 1376315696098840636...
+2025-05-25 15:14:37 - src.bot - INFO - DEBUG: Sync command returned: 0 commands. Names: []
+2025-05-25 15:14:37 - src.bot - INFO - Synced slash commands to test guild: 1376315696098840636
+2025-05-25 15:16:54 - main - INFO - Starting Project X Bot...
+2025-05-25 15:16:55 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:16:55 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:16:55 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:16:55 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:16:55 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:16:55 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:16:55 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:16:57 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:16:57 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:16:57 - src.bot - INFO - DEBUG: TEST_GUILD_ID from .env: '1376315696098840636'
+2025-05-25 15:16:57 - src.bot - INFO - DEBUG: Attempting to clear commands for guild 1376315696098840636...
+2025-05-25 15:16:57 - src.bot - INFO - DEBUG: Successfully cleared commands for guild 1376315696098840636.
+2025-05-25 15:16:57 - src.bot - INFO - DEBUG: Attempting to sync commands for guild 1376315696098840636...
+2025-05-25 15:16:57 - src.bot - INFO - DEBUG: Sync command returned: 0 commands. Names: []
+2025-05-25 15:16:57 - src.bot - INFO - Synced slash commands to test guild: 1376315696098840636
+2025-05-25 15:19:31 - main - INFO - Starting Project X Bot...
+2025-05-25 15:19:32 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:19:32 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:19:32 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:19:32 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:19:32 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:19:32 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:19:32 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:19:34 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:19:34 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:19:34 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:19:34 - src.bot - INFO - DEBUG: TEST_GUILD_ID from .env: '1376315696098840636'
+2025-05-25 15:19:34 - src.bot - INFO - DEBUG: Attempting to clear commands for guild 1376315696098840636...
+2025-05-25 15:19:34 - src.bot - INFO - DEBUG: Successfully cleared commands for guild 1376315696098840636.
+2025-05-25 15:19:34 - src.bot - INFO - DEBUG: Attempting to sync commands for guild 1376315696098840636...
+2025-05-25 15:19:34 - src.bot - INFO - DEBUG: Sync command returned: 0 commands. Names: []
+2025-05-25 15:19:34 - src.bot - INFO - Synced slash commands to test guild: 1376315696098840636
+2025-05-25 15:21:03 - main - INFO - Starting Project X Bot...
+2025-05-25 15:21:03 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:21:04 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:21:04 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:21:04 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:21:04 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:21:04 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:21:04 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:21:06 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:21:06 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:21:06 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:21:06 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:21:06 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:21:06 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:22:52 - src.cogs.start - INFO - User 798476548734844969 used /ping command.
+2025-05-25 15:23:03 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:23:34 - src.cogs.start - INFO - User 798476548734844969 used /ping command.
+2025-05-25 15:23:54 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:25:24 - main - INFO - Starting Project X Bot...
+2025-05-25 15:25:24 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:25:25 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:25:25 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:25:25 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:25:25 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:25:25 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:25:25 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:25:27 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:25:27 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:25:27 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:25:27 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:25:27 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:25:27 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:25:35 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:25:35 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: 'async_generator' object does not support the asynchronous context manager protocol
+NoneType: None
+2025-05-25 15:27:27 - main - INFO - Starting Project X Bot...
+2025-05-25 15:27:27 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:27:28 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:27:28 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:27:28 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:27:28 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:27:28 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:27:28 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:27:30 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:27:30 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:27:30 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:27:30 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:27:30 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:27:30 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:27:35 - src.cogs.start - INFO - User 798476548734844969 used /ping command.
+2025-05-25 15:27:38 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:27:39 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: 'async_generator' object does not support the asynchronous context manager protocol
+NoneType: None
+2025-05-25 15:31:01 - main - INFO - Starting Project X Bot...
+2025-05-25 15:31:01 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:31:01 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:31:01 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:31:01 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:31:01 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:31:01 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:31:01 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:31:03 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:31:03 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:31:03 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:31:03 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:31:04 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:31:04 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:31:11 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:31:11 - src.cogs.start - INFO - Creating new user profile for 798476548734844969.
+2025-05-25 15:34:55 - main - INFO - Starting Project X Bot...
+2025-05-25 15:34:55 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:34:55 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:34:55 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:34:55 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:34:55 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:34:55 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:34:55 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:34:57 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:34:57 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:34:57 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:34:57 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:34:58 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:34:58 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:35:09 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:35:09 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 15:35:09 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 15:35:09 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 2
+2025-05-25 15:36:54 - main - INFO - Starting Project X Bot...
+2025-05-25 15:36:55 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:36:55 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:36:55 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:36:55 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:36:55 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:36:55 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:36:55 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:36:57 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:36:57 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:36:57 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:36:57 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:36:57 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:36:57 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:37:10 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:37:10 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 15:37:10 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 15:37:10 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 15:41:21 - main - INFO - Starting Project X Bot...
+2025-05-25 15:41:22 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:41:22 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:41:22 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:41:22 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:41:22 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:41:22 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:41:22 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:41:25 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:41:25 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:41:25 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:41:25 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:41:25 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:41:25 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:41:31 - src.cogs.start - INFO - User 798476548734844969 used /ping command.
+2025-05-25 15:41:33 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:41:33 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 15:41:33 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 15:41:33 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 15:47:40 - main - INFO - Starting Project X Bot...
+2025-05-25 15:47:40 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:47:40 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:47:40 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:47:40 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:47:40 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:47:40 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:47:40 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:47:42 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:47:42 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:47:42 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:47:42 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:47:43 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:47:43 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:47:49 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:47:49 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 15:47:49 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 15:47:49 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 15:47:58 - src.views.class_selection_views - INFO - DEBUG_INT: Interaction type: <class 'discord.interactions.Interaction'>
+2025-05-25 15:47:58 - src.views.class_selection_views - INFO - DEBUG_INT: Interaction data: {'id': 2, 'custom_id': 'select_class_human', 'component_type': 2}
+2025-05-25 15:47:58 - src.views.class_selection_views - ERROR - DEBUG_INT: Interaction DOES NOT have custom_id attribute.
+2025-05-25 15:48:01 - src.views.class_selection_views - INFO - DEBUG_INT: Interaction type: <class 'discord.interactions.Interaction'>
+2025-05-25 15:48:01 - src.views.class_selection_views - INFO - DEBUG_INT: Interaction data: {'id': 3, 'custom_id': 'select_class_demon', 'component_type': 2}
+2025-05-25 15:48:01 - src.views.class_selection_views - ERROR - DEBUG_INT: Interaction DOES NOT have custom_id attribute.
+2025-05-25 15:51:20 - main - INFO - Starting Project X Bot...
+2025-05-25 15:51:21 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:51:21 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:51:21 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:51:21 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:51:21 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:51:21 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:51:21 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:51:23 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:51:23 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:51:23 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:51:23 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:51:23 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:51:23 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:51:30 - src.cogs.start - INFO - User 798476548734844969 used /ping command.
+2025-05-25 15:51:31 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:51:31 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 15:51:31 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 15:51:31 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 15:51:42 - src.views.class_selection_views - INFO - DEBUG_INT: Interaction type: <class 'discord.interactions.Interaction'>
+2025-05-25 15:51:42 - src.views.class_selection_views - INFO - DEBUG_INT: Interaction data: {'id': 2, 'custom_id': 'select_class_angel', 'component_type': 2}
+2025-05-25 15:51:42 - src.views.class_selection_views - ERROR - DEBUG_INT: Interaction DOES NOT have custom_id attribute (expected for button click).
+2025-05-25 15:51:42 - src.views.class_selection_views - INFO - DEBUG_INT: Successfully extracted class_id: angel
+2025-05-25 15:53:26 - main - INFO - Starting Project X Bot...
+2025-05-25 15:53:26 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:53:27 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 15:53:27 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 15:53:27 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:53:27 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:53:27 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:53:27 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:53:29 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:53:29 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:53:29 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:53:29 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:53:29 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 15:53:29 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:53:36 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 15:53:36 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 15:53:36 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 15:53:36 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 15:53:42 - src.views.class_selection_views - INFO - DEBUG_INT: Interaction type: <class 'discord.interactions.Interaction'>
+2025-05-25 15:53:42 - src.views.class_selection_views - INFO - DEBUG_INT: Interaction data: {'id': 3, 'custom_id': 'select_class_demon', 'component_type': 2}
+2025-05-25 15:53:42 - src.views.class_selection_views - ERROR - DEBUG_INT: Interaction DOES NOT have custom_id attribute (expected for button click).
+2025-05-25 15:53:42 - src.views.class_selection_views - INFO - DEBUG_INT: Successfully extracted class_id: demon
+2025-05-25 15:53:42 - src.utils.render_helpers - ERROR - Provided image is not a PIL Image object: <class 'coroutine'>
+2025-05-25 15:56:01 - main - INFO - Starting Project X Bot...
+2025-05-25 15:56:01 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:56:02 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: IndentationError: expected an indented block after function definition on line 47 (class_selection_views.py, line 51)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 10, in <module>
+    from src.views.class_selection_views import ClassSelectionPaginatorView
+  File "C:\Project X\src\views\class_selection_views.py", line 51
+    async def on_class_select(self, interaction: discord.Interaction):
+    ^^^^^
+IndentationError: expected an indented block after function definition on line 47
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 23, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: IndentationError: expected an indented block after function definition on line 47 (class_selection_views.py, line 51)
+2025-05-25 15:56:02 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:56:02 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:56:02 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:56:02 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:56:04 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:56:04 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:56:04 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 1 commands. Names: ['testsync']
+2025-05-25 15:56:04 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:56:04 - src.bot - INFO - DEBUG: Global Sync command returned: 1 commands. Names: ['testsync']
+2025-05-25 15:56:04 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:56:44 - main - INFO - Starting Project X Bot...
+2025-05-25 15:56:44 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:56:44 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: IndentationError: expected an indented block after function definition on line 47 (class_selection_views.py, line 51)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 10, in <module>
+    from src.views.class_selection_views import ClassSelectionPaginatorView
+  File "C:\Project X\src\views\class_selection_views.py", line 51
+    async def on_class_select(self, interaction: discord.Interaction):
+    ^^^^^
+IndentationError: expected an indented block after function definition on line 47
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 23, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: IndentationError: expected an indented block after function definition on line 47 (class_selection_views.py, line 51)
+2025-05-25 15:56:44 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:56:44 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:56:44 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:56:44 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:56:46 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:56:46 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:56:46 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 1 commands. Names: ['testsync']
+2025-05-25 15:56:46 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:56:47 - src.bot - INFO - DEBUG: Global Sync command returned: 1 commands. Names: ['testsync']
+2025-05-25 15:56:47 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:58:27 - main - INFO - Starting Project X Bot...
+2025-05-25 15:58:27 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:58:28 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: IndentationError: expected an indented block after function definition on line 47 (class_selection_views.py, line 50)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 10, in <module>
+    from src.views.class_selection_views import ClassSelectionPaginatorView
+  File "C:\Project X\src\views\class_selection_views.py", line 50
+    async def on_class_select(self, interaction: discord.Interaction):
+    ^^^^^
+IndentationError: expected an indented block after function definition on line 47
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 23, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: IndentationError: expected an indented block after function definition on line 47 (class_selection_views.py, line 50)
+2025-05-25 15:58:28 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:58:28 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:58:28 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:58:28 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:58:30 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:58:30 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:58:30 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 1 commands. Names: ['testsync']
+2025-05-25 15:58:30 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:58:30 - src.bot - INFO - DEBUG: Global Sync command returned: 1 commands. Names: ['testsync']
+2025-05-25 15:58:30 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 15:59:42 - main - INFO - Starting Project X Bot...
+2025-05-25 15:59:43 - src.bot - INFO - Running setup_hook...
+2025-05-25 15:59:43 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: IndentationError: expected an indented block after function definition on line 47 (class_selection_views.py, line 51)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 10, in <module>
+    from src.views.class_selection_views import ClassSelectionPaginatorView
+  File "C:\Project X\src\views\class_selection_views.py", line 51
+    async def on_class_select(self, interaction: discord.Interaction):
+    ^^^^^
+IndentationError: expected an indented block after function definition on line 47
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 23, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: IndentationError: expected an indented block after function definition on line 47 (class_selection_views.py, line 51)
+2025-05-25 15:59:43 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 15:59:43 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 15:59:43 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 15:59:43 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 15:59:45 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 15:59:45 - src.bot - INFO - Bot is ready and online!
+2025-05-25 15:59:45 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 1 commands. Names: ['testsync']
+2025-05-25 15:59:45 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 15:59:45 - src.bot - INFO - DEBUG: Global Sync command returned: 1 commands. Names: ['testsync']
+2025-05-25 15:59:45 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:01:43 - main - INFO - Starting Project X Bot...
+2025-05-25 16:01:43 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:01:44 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 16:01:44 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 16:01:44 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:01:44 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:01:44 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:01:44 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:01:46 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:01:46 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:01:46 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:01:46 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:01:46 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:01:46 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:02:06 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:02:06 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:02:06 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:02:06 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:02:06 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:04:49 - main - INFO - Starting Project X Bot...
+2025-05-25 16:04:49 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:04:50 - src.bot - ERROR - Failed to load cog src.cogs.start: Extension 'src.cogs.start' raised an error: SyntaxError: invalid syntax (class_selection_views.py, line 281)
+Traceback (most recent call last):
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Project X\src\cogs\start.py", line 10, in <module>
+    from src.views.class_selection_views import ClassSelectionPaginatorView
+  File "C:\Project X\src\views\class_selection_views.py", line 281
+    await self.
+               ^
+SyntaxError: invalid syntax
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Project X\src\bot.py", line 23, in setup_hook
+    await self.load_extension(cog)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\Users\nalun\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: SyntaxError: invalid syntax (class_selection_views.py, line 281)
+2025-05-25 16:04:50 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:04:50 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:04:50 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:04:50 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:04:52 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:04:52 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:04:52 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 1 commands. Names: ['testsync']
+2025-05-25 16:04:52 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:04:52 - src.bot - INFO - DEBUG: Global Sync command returned: 1 commands. Names: ['testsync']
+2025-05-25 16:04:52 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:05:12 - main - INFO - Starting Project X Bot...
+2025-05-25 16:05:12 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:05:12 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 16:05:12 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 16:05:12 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:05:12 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:05:12 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:05:12 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:05:15 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:05:15 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:05:15 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:05:15 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:05:59 - main - INFO - Starting Project X Bot...
+2025-05-25 16:05:59 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:05:59 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 16:05:59 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 16:05:59 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:05:59 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:05:59 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:05:59 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:06:02 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:06:02 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:06:02 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:06:02 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:06:02 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:06:02 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:06:27 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:06:27 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:06:27 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:06:27 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:06:27 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:06:29 - src.cogs.start - INFO - User 798476548734844969 used /ping command.
+2025-05-25 16:08:17 - main - INFO - Starting Project X Bot...
+2025-05-25 16:08:18 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:08:18 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 16:08:18 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 16:08:18 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:08:18 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:08:18 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:08:18 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:08:20 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:08:20 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:08:20 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:08:20 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:08:21 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:08:21 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:08:25 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:08:25 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:08:25 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:08:25 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:08:25 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:08:25 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'human' at path: C:\Project X\classes/human/human_base.png
+2025-05-25 16:08:25 - src.utils.image_utils - ERROR - DEBUG_IMG: Class asset file NOT FOUND for 'human' at: C:\Project X\classes/human/human_base.png. Skipping rendering for this class. (Check file path and name).
+2025-05-25 16:08:25 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'astral' at path: C:\Project X\classes/astral/astral_base.png
+2025-05-25 16:08:25 - src.utils.image_utils - ERROR - DEBUG_IMG: Class asset file NOT FOUND for 'astral' at: C:\Project X\classes/astral/astral_base.png. Skipping rendering for this class. (Check file path and name).
+2025-05-25 16:08:25 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:10:53 - main - INFO - Starting Project X Bot...
+2025-05-25 16:10:53 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:10:54 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 16:10:54 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 16:10:54 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:10:54 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:10:54 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:10:54 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:10:56 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:10:56 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:10:56 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:10:56 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:10:56 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:10:56 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:11:01 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:11:01 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:11:01 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:11:01 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:11:01 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:11:01 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'human' at path: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:11:01 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'astral' at path: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:11:01 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:14:14 - main - INFO - Starting Project X Bot...
+2025-05-25 16:14:15 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:14:15 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 16:14:15 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 16:14:15 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:14:15 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:14:15 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:14:15 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:14:17 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:14:17 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:14:17 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:14:17 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:14:17 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:14:17 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:14:23 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:14:23 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:14:23 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:14:23 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:14:23 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:14:23 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'human' at path: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:14:23 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:14:23 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:14:23 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:14:23 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Starting render for page with IDs: ['human', 'astral']
+2025-05-25 16:14:23 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:14:23 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'human' from: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:14:23 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'astral' at path: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:14:23 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:14:23 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'astral' from: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:14:23 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Finished rendering page. Successfully loaded 2 images.
+2025-05-25 16:14:23 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:15:02 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:15:02 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:15:02 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:15:02 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:15:02 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:15:02 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:15:02 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:15:02 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Starting render for page with IDs: ['human', 'astral']
+2025-05-25 16:15:02 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:15:02 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:15:02 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'human' at path: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:15:02 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'human' from: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:15:02 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'astral' at path: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:15:02 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'astral' from: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:15:02 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:15:02 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Finished rendering page. Successfully loaded 2 images.
+2025-05-25 16:15:02 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:15:23 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:15:23 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:15:23 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:15:23 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:15:23 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:15:23 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:15:23 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:15:23 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:15:23 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:15:23 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Starting render for page with IDs: ['human', 'astral']
+2025-05-25 16:15:23 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:15:23 - src.utils.image_utils - INFO - DEBUG_IMG: Checking asset for 'human' at path: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:15:23 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'human' from: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:15:23 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'astral' from: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:15:23 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Finished rendering page. Successfully loaded 2 images.
+2025-05-25 16:15:23 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:15:23 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:17:20 - main - INFO - Starting Project X Bot...
+2025-05-25 16:17:20 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:17:20 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 16:17:20 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 16:17:20 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:17:20 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:17:20 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:17:20 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:17:23 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:17:23 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:17:23 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:17:23 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:17:23 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:17:23 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:17:32 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:17:32 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:17:32 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:17:32 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:17:32 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Starting render for page with IDs: ['human', 'astral']
+2025-05-25 16:17:32 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:17:32 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'human' from: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:17:32 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'astral' from: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:17:32 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Finished rendering page. Successfully loaded 2 images.
+2025-05-25 16:17:32 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:20:07 - main - INFO - Starting Project X Bot...
+2025-05-25 16:20:07 - src.bot - INFO - Running setup_hook...
+2025-05-25 16:20:07 - src.utils.config_manager - INFO - Loaded config: C:\Project X\data\config\class_data.json
+2025-05-25 16:20:07 - src.bot - INFO - Successfully loaded cog: src.cogs.start
+2025-05-25 16:20:07 - src.bot - INFO - DEBUG: Added direct 'testsync' command to bot.tree for diagnostic.
+2025-05-25 16:20:07 - src.database.db - INFO - Attempting to create database tables...
+2025-05-25 16:20:07 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-25 16:20:07 - src.bot - INFO - Database initialized and tables created.
+2025-05-25 16:20:09 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-25 16:20:09 - src.bot - INFO - Bot is ready and online!
+2025-05-25 16:20:09 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:20:09 - src.bot - INFO - DEBUG: Attempting GLOBAL slash command sync...
+2025-05-25 16:20:10 - src.bot - INFO - DEBUG: Global Sync command returned: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-25 16:20:10 - src.bot - INFO - GLOBAL slash command sync initiated (may take 10-60 minutes to appear).
+2025-05-25 16:20:17 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:20:17 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:20:17 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:20:17 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:20:17 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Starting render for page with IDs: ['human', 'astral']
+2025-05-25 16:20:17 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:20:17 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'human' from: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:20:17 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'astral' from: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:20:17 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Finished rendering page. Successfully loaded 2 images.
+2025-05-25 16:20:18 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-25 16:21:31 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-25 16:21:31 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-25 16:21:31 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-25 16:21:31 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-25 16:21:31 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Starting render for page with IDs: ['human', 'astral']
+2025-05-25 16:21:31 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-25 16:21:31 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'human' from: C:\Project X\assets/classes/human/human_base.png
+2025-05-25 16:21:31 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'astral' from: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-25 16:21:31 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Finished rendering page. Successfully loaded 2 images.
+2025-05-25 16:21:31 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-26 12:21:39 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-26 12:21:39 - src.bot - INFO - Bot is ready and online!
+2025-05-26 12:21:39 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-26 12:24:40 - src.cogs.start - INFO - User 798476548734844969 (jinenv) used /start command.
+2025-05-26 12:24:40 - src.views.class_selection_views - INFO - DEBUG_PAG: Initializing Paginator. class_data.keys(): ['human', 'astral', 'elf', 'demon', 'angel', 'orc']
+2025-05-26 12:24:40 - src.views.class_selection_views - INFO - DEBUG_PAG: len(self.class_ids): 6
+2025-05-26 12:24:40 - src.views.class_selection_views - INFO - DEBUG_PAG: Calculated total_pages: 3
+2025-05-26 12:24:40 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Starting render for page with IDs: ['human', 'astral']
+2025-05-26 12:24:40 - src.utils.image_utils - INFO - DEBUG_FONT: Attempting to load font from: C:\Project X\assets/ui/fonts/PressStart2P.ttf
+2025-05-26 12:24:40 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'human' from: C:\Project X\assets/classes/human/human_base.png
+2025-05-26 12:24:40 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Attempting to load asset for 'astral' from: C:\Project X\assets/classes/astral/astral_base.png
+2025-05-26 12:24:40 - src.utils.image_utils - INFO - DEBUG_IMG_RENDER: Finished rendering page. Successfully loaded 2 images.
+2025-05-26 12:24:40 - src.utils.error_handler - ERROR - Unhandled command error: Hybrid command raised an error: Command 'start' raised an exception: TypeError: object Image can't be used in 'await' expression
+NoneType: None
+2025-05-26 16:11:03 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-26 16:11:03 - src.bot - INFO - Bot is ready and online!
+2025-05-26 16:11:03 - src.bot - INFO - DEBUG: Commands in bot.tree BEFORE sync: 3 commands. Names: ['start', 'ping', 'testsync']
+2025-05-27 00:16:36 - src.cogs.start - INFO - User 798476548734844969 used /ping command.
