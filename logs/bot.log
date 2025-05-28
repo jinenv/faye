@@ -1,0 +1,65 @@
+2025-05-28 11:33:50 - main - INFO - Starting Nyxa Bot...
+2025-05-28 11:33:50 - src.bot - INFO - Running setup_hook...
+2025-05-28 11:33:50 - main - CRITICAL - An unexpected error occurred while running the bot: cannot import name 'create_db_and_tables' from 'src.database.db' (C:\nyxa\src\database\db.py)
+Traceback (most recent call last):
+  File "C:\nyxa\run.py", line 40, in main
+    nyxa_bot.run(DISCORD_BOT_TOKEN)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Program Files\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\client.py", line 621, in login
+    await self.setup_hook()
+  File "C:\nyxa\src\bot.py", line 53, in setup_hook
+    from src.database.db import create_db_and_tables # Import db.py after other setup
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ImportError: cannot import name 'create_db_and_tables' from 'src.database.db' (C:\nyxa\src\database\db.py)
+2025-05-28 11:35:09 - main - INFO - Starting Nyxa Bot...
+2025-05-28 11:35:10 - src.bot - INFO - Running setup_hook...
+2025-05-28 11:35:10 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 11:35:10 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-28 11:35:10 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 11:35:10 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 11:35:10 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 11:35:12 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 11:35:12 - src.bot - INFO - Bot is ready and online!
+2025-05-28 11:37:45 - main - INFO - Starting Nyxa Bot...
+2025-05-28 11:37:46 - src.bot - INFO - Running setup_hook...
+2025-05-28 11:37:46 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 11:37:46 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-28 11:37:46 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 11:37:46 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 11:37:46 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 11:37:48 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 11:37:48 - src.bot - INFO - Bot is ready and online!
+2025-05-28 11:38:21 - src.bot - INFO - User 798476548734844969 used /testsync command.
+2025-05-28 11:40:21 - main - INFO - Starting Nyxa Bot...
+2025-05-28 11:40:22 - src.bot - INFO - Running setup_hook...
+2025-05-28 11:40:22 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 11:40:22 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-28 11:40:22 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 11:40:22 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 11:40:22 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 11:40:25 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 11:40:25 - src.bot - INFO - Bot is ready and online!
+2025-05-28 11:42:17 - main - INFO - Starting Nyxa Bot...
+2025-05-28 11:42:17 - src.bot - INFO - Running setup_hook...
+2025-05-28 11:42:18 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 11:42:18 - src.database.db - INFO - Database tables created (or already exist).
+2025-05-28 11:42:18 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 11:42:18 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 11:42:18 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 11:42:20 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 11:42:20 - src.bot - INFO - Bot is ready and online!
+2025-05-28 11:43:08 - src.bot - INFO - User 798476548734844969 used /testsync command.

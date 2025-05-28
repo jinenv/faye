@@ -1,0 +1,25 @@
+{
+  "starting_gold": 500,
+  "start_command_free_summon": true,
+  "daily_summon_cost": 100,
+  "daily_free_summons": 1,
+  "xp_per_level_base": 100,
+  "xp_per_level_multiplier": 1.5,
+  "base_adventure_xp": 50,
+  "base_adventure_gold": 20,
+  "summon_types": {
+    "standard": {
+      "cost_gold": 100,
+      "free_daily_rolls": 1,
+      "rarity_distribution": {
+        "Supreme": 0.001,
+        "Mythic": 0.004,
+        "Legendary": 0.02,
+        "Epic": 0.075,
+        "Rare": 0.15,
+        "Uncommon": 0.25,
+        "Common": 0.50
+      }
+    }
+  }
+}

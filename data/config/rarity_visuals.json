@@ -1,0 +1,9 @@
+{
+  "Supreme": "#FFC0CB",
+  "Mythic": "#800080",
+  "Legendary": "#FFD700",
+  "Epic": "#A020F0",
+  "Rare": "#1E90FF",
+  "Uncommon": "#32CD32",
+  "Common": "#808080"
+}

@@ -1,0 +1,6 @@
+discord.py==2.3.2
+python-dotenv==1.0.1
+Pillow==10.3.0
+SQLModel==0.0.18
+PyYAML==6.0.1
+aiosqlite==0.20.0
