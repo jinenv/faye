@@ -17,13 +17,14 @@ class User(SQLModel, table=True):
     last_daily_claim: Optional[datetime] = Field(default=None) # Timestamp for daily claim cooldown
 
     # Optional: Link to the active Esprit. This uses a foreign key to UserEsprit.id
-    # We define this as a relationship here, but the active_esprit_id field would be on User.
-    # For simplicity in models, we often link via ID and manage the relationship in code.
-    # Let's keep it simple for now, just the ID.
     active_esprit_id: Optional[uuid.UUID] = Field(default=None, foreign_key="useresprit.id")
 
     # Define a relationship to access a user's owned Esprits
-    esprits: List["UserEsprit"] = Relationship(back_populates="owner")
+    # This was fixed in the previous step
+    esprits: List["UserEsprit"] = Relationship(
+        back_populates="owner",
+        sa_relationship_kwargs={"foreign_keys": "UserEsprit.owner_id"} # Explicitly link via owner_id
+    )
 
 
 # --- Esprit Data Model (Definitions of all possible Esprits) ---
@@ -43,17 +44,31 @@ class EspritData(SQLModel, table=True):
     base_attack: int
     base_defense: int
     base_speed: int
-    base_magic_resist: int = Field(default=0) # New stat based on your examples
-    base_crit_rate: float = Field(default=0.05) # 5% base crit rate
-    base_block_rate: float = Field(default=0.0) # 0% base block rate
-    base_dodge_chance: float = Field(default=0.0) # 0% base dodge chance
-    base_mana_regen: int = Field(default=0) # New stat based on your examples
-
-    # Relationship to actual instances of this Esprit type owned by players
-    # Note: This is commented out for now as we primarily query EspritData directly
-    # and link UserEsprit to EspritData.esprit_id. If we needed to find all
-    # UserEsprits of a specific EspritData, this would be useful.
-    # instances: List["UserEsprit"] = Relationship(back_populates="esprit_definition")
+    base_magic_resist: int = Field(default=0)
+    base_crit_rate: float = Field(default=0.05)
+    base_block_rate: float = Field(default=0.0)
+    base_dodge_chance: float = Field(default=0.0)
+    base_mana_regen: int = Field(default=0)
+    base_mana: int = Field(default=0)
+    
+    def to_dict(self):
+        """Converts the EspritData instance to a dictionary, useful for image rendering."""
+        return {
+            "esprit_id": self.esprit_id,
+            "name": self.name,
+            "description": self.description,
+            "rarity": self.rarity,
+            "visual_asset_path": self.visual_asset_path,
+            "base_hp": self.base_hp,
+            "base_attack": self.base_attack,
+            "base_defense": self.base_defense,
+            "base_speed": self.base_speed,
+            "base_magic_resist": self.base_magic_resist,
+            "base_crit_rate": self.base_crit_rate,
+            "base_block_rate": self.base_block_rate,
+            "base_dodge_chance": self.base_dodge_chance,
+            "base_mana_regen": self.base_mana_regen,
+        }
 
 
 # --- User Esprit Model (Player-owned Esprit Instances) ---
@@ -65,26 +80,16 @@ class UserEsprit(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True) # Unique ID for this specific Esprit instance
 
     owner_id: str = Field(foreign_key="user.user_id") # Link to the User who owns this Esprit
-    owner: Optional[User] = Relationship(back_populates="esprits") # Define relationship back to owner
+    # --- CRITICAL FIX IS HERE ---
+    owner: Optional[User] = Relationship(
+        back_populates="esprits",
+        sa_relationship_kwargs={"foreign_keys": "UserEsprit.owner_id"} # Explicitly link via owner_id
+    )
+    # --- END CRITICAL FIX ---
 
     esprit_data_id: str = Field(foreign_key="espritdata.esprit_id") # Link to the EspritData definition
-    # esprit_definition: Optional[EspritData] = Relationship(back_populates="instances") # See note in EspritData
 
     # Current Stats (can change based on level, equipment, buffs)
     current_hp: int
     current_level: int = Field(default=1)
     current_xp: int = Field(default=0)
-
-    # We'll calculate current attack, defense, etc. dynamically from base stats + level + equipment
-    # equipped_item_id: Optional[uuid.UUID] = Field(default=None, foreign_key="useritem.id") # Link to equipped item (future)
-
-    # You can add more fields here as you expand features:
-    # equipped_items: List["UserItem"] = Relationship(link_model=UserEspritEquipmentLink) # For multiple equipment slots
-    # abilities: List[str] = Field(default_factory=list) # List of ability IDs this instance has
-
-
-# Example of a many-to-many link model for equipment (future expansion)
-# class UserEspritEquipmentLink(SQLModel, table=True):
-#     user_esprit_id: uuid.UUID = Field(foreign_key="useresprit.id", primary_key=True)
-#     user_item_id: uuid.UUID = Field(foreign_key="useritem.id", primary_key=True)
-#     slot: str # e.g., "weapon", "armor", "accessory"

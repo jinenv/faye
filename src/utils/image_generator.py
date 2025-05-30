@@ -1,201 +1,174 @@
-from PIL import Image, ImageDraw, ImageFont
+# src/utils/image_generator.py
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 import os
-from src.utils.logger import Logger
-from src.utils.config_manager import ConfigManager
+import io
+import math
 
-log = Logger(__name__)
+# Corrected import for the logger
+from src.utils.logger import get_logger
+from src.utils.config_manager import ConfigManager # <--- ADD THIS IMPORT
 
-# --- Configuration for Image Generation ---
-# Target size for individual sprites when rendered in embeds
-TARGET_SPRITE_SIZE = (128, 128)
-# Font settings
-FONT_PATH = "assets/ui/fonts/PressStart2P.ttf" # Path to your font
-FONT_SIZE_BODY = 14
-FONT_SIZE_TITLE = 18
+logger = get_logger(__name__)
 
-# --- Helper to load and resize font ---
-def get_font(size: int = FONT_SIZE_BODY):
-    try:
-        current_file_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.abspath(os.path.join(current_file_dir, '..', '..'))
-        full_font_path = os.path.join(project_root, FONT_PATH)
-        # log.debug(f"Attempting to load font from: {full_font_path}") # Use debug to avoid spamming logs
-        return ImageFont.truetype(full_font_path, size)
-    except IOError as e:
-        log.error(f"FONT ERROR: Font file NOT FOUND or UNREADABLE at: {full_font_path}. Using default font. Error: {e}", exc_info=True)
-        return ImageFont.load_default()
-    except Exception as e:
-        log.error(f"FONT ERROR: Unexpected error loading font from {full_font_path}: {e}", exc_info=True)
-        return ImageFont.load_default()
+class ImageGenerator:
+    def __init__(self, assets_base_path="assets/"):
+        self.assets_base_path = assets_base_path
+        self.companion_assets_path = os.path.join(assets_base_path, "companions")
+        self.ui_assets_path = os.path.join(assets_base_path, "ui")
 
-# --- NEW Helper to load and resize sprites ---
-def _load_and_resize_sprite(relative_asset_path: str, target_size: tuple = TARGET_SPRITE_SIZE) -> Image.Image:
-    """
-    Loads an image from a relative asset path, converts it to RGBA,
-    and resizes it to the target_size using NEAREST neighbor for pixel art.
-    """
-    current_file_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.abspath(os.path.join(current_file_dir, '..', '..'))
-    full_asset_path = os.path.join(project_root, relative_asset_path)
+        self.font_path = os.path.abspath(os.path.join(self.ui_assets_path, "fonts", "PressStart2P.ttf"))
 
-    if not os.path.exists(full_asset_path):
-        log.error(f"ASSET NOT FOUND: Image file missing at: '{full_asset_path}'.")
-        return None
+        # FONT SIZE CHANGES FOR MAX TEXT VISIBILITY
+        try:
+            self.font_small = ImageFont.truetype(self.font_path, 40)
+            self.font_medium = ImageFont.truetype(self.font_path, 52)
+            self.font_large = ImageFont.truetype(self.font_path, 68)
+            logger.info(f"Fonts loaded successfully from: {self.font_path}")
+        except IOError as e:
+            logger.error(f"Error: Font file not found or inaccessible at '{self.font_path}'. Error details: {e}", exc_info=True)
+            self.font_small = ImageFont.load_default()
+            self.font_medium = ImageFont.load_default()
+            self.font_large = ImageFont.load_default()
 
-    try:
-        img = Image.open(full_asset_path).convert("RGBA")
-        # Use Image.NEAREST for pixel art scaling to avoid blurriness
-        img = img.resize(target_size, Image.Resampling.NEAREST)
+        # --- NEW: Load rarity visuals for colors ---
+        self.config_manager = ConfigManager() # Instantiate ConfigManager
+        self.rarity_visuals = self.config_manager.get_config('rarity_visuals')
+        # --- END NEW ---
+
+    # Helper to convert hex to RGB
+    def _hex_to_rgb(self, hex_color: str):
+        hex_color = hex_color.lstrip('#')
+        return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+
+    async def _load_and_resize_sprite(self, sprite_path: str, target_size=(128, 128)):
+        full_path = os.path.join(self.assets_base_path, sprite_path)
+        if not os.path.exists(full_path):
+            logger.warning(f"Sprite not found: {full_path}. Returning blank image.")
+            return Image.new('RGBA', target_size, (0, 0, 0, 0))
+
+        try:
+            with Image.open(full_path) as img:
+                if img.mode != 'RGBA':
+                    img = img.convert('RGBA')
+                resized_img = img.resize(target_size, Image.Resampling.NEAREST)
+                return resized_img
+        except Exception as e:
+            logger.error(f"Failed to load or resize sprite from {full_path}: {e}", exc_info=True)
+            return Image.new('RGBA', target_size, (255, 0, 0, 128))
+
+
+    async def render_esprit_selection_page_image(self, esprits_data_list: list):
+        pass
+
+    async def render_esprit_detail_image(self, esprit_data_dict: dict, esprit_instance):
+        canvas_width = 800
+        canvas_height = 1250
+        img = Image.new('RGBA', (canvas_width, canvas_height), (30, 30, 30, 255))
+        draw = ImageDraw.Draw(img)
+
+        # --- MODIFIED: Draw rarity-colored border ---
+        rarity = esprit_data_dict.get('rarity', 'Common')
+        # Fetch color from loaded rarity_visuals, default to dark gray if not found
+        rarity_info = self.rarity_visuals.get(rarity, {})
+        border_hex_color = rarity_info.get('border_color', 'A9A9A9')
+        border_rgb_color = self._hex_to_rgb(border_hex_color) + (255,) # Add alpha channel
+
+        draw.rectangle([0, 0, canvas_width-1, canvas_height-1], outline=border_rgb_color, width=8) # Increased border width to 8 for visibility
+        # --- END MODIFIED ---
+
+        # --- Esprit Sprite (Centered at top) ---
+        sprite_target_size = (512, 512)
+        sprite_path = esprit_data_dict.get('visual_asset_path', 'esprits/default.png')
+        esprit_sprite = await self._load_and_resize_sprite(sprite_path, target_size=sprite_target_size)
+
+        sprite_x = (canvas_width - sprite_target_size[0]) // 2
+        sprite_y = 30
+        img.paste(esprit_sprite, (sprite_x, sprite_y), esprit_sprite)
+
+        # --- Esprit Name, Rarity, Level (Centered below sprite) ---
+        def draw_centered_text(draw_obj, y_pos, text, font, fill_color):
+            left, top, right, bottom = font.getbbox(text)
+            text_width = right - left
+            centered_x = (canvas_width - text_width) // 2
+            draw_obj.text((centered_x, y_pos), text, font=font, fill=fill_color)
+
+        current_y = sprite_y + sprite_target_size[1] + 30
+
+        name = esprit_data_dict.get('name', 'Unknown')
+        rarity = esprit_data_dict.get('rarity', 'Common')
+        # Existing rarity_colors for text, might need to be sourced from rarity_visuals too
+        rarity_colors = {
+            "Supreme": (255, 215, 0, 255), "Mythic": (148, 0, 211, 255), "Legendary": (255, 140, 0, 255),
+            "Epic": (128, 0, 128, 255), "Rare": (0, 0, 255, 255), "Uncommon": (0, 200, 0, 255),
+            "Common": (169, 169, 169, 255)
+        }
+        rarity_color_text = rarity_colors.get(rarity, (255, 255, 255, 255)) # Used for text color
+
+        draw_centered_text(draw, current_y, name, self.font_large, (255, 255, 255, 255))
+        current_y += (self.font_large.getbbox(name)[3] - self.font_large.getbbox(name)[1]) + 20
+
+        draw_centered_text(draw, current_y, f"Rarity: {rarity}", self.font_medium, rarity_color_text)
+        current_y += (self.font_medium.getbbox(f"Rarity: {rarity}")[3] - self.font_medium.getbbox(f"Rarity: {rarity}")[1]) + 20
+
+        draw_centered_text(draw, current_y, f"Level: {esprit_instance.current_level}", self.font_medium, (200, 200, 255, 255))
+        current_y += (self.font_medium.getbbox(f"Level: {esprit_instance.current_level}")[3] - self.font_medium.getbbox(f"Level: {esprit_instance.current_level}")[1]) + 70
+
+        # --- Stats (Two closer columns, color-coded) ---
+        col1_x = 100
+        col2_x = 470
+
+        stat_line_height = 60
+
+        stat_name_color = (150, 150, 150, 255)
+        stat_value_color = (255, 255, 255, 255)
+
+        def draw_two_color_stat(draw_obj, x_start, y_pos, name_text, value_text, font, name_color, value_color):
+            name_str = f"{name_text}:"
+            draw_obj.text((x_start, y_pos), name_str, font=font, fill=name_color)
+
+            name_bbox = font.getbbox(name_str)
+            name_width = name_bbox[2] - name_bbox[0]
+            value_x = x_start + name_width + 20
+
+            draw_obj.text((value_x, y_pos), str(value_text), font=font, fill=value_color)
+
+        stats_col1_data = [
+            ("HP", esprit_instance.current_hp),
+            ("ATK", esprit_data_dict['base_attack']),
+            ("DEF", esprit_data_dict['base_defense']),
+            ("SPD", esprit_data_dict['base_speed']),
+            ("MP", esprit_data_dict.get('base_mana', 0))
+        ]
+        stats_col2_data = [
+            ("MR", esprit_data_dict.get('base_magic_resist', 0)),
+            ("CRIT", f"{esprit_data_dict.get('base_crit_rate', 0.0)*100:.1f}%"),
+            ("BLOCK", f"{esprit_data_dict.get('base_block_rate', 0.0)*100:.1f}%"),
+            ("DODGE", f"{esprit_data_dict.get('base_dodge_chance', 0.0)*100:.1f}%"),
+            ("MP REG", esprit_data_dict.get('base_mana_regen', 0))
+        ]
+
+        for i, (name_text, value) in enumerate(stats_col1_data):
+            draw_two_color_stat(draw, col1_x, current_y + i * stat_line_height, name_text, value, self.font_small, stat_name_color, stat_value_color)
+
+        for i, (name_text, value) in enumerate(stats_col2_data):
+            draw_two_color_stat(draw, col2_x, current_y + i * stat_line_height, name_text, value, self.font_small, stat_name_color, stat_value_color)
+
+        current_y += max(len(stats_col1_data), len(stats_col2_data)) * stat_line_height + 50
+
+        # --- XP Bar (Centered at bottom) ---
+        xp_max = esprit_instance.current_level * 100
+        xp_current = esprit_instance.current_xp
+        xp_percentage = xp_current / xp_max if xp_max > 0 else 0
+
+        bar_width = 700
+        bar_height = 40
+        bar_x = (canvas_width - bar_width) // 2
+        bar_y = current_y
+
+        draw.rectangle([bar_x, bar_y, bar_x + bar_width, bar_y + bar_height], fill=(50, 50, 50, 255), outline=(100, 100, 100, 255))
+        draw.rectangle([bar_x, bar_y, bar_x + (bar_width * xp_percentage), bar_y + bar_height], fill=(0, 200, 0, 255))
+        xp_text = f"XP: {xp_current}/{xp_max}"
+        draw.text((bar_x + bar_width / 2, bar_y + bar_height / 2), xp_text, font=self.font_large, fill=(255, 255, 255, 255), anchor="mm")
+
         return img
-    except Exception as e:
-        log.error(f"IMAGE PROCESSING ERROR: Could not load or resize image '{full_asset_path}': {e}", exc_info=True)
-        return None
-
-# --- Renamed and adapted from previous render_class_selection_page_image ---
-def render_esprit_selection_page_image(esprit_ids_on_page: list) -> Image.Image:
-    """
-    Renders a single image with multiple Esprit previews spliced together for selection pages.
-    Each Esprit will be rendered at TARGET_SPRITE_SIZE.
-    """
-    log.info(f"Starting render for Esprit selection page with IDs: {esprit_ids_on_page}")
-    esprit_data_config = ConfigManager.get_config('config', 'companions.json') # Using companions.json for Esprits
-    if not esprit_data_config:
-        log.error("render_esprit_selection_page_image: Failed to load companions.json. Returning None.")
-        return None
-
-    num_esprits = len(esprit_ids_on_page)
-    if num_esprits == 0:
-        log.warning("render_esprit_selection_page_image: No Esprit IDs provided. Returning blank image.")
-        return Image.new("RGBA", (1, 1), (0, 0, 0, 0))
-
-    # Layout parameters
-    SPRITE_WIDTH, SPRITE_HEIGHT = TARGET_SPRITE_SIZE
-    PADDING_X = 20 # Horizontal padding between sprites
-    PADDING_Y = 10 # Vertical padding below sprite for text
-    TEXT_HEIGHT = FONT_SIZE_BODY # Approximate height for a single line of text
-
-    total_width = (SPRITE_WIDTH * num_esprits) + (PADDING_X * (num_esprits - 1))
-    # Canvas height needs to accommodate sprite + name + some margin
-    canvas_height = SPRITE_HEIGHT + PADDING_Y + TEXT_HEIGHT + 10
-
-    combined_img = Image.new("RGBA", (total_width, canvas_height), (0, 0, 0, 0)) # Transparent background
-    draw = ImageDraw.Draw(combined_img)
-    font = get_font(FONT_SIZE_BODY)
-
-    x_offset = 0
-    images_successfully_loaded = 0
-    for esprit_id in esprit_ids_on_page:
-        esprit_info = esprit_data_config.get(esprit_id)
-        if not esprit_info:
-            log.warning(f"Esprit info not found for ID: '{esprit_id}'. Skipping. (Check companions.json).")
-            x_offset += SPRITE_WIDTH + PADDING_X
-            continue
-
-        asset_path_relative = esprit_info.get('visual_asset_path', '')
-        if not asset_path_relative:
-            log.error(f"visual_asset_path is empty for Esprit '{esprit_id}'. Skipping.")
-            x_offset += SPRITE_WIDTH + PADDING_X
-            continue
-
-        esprit_img = _load_and_resize_sprite(asset_path_relative, TARGET_SPRITE_SIZE)
-        if esprit_img:
-            combined_img.paste(esprit_img, (x_offset, 0), esprit_img)
-            images_successfully_loaded += 1
-
-            # Draw Esprit Name
-            text_label = esprit_info['name']
-            # Get text bounding box for accurate centering
-            text_bbox = draw.textbbox((0,0), text_label, font=font)
-            text_width = text_bbox[2] - text_bbox[0]
-            text_x = x_offset + (SPRITE_WIDTH - text_width) // 2
-            draw.text((text_x, SPRITE_HEIGHT + PADDING_Y), text_label, font=font, fill=(255, 255, 255)) # White text
-
-            x_offset += SPRITE_WIDTH + PADDING_X
-        else:
-            x_offset += SPRITE_WIDTH + PADDING_X # Move offset even if image fails to load
-
-    if images_successfully_loaded == 0:
-        log.error("No Esprit images were successfully loaded or combined for the selection page. Returning None.")
-        return None
-
-    log.info(f"Finished rendering Esprit selection page. Successfully loaded {images_successfully_loaded} images.")
-    return combined_img
-
-
-# --- Renamed and adapted from previous render_class_detail_image ---
-def render_esprit_detail_image(esprit_id: str) -> Image.Image:
-    """
-    Renders a detailed image for a single Esprit, including its sprite and basic stats.
-    The Esprit's sprite will be rendered at TARGET_SPRITE_SIZE.
-    """
-    log.info(f"Starting render for detail of Esprit: '{esprit_id}'")
-    esprit_data_config = ConfigManager.get_config('config', 'companions.json')
-    esprit_info = esprit_data_config.get(esprit_id)
-    if not esprit_info:
-        log.error(f"Esprit info not found for detail rendering: '{esprit_id}'. Returning None.")
-        return None
-
-    asset_path_relative = esprit_info.get('visual_asset_path', '')
-    if not asset_path_relative:
-        log.error(f"visual_asset_path is empty for Esprit '{esprit_id}' in detail rendering. Returning None.")
-        return None
-
-    # Load and resize the main Esprit sprite to TARGET_SPRITE_SIZE
-    esprit_sprite = _load_and_resize_sprite(asset_path_relative, TARGET_SPRITE_SIZE)
-    if not esprit_sprite:
-        log.error(f"Failed to load or process sprite for Esprit '{esprit_id}' for detail view. Returning None.")
-        return None
-
-    # --- Define Canvas and Layout ---
-    CANVAS_WIDTH = 500
-    CANVAS_HEIGHT = max(esprit_sprite.height + 40, 250) # Ensure enough height for sprite + text
-
-    detail_img = Image.new("RGBA", (CANVAS_WIDTH, CANVAS_HEIGHT), (0, 0, 0, 0)) # Transparent background
-    draw = ImageDraw.Draw(detail_img)
-
-    font_title = get_font(FONT_SIZE_TITLE)
-    font_body = get_font(FONT_SIZE_BODY)
-
-    # Paste Esprit sprite (positioned for visual appeal)
-    sprite_x = 20
-    sprite_y = 20
-    detail_img.paste(esprit_sprite, (sprite_x, sprite_y), esprit_sprite)
-
-    # --- Draw Text Information ---
-    text_start_x = sprite_x + esprit_sprite.width + 30 # Start text to the right of the sprite
-    text_current_y = sprite_y + 10 # Start text slightly below sprite top
-
-    # Name and Rarity
-    draw.text((text_start_x, text_current_y), esprit_info['name'], font=font_title, fill=(255, 255, 255)) # White name
-    text_current_y += FONT_SIZE_TITLE + 5
-
-    rarity_emoji = ConfigManager.get_config('config', 'rarity_tiers.json').get(esprit_info['rarity'], {}).get('emoji', '')
-    rarity_color_hex = ConfigManager.get_config('config', 'rarity_visuals.json').get(esprit_info['rarity'], "#FFFFFF")
-    rarity_color_rgb = tuple(int(rarity_color_hex.lstrip('#')[i:i+2], 16) for i in (0, 2, 4)) + (255,) # Convert hex to RGBA tuple
-
-    draw.text((text_start_x, text_current_y), f"{rarity_emoji} {esprit_info['rarity']}", font=font_body, fill=rarity_color_rgb)
-    text_current_y += FONT_SIZE_BODY + 15
-
-    # Description (simple for now, might need wrapping for longer text)
-    draw.text((text_start_x, text_current_y), esprit_info['description'], font=font_body, fill=(200, 200, 200))
-    text_current_y += FONT_SIZE_BODY + 20
-
-    # Base Stats
-    draw.text((text_start_x, text_current_y), "Base Stats:", font=font_body, fill=(255, 255, 0)) # Yellow for stats header
-    text_current_y += FONT_SIZE_BODY + 5
-
-    stats_text = (
-        f"HP: {esprit_info['base_hp']}\n"
-        f"ATK: {esprit_info['base_attack']}\n"
-        f"DEF: {esprit_info['base_defense']}\n"
-        f"SPD: {esprit_info['base_speed']}\n"
-        f"M.RES: {esprit_info['base_magic_resist']}\n"
-        f"CRIT: {esprit_info['base_crit_rate'] * 100:.0f}%\n"
-        f"BLOCK: {esprit_info['base_block_rate'] * 100:.0f}%\n"
-        f"DODGE: {esprit_info['base_dodge_chance'] * 100:.0f}%\n"
-        f"MANA REG: {esprit_info['base_mana_regen']}"
-    )
-    draw.text((text_start_x, text_current_y), stats_text, font=font_body, fill=(255, 255, 255)) # White stats
-
-    log.info(f"Finished rendering detail image for '{esprit_id}'.")
-    return detail_img

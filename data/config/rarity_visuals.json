@@ -1,9 +1,30 @@
 {
-  "Supreme": "#FFC0CB",
-  "Mythic": "#800080",
-  "Legendary": "#FFD700",
-  "Epic": "#A020F0",
-  "Rare": "#1E90FF",
-  "Uncommon": "#32CD32",
-  "Common": "#808080"
+  "Supreme": {
+    "color": "FFD700",
+    "border_color": "FFD700"
+  },
+  "Mythic": {
+    "color": "9400D3",
+    "border_color": "9400D3"
+  },
+  "Legendary": {
+    "color": "FF8C00",
+    "border_color": "FF8C00"
+  },
+  "Epic": {
+    "color": "800080",
+    "border_color": "800080"
+  },
+  "Rare": {
+    "color": "0000FF",
+    "border_color": "0000FF"
+  },
+  "Uncommon": {
+    "color": "00C853",
+    "border_color": "00C853"
+  },
+  "Common": {
+    "color": "A9A9A9",
+    "border_color": "A9A9A9"
+  }
 }

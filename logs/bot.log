@@ -72,3 +72,1927 @@ ImportError: cannot import name 'create_db_and_tables' from 'src.database.db' (C
 2025-05-28 12:21:53 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
 2025-05-28 12:21:55 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
 2025-05-28 12:21:55 - src.bot - INFO - Bot is ready and online!
+2025-05-28 19:45:37,517 - src.bot - INFO - Running setup_hook...
+2025-05-28 19:45:37,517 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 19:45:37,536 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 19:45:37,536 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 19:45:37,538 - src.utils.image_generator - ERROR - Error: Font file not found at assets/ui\fonts\PressStart2P.ttf. Ensure 'PressStart2P.ttf' is in assets/ui/fonts/.
+2025-05-28 19:45:37,544 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 19:45:37,550 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 19:45:37,550 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 19:45:37,551 - src.bot - ERROR - Failed to load Start cog: Extension 'src.cogs.start' raised an error: KeyError: 'esprit_id'
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "C:\nyxa\src\cogs\start.py", line 150, in setup
+    await bot.add_cog(Start(bot))
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 684, in _inject
+    await maybe_coroutine(self.cog_load)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\utils.py", line 693, in maybe_coroutine
+    return await value
+           ^^^^^^^^^^^
+  File "C:\nyxa\src\cogs\start.py", line 41, in cog_load
+    self.starter_esprit_id = common_esprits[0]['esprit_id']
+                             ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+KeyError: 'esprit_id'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 53, in setup_hook
+    await self.load_extension("src.cogs.start")
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: KeyError: 'esprit_id'
+2025-05-28 19:45:37,553 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 19:45:37,705 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 19:49:25,316 - src.bot - INFO - Running setup_hook...
+2025-05-28 19:49:25,316 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 19:49:25,321 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 19:49:25,321 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 19:49:25,322 - src.utils.image_generator - ERROR - Error: Font file not found at assets/ui\fonts\PressStart2P.ttf. Ensure 'PressStart2P.ttf' is in assets/ui/fonts/.
+2025-05-28 19:49:25,324 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 19:49:25,324 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 19:49:25,324 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 19:49:25,324 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 19:49:25,324 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 19:49:25,325 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 19:49:25,471 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 19:49:27,840 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 19:49:27,840 - src.bot - INFO - Bot is ready and online!
+2025-05-28 19:49:56,202 - src.bot - INFO - User 798476548734844969 used /testsync command.
+2025-05-28 19:54:29,523 - src.bot - INFO - Running setup_hook...
+2025-05-28 19:54:29,523 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 19:54:29,527 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 19:54:29,527 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 19:54:29,529 - src.utils.image_generator - ERROR - Error: Font file not found at assets/ui\fonts\PressStart2P.ttf. Ensure 'PressStart2P.ttf' is in assets/ui/fonts/.
+2025-05-28 19:54:29,529 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 19:54:29,530 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 19:54:29,530 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 19:54:29,530 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 19:54:29,530 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 19:54:29,530 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 19:54:29,694 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 19:54:31,964 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 19:54:31,964 - src.bot - INFO - Bot is ready and online!
+2025-05-28 19:56:02,970 - src.bot - INFO - Running setup_hook...
+2025-05-28 19:56:02,970 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 19:56:02,974 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 19:56:02,974 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 19:56:02,975 - src.utils.image_generator - ERROR - Error: Font file not found or inaccessible at 'C:\nyxa\assets\ui\fonts\PressStart2P.ttf'. Ensure 'PressStart2P.ttf' is in assets/ui/fonts/ and has read permissions. Error details: unknown file format
+Traceback (most recent call last):
+  File "C:\nyxa\src\utils\image_generator.py", line 23, in __init__
+    self.font_small = ImageFont.truetype(self.font_path, 10)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\PIL\ImageFont.py", line 807, in truetype
+    return freetype(font)
+           ^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\PIL\ImageFont.py", line 804, in freetype
+    return FreeTypeFont(font, size, index, encoding, layout_engine)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\PIL\ImageFont.py", line 244, in __init__
+    self.font = core.getfont(
+                ^^^^^^^^^^^^^
+OSError: unknown file format
+2025-05-28 19:56:02,977 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 19:56:02,977 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 19:56:02,977 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 19:56:02,977 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 19:56:02,978 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 19:56:02,978 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 19:56:03,263 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 19:56:05,540 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 19:56:05,540 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:01:05,357 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:01:05,357 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:01:05,361 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:01:05,361 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:01:05,364 - src.utils.image_generator - ERROR - Error: Font file not found or inaccessible at 'C:\nyxa\assets\ui\fonts\PressStart2P.ttf'. Ensure 'PressStart2P.ttf' is in assets/ui/fonts/ and has read permissions. Error details: cannot open resource
+Traceback (most recent call last):
+  File "C:\nyxa\src\utils\image_generator.py", line 23, in __init__
+    self.font_small = ImageFont.truetype(self.font_path, 10)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\PIL\ImageFont.py", line 807, in truetype
+    return freetype(font)
+           ^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\PIL\ImageFont.py", line 804, in freetype
+    return FreeTypeFont(font, size, index, encoding, layout_engine)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\PIL\ImageFont.py", line 244, in __init__
+    self.font = core.getfont(
+                ^^^^^^^^^^^^^
+OSError: cannot open resource
+2025-05-28 20:01:05,365 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:01:05,365 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:01:05,365 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:01:05,366 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:01:05,366 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:01:05,366 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:01:05,487 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 20:01:07,836 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:01:07,836 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:02:54,510 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:02:54,510 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:02:54,515 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:02:54,515 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:02:54,516 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:02:54,517 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:02:54,517 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:02:54,518 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:02:54,518 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:02:54,518 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:02:54,518 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:02:54,686 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 20:02:57,009 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:02:57,009 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:04:52,155 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:04:52,156 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:04:52,160 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:04:52,160 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:04:52,162 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:04:52,162 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:04:52,162 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:04:52,162 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:04:52,162 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:04:52,163 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:04:52,163 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:04:54,478 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:04:54,478 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:04:54,668 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 20:06:28,383 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:06:28,383 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:06:28,387 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:06:28,387 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:06:28,389 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:06:28,389 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:06:28,389 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:06:28,389 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:06:28,390 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:06:28,390 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:06:28,390 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:06:30,624 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:06:30,624 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:06:30,625 - src.bot - ERROR - Failed to sync slash commands to test guild 435610288277028865 during on_ready: object NoneType can't be used in 'await' expression
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 84, in on_ready
+    await self.tree.clear_commands(guild=guild)
+TypeError: object NoneType can't be used in 'await' expression
+2025-05-28 20:08:00,273 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:08:00,273 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:08:00,277 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:08:00,277 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:08:00,279 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:08:00,279 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:08:00,280 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:08:00,280 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:08:00,280 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:08:00,280 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:08:00,280 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:08:02,514 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:08:02,514 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:08:02,514 - src.bot - INFO - DEBUG: Type of self.tree before sync: <class 'discord.app_commands.tree.CommandTree'>
+2025-05-28 20:08:02,514 - src.bot - INFO - DEBUG: Value of self.tree before sync: <discord.app_commands.tree.CommandTree object at 0x00000237F8257170>
+2025-05-28 20:08:02,514 - src.bot - ERROR - Failed to sync slash commands to test guild 435610288277028865 during on_ready: object NoneType can't be used in 'await' expression
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 89, in on_ready
+    await self.tree.clear_commands(guild=guild)
+TypeError: object NoneType can't be used in 'await' expression
+2025-05-28 20:09:51,051 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:09:51,051 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:09:51,055 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:09:51,055 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:09:51,057 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:09:51,057 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:09:51,058 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:09:51,058 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:09:51,058 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:09:51,058 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:09:51,058 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:09:53,335 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:09:53,335 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:09:53,335 - src.bot - INFO - DEBUG: Type of self.tree before sync: <class 'discord.app_commands.tree.CommandTree'>
+2025-05-28 20:09:53,335 - src.bot - INFO - DEBUG: Value of self.tree before sync: <discord.app_commands.tree.CommandTree object at 0x000001F527B53EC0>
+2025-05-28 20:09:53,473 - src.bot - INFO - Synced 0 slash commands to test guild: 435610288277028865. Names: []
+2025-05-28 20:11:50,793 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:11:50,793 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:11:50,797 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:11:50,797 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:11:50,798 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:11:50,798 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:11:50,799 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:11:50,799 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:11:50,799 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:11:50,799 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:11:50,799 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:11:53,215 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:11:53,215 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:11:53,216 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:11:53,547 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:13:19,664 - src.bot - INFO - User 798476548734844969 used /testsync command.
+2025-05-28 20:13:58,111 - src.bot - INFO - User 798476548734844969 used /testsync command.
+2025-05-28 20:15:43,456 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:15:43,456 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:15:43,461 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:15:43,461 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:15:43,462 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:15:43,464 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:15:43,464 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:15:43,464 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:15:43,464 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:15:43,464 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:15:43,465 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:15:45,754 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:15:45,754 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:15:45,754 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:15:46,096 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:16:09,919 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 20:16:10,173 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 20:16:10,173 - src.cogs.start - CRITICAL - [/start] Unhandled CRITICAL error in /start command for jin: 'async_generator' object does not support the asynchronous context manager protocol
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\start.py", line 49, in start
+    async with get_session() as session:
+               ^^^^^^^^^^^^^
+TypeError: 'async_generator' object does not support the asynchronous context manager protocol
+2025-05-28 20:16:10,174 - src.cogs.start - ERROR - [/start] Failed to send error message to user after critical error: Messageable.send() got an unexpected keyword argument 'ephemeral'
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\start.py", line 49, in start
+    async with get_session() as session:
+               ^^^^^^^^^^^^^
+TypeError: 'async_generator' object does not support the asynchronous context manager protocol
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\start.py", line 169, in start
+    await interaction.channel.send(f"{interaction.user.mention}, an unexpected critical error occurred. Please try again later or contact support.", ephemeral=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Messageable.send() got an unexpected keyword argument 'ephemeral'
+2025-05-28 20:17:55,200 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:17:55,200 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:17:55,204 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:17:55,204 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:17:55,206 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:17:55,206 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:17:55,206 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:17:55,206 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:17:55,207 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:17:55,207 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:17:55,207 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:17:57,515 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:17:57,515 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:17:57,515 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:17:57,751 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:18:22,335 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 20:18:22,671 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 20:18:22,671 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 20:18:22,674 - src.cogs.start - CRITICAL - [/start] Unhandled CRITICAL error in /start command for jin: Could not determine join condition between parent/child tables on relationship User.esprits - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2435, in _determine_joins
+    self.primaryjoin = join_condition(
+                       ^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\util.py", line 123, in join_condition
+    return Join._join_condition(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\selectable.py", line 1432, in _join_condition
+    cls._joincond_trim_constraints(
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\selectable.py", line 1577, in _joincond_trim_constraints
+    raise exc.AmbiguousForeignKeysError(
+sqlalchemy.exc.AmbiguousForeignKeysError: Can't determine join between 'user' and 'useresprit'; tables have more than one foreign key constraint relationship between them. Please specify the 'onclause' of this join explicitly.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\start.py", line 54, in start
+    user = await session.execute(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 463, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1629, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+                                                ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 711, in _compile_w_cache
+    compiled_sql = self._compiler(
+                   ^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 320, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py", line 1446, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py", line 886, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py", line 932, in process
+    return obj._compiler_dispatch(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\visitors.py", line 141, in _compiler_dispatch
+    return meth(self, **kw)  # type: ignore  # noqa: E501
+           ^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py", line 4728, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\base.py", line 687, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 447, in create_for_statement
+    return cls._create_orm_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 1175, in _create_orm_context
+    _QueryEntity.to_compile_state(
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 2628, in to_compile_state
+    _MapperEntity(
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 2708, in __init__
+    entity._post_inspect
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1338, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2724, in _post_inspect
+    self._check_configure()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2401, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4214, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4255, in _do_configure_registries
+    mapper._post_configure_properties()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2418, in _post_configure_properties
+    prop.init()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\interfaces.py", line 589, in init
+    self.do_init()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1658, in do_init
+    self._setup_join_conditions()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1896, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+                                ^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2322, in __init__
+    self._determine_joins()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2479, in _determine_joins
+    raise sa_exc.AmbiguousForeignKeysError(
+sqlalchemy.exc.AmbiguousForeignKeysError: Could not determine join condition between parent/child tables on relationship User.esprits - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+2025-05-28 20:18:22,717 - src.cogs.start - INFO - [/start] Attempting to send error message to channel (not ephemeral).
+2025-05-28 20:19:33,596 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:19:33,596 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:19:33,601 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:19:33,601 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:19:33,603 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:19:33,603 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:19:33,604 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:19:33,604 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:19:33,604 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:19:33,604 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:19:33,604 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:19:35,825 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:19:35,825 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:19:35,825 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:19:36,022 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:19:48,015 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 20:19:48,205 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 20:19:48,206 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 20:19:48,210 - src.cogs.start - CRITICAL - [/start] Unhandled CRITICAL error in /start command for jin: Could not determine join condition between parent/child tables on relationship UserEsprit.owner - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2435, in _determine_joins
+    self.primaryjoin = join_condition(
+                       ^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\util.py", line 123, in join_condition
+    return Join._join_condition(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\selectable.py", line 1432, in _join_condition
+    cls._joincond_trim_constraints(
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\selectable.py", line 1577, in _joincond_trim_constraints
+    raise exc.AmbiguousForeignKeysError(
+sqlalchemy.exc.AmbiguousForeignKeysError: Can't determine join between 'useresprit' and 'user'; tables have more than one foreign key constraint relationship between them. Please specify the 'onclause' of this join explicitly.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\start.py", line 54, in start
+    user = await session.execute(user_query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 463, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1629, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+                                                ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 711, in _compile_w_cache
+    compiled_sql = self._compiler(
+                   ^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 320, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py", line 1446, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py", line 886, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py", line 932, in process
+    return obj._compiler_dispatch(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\visitors.py", line 141, in _compiler_dispatch
+    return meth(self, **kw)  # type: ignore  # noqa: E501
+           ^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\compiler.py", line 4728, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\sql\base.py", line 687, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 447, in create_for_statement
+    return cls._create_orm_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 1175, in _create_orm_context
+    _QueryEntity.to_compile_state(
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 2628, in to_compile_state
+    _MapperEntity(
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 2708, in __init__
+    entity._post_inspect
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1338, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2724, in _post_inspect
+    self._check_configure()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2401, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4214, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 4255, in _do_configure_registries
+    mapper._post_configure_properties()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\mapper.py", line 2418, in _post_configure_properties
+    prop.init()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\interfaces.py", line 589, in init
+    self.do_init()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1658, in do_init
+    self._setup_join_conditions()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 1896, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+                                ^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2322, in __init__
+    self._determine_joins()
+  File "C:\nyxa\.venv\Lib\site-packages\sqlalchemy\orm\relationships.py", line 2479, in _determine_joins
+    raise sa_exc.AmbiguousForeignKeysError(
+sqlalchemy.exc.AmbiguousForeignKeysError: Could not determine join condition between parent/child tables on relationship UserEsprit.owner - there are multiple foreign key paths linking the tables.  Specify the 'foreign_keys' argument, providing a list of those columns which should be counted as containing a foreign key reference to the parent table.
+2025-05-28 20:19:48,219 - src.cogs.start - INFO - [/start] Attempting to send error message to channel (not ephemeral).
+2025-05-28 20:20:52,134 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:20:52,135 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:20:52,139 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:20:52,139 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:20:52,141 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:20:52,141 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:20:52,142 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:20:52,142 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:20:52,142 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:20:52,142 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:20:52,142 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:20:54,380 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:20:54,380 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:20:54,380 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:20:54,573 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:21:26,224 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 20:21:26,751 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 20:21:26,751 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 20:21:26,758 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 20:21:26,759 - src.cogs.start - CRITICAL - [/start] Unhandled CRITICAL error in /start command for jin: 'starting_level'
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\start.py", line 71, in start
+    level=self.game_settings['starting_level'],
+          ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'starting_level'
+2025-05-28 20:21:26,759 - src.cogs.start - INFO - [/start] Attempting to send error message to channel (not ephemeral).
+2025-05-28 20:23:15,341 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:23:15,341 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:23:15,346 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:23:15,346 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:23:15,348 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:23:15,354 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:23:15,355 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:23:15,355 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:23:15,355 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:23:15,355 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:23:15,355 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:23:17,585 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:23:17,585 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:23:17,585 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:23:17,751 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:23:42,829 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 20:23:43,023 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 20:23:43,023 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 20:23:43,030 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 20:23:43,040 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 20:23:43,042 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: None.
+2025-05-28 20:23:43,380 - src.cogs.start - ERROR - Starter Esprit ID ravaging_dog from config not found in DB.
+2025-05-28 20:30:59,728 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:30:59,728 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:30:59,733 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:30:59,733 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:30:59,733 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 20:30:59,733 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:30:59,736 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 20:30:59,745 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 20:30:59,745 - src.bot - INFO - Static data population check completed.
+2025-05-28 20:30:59,747 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:30:59,747 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:30:59,747 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:30:59,748 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:30:59,748 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:30:59,748 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:30:59,748 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:31:01,979 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:31:01,979 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:31:01,979 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:31:02,277 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:31:07,623 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 20:31:07,804 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 20:31:07,804 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 20:31:07,807 - src.cogs.start - INFO - [/start] User query executed. User exists: True.
+2025-05-28 20:31:08,032 - src.cogs.start - INFO - [/start] Existing user message sent for jin.
+2025-05-28 20:32:48,468 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:32:48,468 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:32:48,488 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:32:48,489 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:32:48,489 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 20:32:48,489 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:32:48,492 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 20:32:48,501 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 20:32:48,501 - src.bot - INFO - Static data population check completed.
+2025-05-28 20:32:48,503 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:32:48,503 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:32:48,503 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:32:48,504 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:32:48,504 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:32:48,504 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:32:48,504 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:32:50,737 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:32:50,737 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:32:50,737 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:32:51,098 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:33:00,806 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 20:33:01,007 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 20:33:01,007 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 20:33:01,010 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 20:33:01,016 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 20:33:01,018 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 20:33:01,026 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: b32ed768-7387-463b-b7b8-633f6300294c (Fire Golem).
+2025-05-28 20:33:01,032 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 20:33:01,032 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 20:33:01,032 - src.utils.image_generator - WARNING - Sprite not found: assets/assets/esprits/fire_golem.png. Returning blank image.
+2025-05-28 20:33:01,084 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 20:33:01,084 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 20:33:01,549 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 20:33:01,549 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 20:33:01,898 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 20:51:20,570 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:51:20,570 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:51:20,575 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:51:20,575 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:51:20,575 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 20:51:20,584 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:51:20,587 - src.database.db - INFO - EspritData table already contains 7 entries. Skipping population.
+2025-05-28 20:51:20,587 - src.bot - INFO - Static data population check completed.
+2025-05-28 20:51:20,589 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:51:20,589 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:51:20,589 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:51:20,590 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:51:20,590 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:51:20,590 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:51:20,590 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:51:22,999 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:51:22,999 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:51:22,999 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:51:23,275 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:51:54,591 - src.bot - INFO - Running setup_hook...
+2025-05-28 20:51:54,592 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 20:51:54,611 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 20:51:54,611 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 20:51:54,612 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 20:51:54,612 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:51:54,615 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 20:51:54,624 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 20:51:54,624 - src.bot - INFO - Static data population check completed.
+2025-05-28 20:51:54,626 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 20:51:54,626 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 20:51:54,627 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 20:51:54,627 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 20:51:54,627 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 20:51:54,627 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 20:51:54,627 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 20:51:56,924 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 20:51:56,924 - src.bot - INFO - Bot is ready and online!
+2025-05-28 20:51:56,924 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 20:51:57,253 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 20:52:02,664 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 20:52:02,839 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 20:52:02,839 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 20:52:02,842 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 20:52:02,850 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 20:52:02,852 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 20:52:02,858 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: c5ac3885-3342-4bc1-b7e2-8968ee06a4df (Fire Golem).
+2025-05-28 20:52:02,863 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 20:52:02,863 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 20:52:02,863 - src.utils.image_generator - WARNING - Sprite not found: assets/assets/esprits/common/fire_golem.png. Returning blank image.
+2025-05-28 20:52:02,864 - src.cogs.start - ERROR - [/start] Error generating summon image for /start: 'FreeTypeFont' object has no attribute 'textbbox'
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\start.py", line 125, in start
+    summon_image_pil = await self.image_generator.render_esprit_detail_image(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\src\utils\image_generator.py", line 152, in render_esprit_detail_image
+    current_y += (self.font_large.textbbox((0,0), name)[3] - self.font_large.textbbox((0,0), name)[1]) + 5
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FreeTypeFont' object has no attribute 'textbbox'. Did you mean: 'getbbox'?
+2025-05-28 20:52:02,865 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 20:52:03,104 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 20:52:03,105 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 20:52:03,259 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:00:30,756 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:00:30,756 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:00:30,778 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:00:30,778 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:00:30,778 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:00:30,787 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:00:30,790 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 21:00:30,799 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 21:00:30,800 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:00:30,801 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:00:30,802 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:00:30,802 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:00:30,802 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:00:30,802 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:00:30,802 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:00:30,802 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:00:33,066 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:00:33,066 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:00:33,066 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:00:33,334 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:01:22,593 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 21:01:22,774 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 21:01:22,775 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 21:01:22,778 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:01:22,785 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 21:01:22,787 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:01:22,794 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 4c0fe769-8b90-4a34-8b84-15b165303c7e (Fire Golem).
+2025-05-28 21:01:22,800 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 21:01:22,800 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:01:22,820 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:01:22,820 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:01:23,216 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:01:23,216 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:01:23,361 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:07:41,945 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:07:41,945 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:07:41,964 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:07:41,964 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:07:41,965 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:07:41,965 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:07:41,968 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 21:07:41,982 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 21:07:41,982 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:07:41,984 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:07:41,985 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:07:41,985 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:07:41,986 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:07:41,986 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:07:41,986 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:07:41,986 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:07:44,236 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:07:44,236 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:07:44,236 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:07:44,429 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:07:48,100 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 21:07:48,281 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 21:07:48,281 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 21:07:48,284 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:07:48,289 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 21:07:48,291 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:07:48,296 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: d47730eb-8e32-424f-a63e-dc3a0aa82de9 (Fire Golem).
+2025-05-28 21:07:48,301 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 21:07:48,301 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:07:48,342 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:07:48,342 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:07:48,903 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:07:48,903 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:07:49,037 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:11:23,194 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:11:23,194 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:11:23,215 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:11:23,215 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:11:23,215 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:11:23,216 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:11:23,219 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 21:11:23,227 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 21:11:23,227 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:11:23,229 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:11:23,229 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:11:23,230 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:11:23,230 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:11:23,230 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:11:23,230 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:11:23,230 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:11:25,444 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:11:25,444 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:11:25,444 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:11:25,722 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:11:33,184 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 21:11:33,416 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 21:11:33,417 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 21:11:33,419 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:11:33,428 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 21:11:33,430 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:11:33,437 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: cb67fbb3-4a7c-4ed3-95c5-5c5639360cda (Fire Golem).
+2025-05-28 21:11:33,443 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 21:11:33,443 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:11:33,489 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:11:33,490 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:11:34,015 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:11:34,015 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:11:34,259 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:14:22,099 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:14:22,099 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:14:22,118 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:14:22,118 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:14:22,118 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:14:22,118 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:14:22,121 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 21:14:22,130 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 21:14:22,130 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:14:22,132 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:14:22,132 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:14:22,133 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:14:22,133 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:14:22,133 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:14:22,133 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:14:22,133 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:14:24,398 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:14:24,398 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:14:24,398 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:14:24,832 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:15:04,535 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 21:15:04,909 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 21:15:04,909 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 21:15:04,911 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:15:04,920 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 21:15:04,922 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:15:04,929 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 2ac4e0c0-6e30-4152-a6a3-2a126cfb9f83 (Fire Golem).
+2025-05-28 21:15:04,935 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 21:15:04,935 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:15:04,982 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:15:04,982 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:15:05,369 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:15:05,369 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:15:05,670 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:17:46,750 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:17:46,750 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:17:46,755 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:17:46,755 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:17:46,755 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:17:46,756 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:17:46,758 - src.database.db - INFO - EspritData table already contains 7 entries. Skipping population.
+2025-05-28 21:17:46,759 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:17:46,760 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:17:46,761 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:17:46,761 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:17:46,761 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:17:46,761 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:17:46,761 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:17:46,761 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:17:49,050 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:17:49,050 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:17:49,050 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:17:49,333 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:18:07,721 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:18:07,721 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:18:07,743 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:18:07,744 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:18:07,744 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:18:07,744 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:18:07,748 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 21:18:07,757 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 21:18:07,757 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:18:07,759 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:18:07,759 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:18:07,759 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:18:07,759 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:18:07,760 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:18:07,760 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:18:07,760 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:18:09,971 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:18:09,971 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:18:09,971 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:18:40,457 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 21:18:40,653 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 21:18:40,654 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 21:18:40,656 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:18:40,664 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 21:18:40,667 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:18:40,674 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: dc86fb57-50e7-43ee-90cc-667dc153236a (Fire Golem).
+2025-05-28 21:18:40,681 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 21:18:40,681 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:18:40,727 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:18:40,727 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:18:41,233 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:18:41,233 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:18:41,383 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:18:49,242 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:20:49,300 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:20:49,300 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:20:49,319 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:20:49,320 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:20:49,320 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:20:49,320 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:20:49,323 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 21:20:49,331 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 21:20:49,332 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:20:49,334 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:20:49,334 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:20:49,334 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:20:49,334 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:20:49,335 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:20:49,335 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:20:49,335 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:20:51,564 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:20:51,564 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:20:51,564 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:20:51,911 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:20:55,136 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 21:20:55,351 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 21:20:55,351 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 21:20:55,355 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:20:55,363 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 21:20:55,364 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:20:55,371 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 347decba-6e33-4d03-849c-82f8920f3f51 (Fire Golem).
+2025-05-28 21:20:55,375 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 21:20:55,375 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:20:55,421 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:20:55,421 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:20:55,963 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:20:55,963 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:20:56,141 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:37:37,419 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:37:37,419 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:37:37,440 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:37:37,440 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:37:37,440 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:37:37,440 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:37:37,443 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 21:37:37,451 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 21:37:37,452 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:37:37,454 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:37:37,454 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:37:37,454 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:37:37,455 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:37:37,455 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:37:37,455 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:37:37,455 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:37:39,907 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:37:39,907 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:37:39,907 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:37:40,084 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:37:45,047 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 21:37:45,217 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 21:37:45,217 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 21:37:45,221 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:37:45,229 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 21:37:45,230 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:37:45,236 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: afdc4b42-1214-4360-a130-af96b1f6fd01 (Fire Golem).
+2025-05-28 21:37:45,241 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 21:37:45,242 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:37:45,287 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:37:45,287 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:37:45,767 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:37:45,767 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:37:45,984 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:39:35,001 - src.cogs.start - INFO - [/start] Command received by aiden (708370789111693428).
+2025-05-28 21:39:35,194 - src.cogs.start - INFO - [/start] Response deferred for aiden.
+2025-05-28 21:39:35,194 - src.cogs.start - INFO - [/start] Database session obtained for aiden.
+2025-05-28 21:39:35,196 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:39:35,201 - src.cogs.start - INFO - [/start] New user created and committed: xuaiden (708370789111693428).
+2025-05-28 21:39:35,202 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:39:35,207 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: fb9f9ba8-dd66-4f06-99e4-cb86242a827a (Fire Golem).
+2025-05-28 21:39:35,211 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for xuaiden.
+2025-05-28 21:39:35,213 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:39:35,250 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:39:35,250 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:39:35,699 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:39:35,699 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:39:35,854 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 21:42:35,857 - src.bot - INFO - Running setup_hook...
+2025-05-28 21:42:35,857 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 21:42:35,878 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 21:42:35,878 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 21:42:35,879 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 21:42:35,879 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:42:35,882 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 21:42:35,891 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 21:42:35,891 - src.bot - INFO - Static data population check completed.
+2025-05-28 21:42:35,893 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 21:42:35,894 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 21:42:35,894 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 21:42:35,894 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 21:42:35,894 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 21:42:35,895 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 21:42:35,895 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 21:42:38,385 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 21:42:38,385 - src.bot - INFO - Bot is ready and online!
+2025-05-28 21:42:38,385 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 21:42:38,738 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 21:43:18,556 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 21:43:18,825 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 21:43:18,826 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 21:43:18,828 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 21:43:18,836 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 21:43:18,838 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 21:43:18,847 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 0372613b-770d-4b44-8fc9-bf7ae1080759 (Fire Golem).
+2025-05-28 21:43:18,852 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 21:43:18,852 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 21:43:18,902 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 21:43:18,902 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 21:43:19,330 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 21:43:19,330 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 21:43:19,483 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 22:00:54,472 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 22:00:54,698 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 22:00:54,698 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 22:00:54,700 - src.cogs.start - INFO - [/start] User query executed. User exists: True.
+2025-05-28 22:00:54,848 - src.cogs.start - INFO - [/start] Existing user message sent for jin.
+2025-05-28 22:02:09,149 - src.bot - INFO - Running setup_hook...
+2025-05-28 22:02:09,149 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 22:02:09,168 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 22:02:09,168 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 22:02:09,168 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 22:02:09,168 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:02:09,171 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 22:02:09,180 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 22:02:09,180 - src.bot - INFO - Static data population check completed.
+2025-05-28 22:02:09,182 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 22:02:09,182 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 22:02:09,183 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:02:09,183 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 22:02:09,183 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 22:02:09,183 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 22:02:09,183 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 22:02:11,732 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 22:02:11,732 - src.bot - INFO - Bot is ready and online!
+2025-05-28 22:02:11,732 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 22:02:11,995 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 22:02:15,784 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 22:02:15,962 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 22:02:15,962 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 22:02:15,964 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 22:02:15,973 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 22:02:15,975 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 22:02:15,981 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 19cf9785-ec81-4dbb-95e5-3db8bcda221a (Fire Golem).
+2025-05-28 22:02:15,986 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 22:02:15,987 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 22:02:16,038 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 22:02:16,038 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 22:02:16,486 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 22:02:16,486 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 22:02:16,649 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 22:08:52,901 - src.bot - INFO - Running setup_hook...
+2025-05-28 22:08:52,901 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 22:08:52,921 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 22:08:52,921 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 22:08:52,921 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 22:08:52,921 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:08:52,925 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 22:08:52,935 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 22:08:52,935 - src.bot - INFO - Static data population check completed.
+2025-05-28 22:08:52,936 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 22:08:52,937 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 22:08:52,937 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:08:52,937 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 22:08:52,937 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 22:08:52,938 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 22:08:52,938 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 22:08:55,194 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 22:08:55,194 - src.bot - INFO - Bot is ready and online!
+2025-05-28 22:08:55,195 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 22:08:55,406 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 22:09:55,098 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 22:09:55,276 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 22:09:55,276 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 22:09:55,279 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 22:09:55,287 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 22:09:55,289 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 22:09:55,296 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 9aad87bd-e956-4ff2-b6d9-40a2edf5b7ee (Fire Golem).
+2025-05-28 22:09:55,301 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 22:09:55,301 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 22:09:55,351 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 22:09:55,351 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 22:09:55,899 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 22:09:55,900 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 22:09:56,067 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 22:16:25,605 - src.bot - INFO - Running setup_hook...
+2025-05-28 22:16:25,605 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 22:16:25,626 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 22:16:25,627 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 22:16:25,627 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 22:16:25,627 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:16:25,630 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 22:16:25,640 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 22:16:25,641 - src.bot - INFO - Static data population check completed.
+2025-05-28 22:16:25,642 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 22:16:25,643 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 22:16:25,643 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:16:25,643 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 22:16:25,643 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 22:16:25,643 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 22:16:25,643 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 22:16:27,931 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 22:16:27,931 - src.bot - INFO - Bot is ready and online!
+2025-05-28 22:16:27,931 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 22:16:28,203 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 22:16:41,258 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 22:16:41,506 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 22:16:41,506 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 22:16:41,509 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 22:16:41,517 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 22:16:41,519 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 22:16:41,525 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: fd8ac16f-a1df-4558-96e0-d0d5e11e54e9 (Fire Golem).
+2025-05-28 22:16:41,530 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 22:16:41,530 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 22:16:41,583 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 22:16:41,583 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 22:16:42,149 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 22:16:42,149 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 22:16:42,331 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 22:20:50,338 - src.bot - INFO - Running setup_hook...
+2025-05-28 22:20:50,339 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 22:20:50,358 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 22:20:50,358 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 22:20:50,358 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 22:20:50,359 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:20:50,361 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 22:20:50,370 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 22:20:50,370 - src.bot - INFO - Static data population check completed.
+2025-05-28 22:20:50,371 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 22:20:50,371 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 22:20:50,373 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:20:50,373 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 22:20:50,373 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 22:20:50,373 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 22:20:50,373 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 22:20:52,830 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 22:20:52,830 - src.bot - INFO - Bot is ready and online!
+2025-05-28 22:20:52,830 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 22:20:53,236 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 22:20:59,264 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 22:20:59,540 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 22:20:59,541 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 22:20:59,543 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 22:20:59,550 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 22:20:59,551 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 22:20:59,558 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: eb5746c6-23c6-4ba9-b09e-66f39daca75a (Fire Golem).
+2025-05-28 22:20:59,563 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 22:20:59,563 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 22:20:59,609 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 22:20:59,609 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 22:21:00,313 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 22:21:00,314 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 22:21:00,459 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 22:23:54,335 - src.bot - INFO - Running setup_hook...
+2025-05-28 22:23:54,335 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 22:23:54,354 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 22:23:54,354 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 22:23:54,354 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 22:23:54,355 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:23:54,357 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 22:23:54,367 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 22:23:54,367 - src.bot - INFO - Static data population check completed.
+2025-05-28 22:23:54,368 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 22:23:54,368 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 22:23:54,369 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:23:54,369 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 22:23:54,369 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 22:23:54,369 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 22:23:54,369 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 22:23:56,680 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 22:23:56,680 - src.bot - INFO - Bot is ready and online!
+2025-05-28 22:23:56,680 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 22:23:57,101 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 22:28:38,533 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 22:28:38,752 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 22:28:38,752 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 22:28:38,755 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 22:28:38,763 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 22:28:38,764 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 22:28:38,771 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: d257ffe0-7146-40fc-9b48-1b2041f1fe50 (Fire Golem).
+2025-05-28 22:28:38,777 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 22:28:38,778 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 22:28:38,825 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 22:28:38,825 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 22:28:39,200 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 22:28:39,201 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 22:28:39,338 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-28 22:30:43,843 - src.bot - INFO - Running setup_hook...
+2025-05-28 22:30:43,843 - src.database.db - INFO - Attempting to create database tables...
+2025-05-28 22:30:43,864 - src.database.db - INFO - Database tables created or already exist.
+2025-05-28 22:30:43,864 - src.bot - INFO - Database initialized and tables created.
+2025-05-28 22:30:43,864 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-28 22:30:43,864 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:30:43,867 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-28 22:30:43,877 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-28 22:30:43,877 - src.bot - INFO - Static data population check completed.
+2025-05-28 22:30:43,878 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-28 22:30:43,879 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-28 22:30:43,879 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-28 22:30:43,879 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-28 22:30:43,879 - src.cogs.start - INFO - Set starter Esprit ID to: ravaging_dog
+2025-05-28 22:30:43,879 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-28 22:30:43,880 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-28 22:30:46,192 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-28 22:30:46,192 - src.bot - INFO - Bot is ready and online!
+2025-05-28 22:30:46,193 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-28 22:30:46,530 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-28 22:30:58,437 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-28 22:30:58,600 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-28 22:30:58,600 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-28 22:30:58,603 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-28 22:30:58,609 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-28 22:30:58,611 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-28 22:30:58,618 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 1b4a5b5b-0260-4690-8740-06198b2f3af1 (Fire Golem).
+2025-05-28 22:30:58,623 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-28 22:30:58,623 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-28 22:30:58,678 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-28 22:30:58,678 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-28 22:30:59,478 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-28 22:30:59,478 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-28 22:30:59,656 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 11:49:11,635 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 11:49:11,873 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 11:49:11,875 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 11:49:11,885 - src.cogs.start - INFO - [/start] User query executed. User exists: True.
+2025-05-29 11:49:12,476 - src.cogs.start - INFO - [/start] Existing user message sent for jin.
+2025-05-29 13:32:15,300 - src.bot - INFO - Running setup_hook...
+2025-05-29 13:32:15,300 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 13:32:15,320 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 13:32:15,320 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 13:32:15,320 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 13:32:15,327 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 13:32:15,330 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 13:32:15,338 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-29 13:32:15,338 - src.bot - INFO - Static data population check completed.
+2025-05-29 13:32:15,345 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 13:32:15,346 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 13:32:15,346 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 13:32:15,346 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 13:32:15,346 - src.cogs.start - INFO - Set starter Esprit ID to: fire_golem
+2025-05-29 13:32:15,346 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 13:32:15,347 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 13:32:17,604 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 13:32:17,604 - src.bot - INFO - Bot is ready and online!
+2025-05-29 13:32:17,604 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 13:32:17,811 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-29 13:32:31,921 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 13:32:32,173 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 13:32:32,173 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 13:32:32,176 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 13:32:32,182 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 13:32:32,185 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-29 13:32:32,193 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 9ecb3e07-70eb-4a36-8b44-a9b83a62e358 (Fire Golem).
+2025-05-29 13:32:32,198 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 13:32:32,198 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-29 13:32:32,266 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 13:32:32,266 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 13:32:32,969 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 13:32:32,969 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 13:32:33,136 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 13:42:59,977 - src.bot - INFO - Running setup_hook...
+2025-05-29 13:42:59,977 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 13:42:59,996 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 13:42:59,996 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 13:42:59,996 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 13:43:00,004 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 13:43:00,006 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 13:43:00,015 - src.database.db - INFO - Populated EspritData table with 7 entries.
+2025-05-29 13:43:00,015 - src.bot - INFO - Static data population check completed.
+2025-05-29 13:43:00,016 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 13:43:00,016 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 13:43:00,017 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 13:43:00,017 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 13:43:00,017 - src.cogs.start - INFO - Set starter Esprit ID to: fire_golem
+2025-05-29 13:43:00,017 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 13:43:00,017 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 13:43:02,238 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 13:43:02,238 - src.bot - INFO - Bot is ready and online!
+2025-05-29 13:43:02,238 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 13:43:02,563 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-29 13:43:08,349 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 13:43:08,549 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 13:43:08,549 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 13:43:08,551 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 13:43:08,559 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 13:43:08,561 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Fire Golem.
+2025-05-29 13:43:08,567 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: f92cd5ce-4c31-4688-9472-e8c47d70e94b (Fire Golem).
+2025-05-29 13:43:08,571 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 13:43:08,571 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Fire Golem.
+2025-05-29 13:43:08,613 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 13:43:08,613 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 13:43:09,121 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 13:43:09,121 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 13:43:09,286 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 17:39:52,069 - src.bot - INFO - Running setup_hook...
+2025-05-29 17:39:52,069 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 17:39:52,089 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 17:39:52,089 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 17:39:52,089 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 17:39:52,098 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 17:39:52,101 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 17:39:52,110 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 17:39:52,111 - src.bot - INFO - Static data population check completed.
+2025-05-29 17:39:52,118 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 17:39:52,119 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 17:39:52,119 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 17:39:52,120 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 17:39:52,120 - src.cogs.start - INFO - Set starter Esprit ID to: leaf_wyvern_juvenile (Rarity: Epic).
+2025-05-29 17:39:52,120 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 17:39:52,120 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 17:39:54,390 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 17:39:54,390 - src.bot - INFO - Bot is ready and online!
+2025-05-29 17:39:54,390 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 17:39:54,606 - src.bot - INFO - Global Sync returned 2 commands. Names: ['start', 'testsync']
+2025-05-29 17:40:46,718 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 17:40:46,905 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 17:40:46,905 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 17:40:46,907 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 17:40:46,914 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 17:40:46,916 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Leaf Wyvern Juvenile.
+2025-05-29 17:40:46,923 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: b389a7e7-d798-4474-9903-f222d60e5f65 (Leaf Wyvern Juvenile).
+2025-05-29 17:40:46,929 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 17:40:46,929 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Leaf Wyvern Juvenile.
+2025-05-29 17:40:46,998 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 17:40:46,999 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 17:40:47,554 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 17:40:47,554 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 17:40:47,710 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 17:48:48,466 - src.bot - INFO - Running setup_hook...
+2025-05-29 17:48:48,467 - src.bot - INFO - Successfully loaded Admin cog.
+2025-05-29 17:48:48,467 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 17:48:48,486 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 17:48:48,486 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 17:48:48,487 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 17:48:48,487 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 17:48:48,490 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 17:48:48,499 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 17:48:48,499 - src.bot - INFO - Static data population check completed.
+2025-05-29 17:48:48,501 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 17:48:48,508 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-05-29 17:48:48,508 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 17:48:48,509 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 17:48:48,509 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 17:48:48,509 - src.cogs.start - INFO - Set starter Esprit ID to: shadow_warrior (Rarity: Epic).
+2025-05-29 17:48:48,509 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 17:48:48,509 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 17:48:50,784 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 17:48:50,784 - src.bot - INFO - Bot is ready and online!
+2025-05-29 17:48:50,784 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 17:48:51,163 - src.bot - INFO - Global Sync returned 3 commands. Names: ['reset_db', 'start', 'testsync']
+2025-05-29 17:49:03,991 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 17:49:04,181 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 17:49:04,182 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 17:49:04,184 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 17:49:04,191 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 17:49:04,193 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Shadow Assassin.
+2025-05-29 17:49:04,200 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 5e0f7598-114e-400d-bf3d-67605e666972 (Shadow Assassin).
+2025-05-29 17:49:04,205 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 17:49:04,205 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Shadow Assassin.
+2025-05-29 17:49:04,259 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 17:49:04,259 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 17:49:04,744 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 17:49:04,744 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 17:49:04,933 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 17:50:45,310 - src.utils.error_handler - INFO - Command not found: '!rest_db' by jinenv.
+2025-05-29 17:50:50,368 - src.utils.error_handler - INFO - Command not found: '!reset_db' by jinenv.
+2025-05-29 17:50:57,012 - src.utils.error_handler - INFO - Command not found: '.reset_db' by jinenv.
+2025-05-29 17:51:51,838 - src.cogs.admin - ERROR - Admin 798476548734844969 failed to reset_db: [WinError 32] The process cannot access the file because it is being used by another process: './nyxa.db'
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\admin.py", line 71, in reset_db
+    os.remove(db_path)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: './nyxa.db'
+2025-05-29 17:53:43,298 - src.cogs.admin - ERROR - Admin 798476548734844969 failed to reset_db: [WinError 32] The process cannot access the file because it is being used by another process: './nyxa.db'
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\admin.py", line 71, in reset_db
+    os.remove(db_path)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: './nyxa.db'
+2025-05-29 17:56:32,437 - src.bot - INFO - Running setup_hook...
+2025-05-29 17:56:32,438 - src.bot - INFO - Successfully loaded Admin cog.
+2025-05-29 17:56:32,438 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 17:56:32,443 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 17:56:32,443 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 17:56:32,443 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 17:56:32,444 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 17:56:32,446 - src.database.db - INFO - EspritData table already contains 15 entries. Skipping population.
+2025-05-29 17:56:32,446 - src.bot - INFO - Static data population check completed.
+2025-05-29 17:56:32,448 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 17:56:32,448 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-05-29 17:56:32,449 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 17:56:32,449 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 17:56:32,449 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 17:56:32,449 - src.cogs.start - INFO - Set starter Esprit ID to: freya_the_mage (Rarity: Epic).
+2025-05-29 17:56:32,449 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 17:56:32,450 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 17:56:34,680 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 17:56:34,680 - src.bot - INFO - Bot is ready and online!
+2025-05-29 17:56:34,680 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 17:56:34,850 - src.bot - ERROR - Failed to perform GLOBAL slash command sync during on_ready: Failed to upload commands to Discord (HTTP status 400, error code 50035)
+In command 'reset_db' defined in function 'Admin.reset_db'
+  description: Must be 100 or fewer in length.
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 89, in on_ready
+    synced_commands = await self.tree.sync() # Force global sync
+                      ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\tree.py", line 1072, in sync
+    raise CommandSyncFailure(e, commands) from None
+discord.app_commands.errors.CommandSyncFailure: Failed to upload commands to Discord (HTTP status 400, error code 50035)
+In command 'reset_db' defined in function 'Admin.reset_db'
+  description: Must be 100 or fewer in length.
+2025-05-29 18:00:58,063 - src.bot - INFO - Running setup_hook...
+2025-05-29 18:00:58,064 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 18:00:58,067 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 18:00:58,068 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 18:00:58,068 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:00:58,068 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:00:58,071 - src.database.db - INFO - EspritData table already contains 15 entries. Skipping population.
+2025-05-29 18:00:58,071 - src.bot - INFO - Static data population check completed.
+2025-05-29 18:00:58,073 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 18:00:58,073 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-05-29 18:00:58,073 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 18:00:58,074 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:00:58,074 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 18:00:58,074 - src.cogs.start - INFO - Set starter Esprit ID to: sword_maiden_kai (Rarity: Epic).
+2025-05-29 18:00:58,074 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 18:00:58,075 - src.bot - INFO - Successfully loaded Admin cog.
+2025-05-29 18:00:58,075 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 18:01:01,706 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 18:01:01,706 - src.bot - INFO - Bot is ready and online!
+2025-05-29 18:01:01,706 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 18:01:02,019 - src.bot - INFO - Global Sync returned 3 commands. Names: ['start', 'reset_db', 'testsync']
+2025-05-29 18:01:15,931 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:01:17,404 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:01:17,404 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:01:17,409 - src.cogs.start - INFO - [/start] User query executed. User exists: True.
+2025-05-29 18:01:17,593 - src.cogs.start - INFO - [/start] Existing user message sent for jin.
+2025-05-29 18:01:38,382 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:01:38,391 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:01:38,391 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:01:38,392 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:01:38,393 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:01:38,401 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:01:38,402 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:01:42,490 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:01:42,694 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:01:42,695 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:01:42,696 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:01:42,703 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:01:42,706 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Kai.
+2025-05-29 18:01:42,714 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 0ee12d4a-10c9-4801-a6d0-1afbe476d0d2 (Sword Maiden Kai).
+2025-05-29 18:01:42,719 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:01:42,720 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Kai.
+2025-05-29 18:01:42,774 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:01:42,774 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:01:43,212 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:01:43,212 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:01:43,459 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:02:04,702 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:02:04,709 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:02:04,709 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:02:04,710 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:02:04,712 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:02:04,718 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:02:04,718 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:02:07,049 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:02:07,217 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:02:07,218 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:02:07,219 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:02:07,224 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:02:07,225 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Kai.
+2025-05-29 18:02:07,230 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 1b51c9c3-1dc9-49a7-9c20-ba9ce349c9df (Sword Maiden Kai).
+2025-05-29 18:02:07,235 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:02:07,235 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Kai.
+2025-05-29 18:02:07,276 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:02:07,276 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:02:07,655 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:02:07,656 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:02:07,810 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:02:13,708 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:02:13,716 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:02:13,716 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:02:13,716 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:02:13,717 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:02:13,724 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:02:13,724 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:02:16,818 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:02:16,989 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:02:16,989 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:02:16,991 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:02:16,997 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:02:16,998 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Kai.
+2025-05-29 18:02:17,003 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: a72bd492-9952-4a12-a86a-a7ea8566359f (Sword Maiden Kai).
+2025-05-29 18:02:17,008 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:02:17,008 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Kai.
+2025-05-29 18:02:17,049 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:02:17,049 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:02:17,449 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:02:17,449 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:02:17,620 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:02:23,248 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:02:23,254 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:02:23,254 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:02:23,255 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:02:23,256 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:02:23,263 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:02:23,263 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:02:26,567 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:02:26,721 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:02:26,722 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:02:26,723 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:02:26,728 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:02:26,730 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Kai.
+2025-05-29 18:02:26,734 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 819cb2aa-38cf-4a25-81cd-32d9e5eab398 (Sword Maiden Kai).
+2025-05-29 18:02:26,739 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:02:26,740 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Kai.
+2025-05-29 18:02:26,780 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:02:26,780 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:02:27,288 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:02:27,288 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:02:27,466 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:02:39,395 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:02:39,401 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:02:39,402 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:02:39,402 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:02:39,403 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:02:39,409 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:02:39,409 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:02:43,099 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:02:43,284 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:02:43,284 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:02:43,286 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:02:43,292 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:02:43,293 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Kai.
+2025-05-29 18:02:43,298 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: c71aca0f-ebd6-4c67-9162-df721e86db07 (Sword Maiden Kai).
+2025-05-29 18:02:43,302 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:02:43,302 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Kai.
+2025-05-29 18:02:43,343 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:02:43,344 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:02:44,428 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:02:44,428 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:02:44,615 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:05:30,700 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:05:30,707 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:05:30,708 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:05:30,708 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:05:30,709 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:05:30,715 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:05:30,715 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:05:33,958 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:05:34,142 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:05:34,142 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:05:34,144 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:05:34,148 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:05:34,149 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Kai.
+2025-05-29 18:05:34,154 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: a601af33-d57a-46db-97ef-1d153af9a16c (Sword Maiden Kai).
+2025-05-29 18:05:34,159 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:05:34,159 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Kai.
+2025-05-29 18:05:34,199 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:05:34,200 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:05:34,631 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:05:34,631 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:05:34,836 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:11:41,087 - src.bot - INFO - Running setup_hook...
+2025-05-29 18:11:41,087 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 18:11:41,092 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 18:11:41,092 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 18:11:41,093 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:11:41,093 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:11:41,095 - src.database.db - INFO - EspritData table already contains 15 entries. Skipping population.
+2025-05-29 18:11:41,096 - src.bot - INFO - Static data population check completed.
+2025-05-29 18:11:41,097 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 18:11:41,097 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-05-29 18:11:41,097 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 18:11:41,098 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:11:41,098 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 18:11:41,098 - src.cogs.start - INFO - DEBUG: Found 10 eligible Epic Esprits. IDs: ['shadow_warrior', 'freya_the_mage', 'gold_plated_wyvern', 'ice_wyvern_juvenile', 'joan_of_arc', 'sword_maiden_amy', 'sword_maiden_kai', 'thunder_wyvern_juvenile', 'leaf_wyvern_juvenile', 'wind_wyvern_juvenile']
+2025-05-29 18:11:41,098 - src.cogs.start - INFO - Set starter Esprit ID to: sword_maiden_amy (Rarity: Epic).
+2025-05-29 18:11:41,098 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 18:11:41,099 - src.bot - INFO - Successfully loaded Admin cog.
+2025-05-29 18:11:41,099 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 18:11:43,425 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 18:11:43,425 - src.bot - INFO - Bot is ready and online!
+2025-05-29 18:11:43,425 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 18:11:43,616 - src.bot - INFO - Global Sync returned 3 commands. Names: ['start', 'reset_db', 'testsync']
+2025-05-29 18:11:47,622 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:11:47,782 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:11:47,782 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:11:47,788 - src.cogs.start - INFO - [/start] User query executed. User exists: True.
+2025-05-29 18:11:48,020 - src.cogs.start - INFO - [/start] Existing user message sent for jin.
+2025-05-29 18:11:53,662 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:11:53,670 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:11:53,671 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:11:53,671 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:11:53,672 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:11:53,680 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:11:53,680 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:11:59,756 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:11:59,931 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:11:59,931 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:11:59,933 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:11:59,940 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:11:59,945 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Amy.
+2025-05-29 18:11:59,951 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 603576c4-3da1-4e99-8bbe-2e435b65a7fc (Sword Maiden Amy).
+2025-05-29 18:11:59,957 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:11:59,957 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Amy.
+2025-05-29 18:12:00,010 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:12:00,010 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:12:00,389 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:12:00,389 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:12:00,557 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:12:06,836 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:12:06,843 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:12:06,843 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:12:06,844 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:12:06,845 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:12:06,850 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:12:06,850 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:12:10,914 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:12:11,090 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:12:11,091 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:12:11,092 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:12:11,097 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:12:11,098 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Amy.
+2025-05-29 18:12:11,103 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 612e8eb8-490b-4732-8569-e59f6e1ae770 (Sword Maiden Amy).
+2025-05-29 18:12:11,108 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:12:11,108 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Amy.
+2025-05-29 18:12:11,149 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:12:11,149 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:12:11,562 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:12:11,562 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:12:11,837 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:12:19,111 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:12:19,343 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:12:19,344 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:12:19,345 - src.cogs.start - INFO - [/start] User query executed. User exists: True.
+2025-05-29 18:12:19,518 - src.cogs.start - INFO - [/start] Existing user message sent for jin.
+2025-05-29 18:12:26,508 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:12:26,516 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:12:26,516 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:12:26,516 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:12:26,517 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:12:26,524 - src.database.db - INFO - Populated EspritData table with 15 entries.
+2025-05-29 18:12:26,524 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:36:18,261 - src.bot - INFO - Running setup_hook...
+2025-05-29 18:36:18,261 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 18:36:18,281 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 18:36:18,281 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 18:36:18,281 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:36:18,289 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:36:18,292 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:36:18,303 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-05-29 18:36:18,303 - src.bot - INFO - Static data population check completed.
+2025-05-29 18:36:18,305 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 18:36:18,305 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-05-29 18:36:18,305 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 18:36:18,305 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:36:18,306 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 18:36:18,306 - src.cogs.start - INFO - DEBUG: Found 10 eligible Epic Esprits. IDs: ['shadow_warrior', 'freya_the_mage', 'gold_plated_wyvern', 'ice_wyvern_juvenile', 'joan_of_arc', 'sword_maiden_amy', 'sword_maiden_kai', 'thunder_wyvern_juvenile', 'leaf_wyvern_juvenile', 'wind_wyvern_juvenile']
+2025-05-29 18:36:18,306 - src.cogs.start - INFO - Set starter Esprit ID to: ice_wyvern_juvenile (Rarity: Epic).
+2025-05-29 18:36:18,306 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 18:36:18,307 - src.bot - INFO - Successfully loaded Admin cog.
+2025-05-29 18:36:18,307 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 18:36:20,692 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 18:36:20,692 - src.bot - INFO - Bot is ready and online!
+2025-05-29 18:36:20,692 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 18:36:20,963 - src.bot - INFO - Global Sync returned 3 commands. Names: ['start', 'reset_db', 'testsync']
+2025-05-29 18:36:41,156 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:36:41,376 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:36:41,376 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:36:41,378 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:36:41,385 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:36:41,387 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 18:36:41,394 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: d9582c98-9f48-4dbb-9cb4-fc50587da524 (Ice Wyvern Juvenile).
+2025-05-29 18:36:41,398 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:36:41,398 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 18:36:41,454 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:36:41,454 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:36:41,948 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:36:41,948 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:36:42,191 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:37:00,100 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:37:00,110 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:37:00,110 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:37:00,111 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:37:00,112 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:37:00,120 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-05-29 18:37:00,120 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:37:02,692 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:37:02,980 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:37:02,980 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:37:02,982 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:37:02,990 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:37:02,992 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 18:37:02,997 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 8732d87d-f1eb-4f8f-b3b5-b22c26472353 (Ice Wyvern Juvenile).
+2025-05-29 18:37:03,003 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:37:03,003 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 18:37:03,054 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:37:03,055 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:37:03,457 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:37:03,457 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:37:03,630 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:37:08,671 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:37:08,678 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:37:08,678 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:37:08,678 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:37:08,680 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:37:08,685 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-05-29 18:37:08,685 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:37:10,485 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:37:10,669 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:37:10,669 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:37:10,670 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:37:10,675 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:37:10,677 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 18:37:10,682 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: fd88369c-e167-4cd7-b797-1624b90417c4 (Ice Wyvern Juvenile).
+2025-05-29 18:37:10,687 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:37:10,687 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 18:37:10,730 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:37:10,732 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:37:11,195 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:37:11,195 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:37:11,348 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:37:43,918 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:37:44,120 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:37:44,120 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:37:44,122 - src.cogs.start - INFO - [/start] User query executed. User exists: True.
+2025-05-29 18:37:44,321 - src.cogs.start - INFO - [/start] Existing user message sent for jin.
+2025-05-29 18:37:44,398 - src.cogs.start - INFO - [/start] Command received by aiden (708370789111693428).
+2025-05-29 18:37:44,601 - src.cogs.start - INFO - [/start] Response deferred for aiden.
+2025-05-29 18:37:44,601 - src.cogs.start - INFO - [/start] Database session obtained for aiden.
+2025-05-29 18:37:44,603 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:37:44,607 - src.cogs.start - INFO - [/start] New user created and committed: xuaiden (708370789111693428).
+2025-05-29 18:37:44,608 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 18:37:44,614 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: ada7fb96-0a50-416c-a83d-bc762e16f870 (Ice Wyvern Juvenile).
+2025-05-29 18:37:44,618 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for xuaiden.
+2025-05-29 18:37:44,619 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 18:37:44,661 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:37:44,661 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:37:45,177 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:37:45,177 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:37:45,374 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:37:56,130 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:37:56,138 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:37:56,138 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:37:56,139 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:37:56,140 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:37:56,149 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-05-29 18:37:56,150 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 18:37:58,013 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:37:58,277 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:37:58,277 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:37:58,278 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:37:58,285 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:37:58,286 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 18:37:58,293 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 24bd1a92-0712-424c-9d31-89cab0914499 (Ice Wyvern Juvenile).
+2025-05-29 18:37:58,302 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 18:37:58,302 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 18:37:58,344 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:37:58,345 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:37:58,887 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:37:58,887 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:37:59,047 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:38:08,916 - src.cogs.start - INFO - [/start] Command received by aiden (708370789111693428).
+2025-05-29 18:38:09,092 - src.cogs.start - INFO - [/start] Response deferred for aiden.
+2025-05-29 18:38:09,092 - src.cogs.start - INFO - [/start] Database session obtained for aiden.
+2025-05-29 18:38:09,094 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:38:09,101 - src.cogs.start - INFO - [/start] New user created and committed: xuaiden (708370789111693428).
+2025-05-29 18:38:09,102 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 18:38:09,110 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: b7d43397-2e89-473a-9484-ff4648bed19a (Ice Wyvern Juvenile).
+2025-05-29 18:38:09,114 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for xuaiden.
+2025-05-29 18:38:09,114 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 18:38:09,157 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 18:38:09,157 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 18:38:09,576 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 18:38:09,577 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 18:38:09,805 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 18:46:11,542 - src.bot - INFO - Running setup_hook...
+2025-05-29 18:46:11,543 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 18:46:11,562 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 18:46:11,562 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 18:46:11,562 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:46:11,570 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:46:11,573 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:46:11,578 - src.bot - CRITICAL - Failed to initialize database: 'base_hp'
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 40, in setup_hook
+    await populate_static_data()
+  File "C:\nyxa\src\database\db.py", line 45, in populate_static_data
+    base_hp=esprit_dict['base_hp'],
+            ~~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'base_hp'
+2025-05-29 18:46:11,580 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 18:46:11,580 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-05-29 18:46:11,582 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 18:46:11,582 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:46:11,582 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 18:46:11,582 - src.cogs.start - INFO - DEBUG: Found 10 eligible Epic Esprits. IDs: ['shadow_warrior', 'freya_the_mage', 'gold_plated_wyvern', 'ice_wyvern_juvenile', 'joan_of_arc', 'sword_maiden_amy', 'sword_maiden_kai', 'thunder_wyvern_juvenile', 'leaf_wyvern_juvenile', 'wind_wyvern_juvenile']
+2025-05-29 18:46:11,582 - src.cogs.start - INFO - Set starter Esprit ID to: sword_maiden_amy (Rarity: Epic).
+2025-05-29 18:46:11,583 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 18:46:11,583 - src.bot - INFO - Successfully loaded Admin cog.
+2025-05-29 18:46:11,583 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 18:46:13,868 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 18:46:13,868 - src.bot - INFO - Bot is ready and online!
+2025-05-29 18:46:13,868 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 18:46:14,131 - src.bot - INFO - Global Sync returned 3 commands. Names: ['start', 'reset_db', 'testsync']
+2025-05-29 18:46:21,716 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 18:46:21,916 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 18:46:21,916 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 18:46:21,918 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:46:21,927 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 18:46:21,929 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: None.
+2025-05-29 18:46:22,126 - src.cogs.start - ERROR - Starter Esprit ID sword_maiden_amy from config not found in DB.
+2025-05-29 18:47:17,868 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 18:47:17,876 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 18:47:17,876 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 18:47:17,876 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 18:47:17,878 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 18:47:17,879 - src.cogs.admin - ERROR - Admin 798476548734844969 failed to clear_db_data: 'base_hp'
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\admin.py", line 83, in reset_db
+    await populate_static_data() # This automatically uses a new session internally
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\src\database\db.py", line 45, in populate_static_data
+    base_hp=esprit_dict['base_hp'],
+            ~~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'base_hp'
+2025-05-29 18:51:35,585 - src.cogs.start - INFO - [/start] Command received by aiden (708370789111693428).
+2025-05-29 18:51:35,943 - src.cogs.start - INFO - [/start] Response deferred for aiden.
+2025-05-29 18:51:35,943 - src.cogs.start - INFO - [/start] Database session obtained for aiden.
+2025-05-29 18:51:35,945 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 18:51:35,951 - src.cogs.start - INFO - [/start] New user created and committed: xuaiden (708370789111693428).
+2025-05-29 18:51:35,952 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: None.
+2025-05-29 18:51:36,151 - src.cogs.start - ERROR - Starter Esprit ID sword_maiden_amy from config not found in DB.
+2025-05-29 19:15:13,213 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 19:15:13,213 - src.bot - INFO - Bot is ready and online!
+2025-05-29 19:17:21,370 - src.bot - INFO - Running setup_hook...
+2025-05-29 19:17:21,371 - src.database.db - INFO - Attempting to create database tables...
+2025-05-29 19:17:21,375 - src.database.db - INFO - Database tables created or already exist.
+2025-05-29 19:17:21,375 - src.bot - INFO - Database initialized and tables created.
+2025-05-29 19:17:21,375 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 19:17:21,382 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 19:17:21,385 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 19:17:21,396 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-05-29 19:17:21,397 - src.bot - INFO - Static data population check completed.
+2025-05-29 19:17:21,404 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-05-29 19:17:21,409 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-05-29 19:17:21,414 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-05-29 19:17:21,414 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 19:17:21,415 - src.cogs.start - INFO - Start cog loaded. Pre-loading starter Esprit data...
+2025-05-29 19:17:21,415 - src.cogs.start - INFO - DEBUG: Found 10 eligible Epic Esprits. IDs: ['shadow_warrior', 'freya_the_mage', 'gold_plated_wyvern', 'ice_wyvern_juvenile', 'joan_of_arc', 'sword_maiden_amy', 'sword_maiden_kai', 'thunder_wyvern_juvenile', 'leaf_wyvern_juvenile', 'wind_wyvern_juvenile']
+2025-05-29 19:17:21,415 - src.cogs.start - INFO - Set starter Esprit ID to: ice_wyvern_juvenile (Rarity: Epic).
+2025-05-29 19:17:21,415 - src.bot - INFO - Successfully loaded Start cog.
+2025-05-29 19:17:21,416 - src.bot - INFO - Successfully loaded Admin cog.
+2025-05-29 19:17:21,416 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-05-29 19:17:24,322 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-05-29 19:17:24,323 - src.bot - INFO - Bot is ready and online!
+2025-05-29 19:17:24,323 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-05-29 19:17:24,664 - src.bot - INFO - Global Sync returned 3 commands. Names: ['start', 'reset_db', 'testsync']
+2025-05-29 19:17:30,897 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 19:17:31,086 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 19:17:31,086 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 19:17:31,088 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 19:17:31,094 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 19:17:31,096 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 19:17:31,103 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: c6d52631-0df8-44b9-a257-b033d462e78b (Ice Wyvern Juvenile).
+2025-05-29 19:17:31,109 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 19:17:31,109 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 19:17:31,182 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 19:17:31,182 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 19:17:31,816 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 19:17:31,816 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 19:17:32,017 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 19:17:44,523 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 19:17:44,531 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 19:17:44,531 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 19:17:44,532 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 19:17:44,533 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 19:17:44,539 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-05-29 19:17:44,539 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 19:17:46,837 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 19:17:47,065 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 19:17:47,066 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 19:17:47,067 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 19:17:47,071 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 19:17:47,073 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 19:17:47,078 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: f7ce03ef-d90f-4031-9e40-c4ddc1659c9d (Ice Wyvern Juvenile).
+2025-05-29 19:17:47,082 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 19:17:47,083 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 19:17:47,125 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 19:17:47,126 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 19:17:47,485 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 19:17:47,485 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 19:17:47,814 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 19:19:13,295 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 19:19:13,299 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 19:19:13,301 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 19:19:13,301 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 19:19:13,302 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 19:19:13,309 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-05-29 19:19:13,311 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 19:19:18,351 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 19:19:18,585 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 19:19:18,585 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 19:19:18,587 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 19:19:18,593 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 19:19:18,594 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 19:19:18,599 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: 54d42f6a-f11f-4f3f-96ce-b882b16337b2 (Ice Wyvern Juvenile).
+2025-05-29 19:19:18,604 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 19:19:18,604 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 19:19:18,647 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 19:19:18,647 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 19:19:19,053 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 19:19:19,053 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 19:19:19,219 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 19:19:27,352 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 19:19:27,358 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 19:19:27,359 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 19:19:27,359 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 19:19:27,360 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 19:19:27,367 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-05-29 19:19:27,367 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 19:19:29,229 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 19:19:29,395 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 19:19:29,396 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 19:19:29,397 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 19:19:29,403 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 19:19:29,404 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 19:19:29,409 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: cb34fc68-be94-4d15-a5f1-88fc00aed3d4 (Ice Wyvern Juvenile).
+2025-05-29 19:19:29,414 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 19:19:29,414 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 19:19:29,456 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 19:19:29,456 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 19:19:29,796 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 19:19:29,796 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 19:19:30,034 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-05-29 19:21:28,490 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 19:21:28,716 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 19:21:28,716 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 19:21:28,718 - src.cogs.start - INFO - [/start] User query executed. User exists: True.
+2025-05-29 19:21:28,890 - src.cogs.start - INFO - [/start] Existing user message sent for jin.
+2025-05-29 19:21:36,332 - src.bot - INFO - User 798476548734844969 used /testsync command.
+2025-05-29 19:21:42,452 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-05-29 19:21:42,458 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-05-29 19:21:42,458 - src.database.db - INFO - Checking to populate static EspritData...
+2025-05-29 19:21:42,458 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-05-29 19:21:42,459 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-05-29 19:21:42,465 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-05-29 19:21:42,466 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-05-29 19:21:45,526 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-05-29 19:21:46,017 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-05-29 19:21:46,017 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-05-29 19:21:46,018 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-05-29 19:21:46,024 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-05-29 19:21:46,025 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-05-29 19:21:46,029 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: be491018-ed58-4fc9-a0e4-e04c921213d7 (Ice Wyvern Juvenile).
+2025-05-29 19:21:46,034 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-05-29 19:21:46,034 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-05-29 19:21:46,074 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-05-29 19:21:46,074 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-05-29 19:21:46,701 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-05-29 19:21:46,701 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-05-29 19:21:46,942 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
