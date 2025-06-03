@@ -9,6 +9,7 @@ import sqlalchemy as sa
 from sqlalchemy.future import select
 import uuid
 
+from ..bot import NyxaBot
 from src.database.db import get_session
 from src.database.models import User, EspritData, UserEsprit
 from src.utils.config_manager import ConfigManager

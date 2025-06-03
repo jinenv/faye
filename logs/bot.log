@@ -3103,3 +3103,454 @@ AttributeError: 'ImageGenerator' object has no attribute 'bar_xp_bg'
 2025-06-02 18:42:41,724 - src.cogs.start - INFO - [/start] Initial followup message sent.
 2025-06-02 18:42:41,724 - src.cogs.start - INFO - [/start] Sending next steps message.
 2025-06-02 18:42:41,925 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-06-02 19:19:54,942 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:19:54,942 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:19:54,947 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:19:54,947 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:19:54,947 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:19:54,948 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:19:54,950 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:19:54,951 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:19:54,953 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-06-02 19:19:54,965 - src.utils.image_generator - INFO - All bar UI assets loaded successfully.
+2025-06-02 19:19:54,966 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-06-02 19:19:54,966 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-06-02 19:19:54,966 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:19:54,966 - src.bot - INFO - Successfully loaded Start cog.
+2025-06-02 19:19:54,967 - src.bot - INFO - Successfully loaded Admin cog.
+2025-06-02 19:19:54,967 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:19:57,525 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:19:57,525 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:19:57,525 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:19:57,970 - src.bot - INFO - Global Sync returned 3 commands. Names: ['start', 'reset_db', 'testsync']
+2025-06-02 19:28:19,949 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:28:19,950 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:28:19,954 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:28:19,954 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:28:19,954 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:28:19,954 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:28:19,959 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:28:19,960 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:28:19,986 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-06-02 19:28:20,000 - src.utils.image_generator - INFO - All bar UI assets loaded successfully.
+2025-06-02 19:28:20,000 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-06-02 19:28:20,000 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-06-02 19:28:20,001 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:28:20,001 - src.bot - INFO - Successfully loaded start cog.
+2025-06-02 19:28:20,003 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-02 19:28:20,021 - src.bot - ERROR - Failed to load summon_cog cog: Extension 'src.cogs.summon_cog' raised an error: ImportError: cannot import name 'setup_logger' from 'src.utils.logger' (C:\nyxa\src\utils\logger.py)
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\nyxa\src\cogs\summon_cog.py", line 8, in <module>
+    from ..utils.logger import setup_logger
+ImportError: cannot import name 'setup_logger' from 'src.utils.logger' (C:\nyxa\src\utils\logger.py)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 55, in setup_hook
+    await self.load_extension(cog_path)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.summon_cog' raised an error: ImportError: cannot import name 'setup_logger' from 'src.utils.logger' (C:\nyxa\src\utils\logger.py)
+2025-06-02 19:28:20,023 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:28:22,282 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:28:22,282 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:28:22,282 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:28:22,504 - src.bot - INFO - Global Sync returned 3 commands. Names: ['start', 'reset_db', 'testsync']
+2025-06-02 19:32:21,179 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:32:21,179 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:32:21,184 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:32:21,184 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:32:21,184 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:32:21,185 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:32:21,187 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:32:21,188 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:32:21,201 - src.bot - ERROR - Failed to load start cog: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'bot'
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\nyxa\src\cogs\start.py", line 12, in <module>
+    from bot import NyxaBot
+ModuleNotFoundError: No module named 'bot'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 55, in setup_hook
+    await self.load_extension(cog_path)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'bot'
+2025-06-02 19:32:21,204 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-02 19:32:21,214 - src.bot - ERROR - Failed to load summon_cog cog: Extension 'src.cogs.summon_cog' raised an error: AttributeError: 'ConfigManager' object has no attribute 'load_json'
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "C:\nyxa\src\cogs\summon_cog.py", line 88, in setup
+    await bot.add_cog(SummonCog(bot))
+                      ^^^^^^^^^^^^^^
+  File "C:\nyxa\src\cogs\summon_cog.py", line 17, in __init__
+    self.rarity_tiers = self.config_manager.load_json('data/config/rarity_tiers.json')
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ConfigManager' object has no attribute 'load_json'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 55, in setup_hook
+    await self.load_extension(cog_path)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.summon_cog' raised an error: AttributeError: 'ConfigManager' object has no attribute 'load_json'
+2025-06-02 19:32:21,215 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:32:23,513 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:32:23,513 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:32:23,513 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:32:23,854 - src.bot - INFO - Global Sync returned 2 commands. Names: ['reset_db', 'testsync']
+2025-06-02 19:33:09,066 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:33:09,066 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:33:09,070 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:33:09,070 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:33:09,070 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:33:09,071 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:33:09,073 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:33:09,074 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:33:09,076 - src.bot - ERROR - Failed to load start cog: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'bot'
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\nyxa\src\cogs\start.py", line 12, in <module>
+    from bot import NyxaBot
+ModuleNotFoundError: No module named 'bot'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 55, in setup_hook
+    await self.load_extension(cog_path)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.start' raised an error: ModuleNotFoundError: No module named 'bot'
+2025-06-02 19:33:09,078 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-02 19:33:09,080 - src.bot - ERROR - Failed to load summon_cog cog: Extension 'src.cogs.summon_cog' raised an error: AttributeError: 'ConfigManager' object has no attribute 'load_json'
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "C:\nyxa\src\cogs\summon_cog.py", line 88, in setup
+    await bot.add_cog(SummonCog(bot))
+                      ^^^^^^^^^^^^^^
+  File "C:\nyxa\src\cogs\summon_cog.py", line 17, in __init__
+    self.rarity_tiers = self.config_manager.load_json('data/config/rarity_tiers.json')
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ConfigManager' object has no attribute 'load_json'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\src\bot.py", line 55, in setup_hook
+    await self.load_extension(cog_path)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.summon_cog' raised an error: AttributeError: 'ConfigManager' object has no attribute 'load_json'
+2025-06-02 19:33:09,081 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:33:11,297 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:33:11,297 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:33:11,297 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:33:11,773 - src.bot - INFO - Global Sync returned 2 commands. Names: ['reset_db', 'testsync']
+2025-06-02 19:35:49,615 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:35:49,615 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:35:49,619 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:35:49,620 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:35:49,620 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:35:49,620 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:35:49,622 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:35:49,623 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:35:49,654 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-06-02 19:35:49,666 - src.utils.image_generator - INFO - All bar UI assets loaded successfully.
+2025-06-02 19:35:49,667 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-06-02 19:35:49,667 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-06-02 19:35:49,668 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:35:49,668 - src.bot - INFO - Successfully loaded start cog.
+2025-06-02 19:35:49,669 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-02 19:35:49,680 - src.utils.config_manager - WARNING - Config file 'data/config/rarity_tiers.json.yaml' or 'data/config/rarity_tiers.json.json' not found in 'data/config'
+2025-06-02 19:35:49,680 - src.utils.config_manager - WARNING - Config file 'data/config/esprits.json.yaml' or 'data/config/esprits.json.json' not found in 'data/config'
+2025-06-02 19:35:49,680 - src.cogs.summon_cog - ERROR - Failed to load rarity_tiers.json. Summoning may not work correctly.
+2025-06-02 19:35:49,680 - src.cogs.summon_cog - ERROR - Failed to load esprits.json. Summoning may not work correctly.
+2025-06-02 19:35:49,681 - src.cogs.summon_cog - INFO - SummonCog loaded.
+2025-06-02 19:35:49,681 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-02 19:35:49,681 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:35:53,061 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:35:53,061 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:35:53,061 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:35:53,457 - src.bot - INFO - Global Sync returned 4 commands. Names: ['start', 'reset_db', 'summon', 'testsync']
+2025-06-02 19:36:02,046 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-06-02 19:36:02,053 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-06-02 19:36:02,053 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:36:02,054 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:36:02,055 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-02 19:36:02,070 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-06-02 19:36:02,070 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-06-02 19:36:29,467 - src.cogs.summon_cog - ERROR - Summon command failed due to missing or invalid config.
+2025-06-02 19:36:37,413 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-06-02 19:36:37,638 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-06-02 19:36:37,638 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-06-02 19:36:37,641 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-06-02 19:36:37,642 - src.cogs.start - INFO - [/start] Randomly selected starter Esprit ID: ice_wyvern_juvenile (Rarity: Epic).
+2025-06-02 19:36:37,644 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-06-02 19:36:37,653 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-06-02 19:36:37,660 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: ef51c39b-f813-44e1-a727-b42f4e8de0ce (Ice Wyvern Juvenile).
+2025-06-02 19:36:37,666 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-06-02 19:36:37,666 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-06-02 19:36:37,707 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-06-02 19:36:37,707 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-06-02 19:36:38,107 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-06-02 19:36:38,107 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-06-02 19:36:38,367 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-06-02 19:36:43,387 - src.cogs.summon_cog - ERROR - Summon command failed due to missing or invalid config.
+2025-06-02 19:39:46,342 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:39:46,342 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:39:46,347 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:39:46,347 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:39:46,347 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:39:46,347 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:39:46,350 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:39:46,350 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:39:46,370 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-06-02 19:39:46,382 - src.utils.image_generator - INFO - All bar UI assets loaded successfully.
+2025-06-02 19:39:46,383 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-06-02 19:39:46,383 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-06-02 19:39:46,383 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:39:46,384 - src.bot - INFO - Successfully loaded start cog.
+2025-06-02 19:39:46,385 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-02 19:39:46,397 - src.utils.config_manager - WARNING - Config file 'data/config/rarity_tiers.yaml' or 'data/config/rarity_tiers.json' not found in 'data/config'
+2025-06-02 19:39:46,397 - src.utils.config_manager - WARNING - Config file 'data/config/esprits.yaml' or 'data/config/esprits.json' not found in 'data/config'
+2025-06-02 19:39:46,397 - src.cogs.summon_cog - ERROR - Failed to load rarity_tiers.json. Summoning may not work correctly.
+2025-06-02 19:39:46,397 - src.cogs.summon_cog - ERROR - Failed to load esprits.json. Summoning may not work correctly.
+2025-06-02 19:39:46,398 - src.cogs.summon_cog - INFO - SummonCog loaded.
+2025-06-02 19:39:46,398 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-02 19:39:46,398 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:39:48,647 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:39:48,647 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:39:48,647 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:39:48,886 - src.bot - INFO - Global Sync returned 4 commands. Names: ['start', 'reset_db', 'summon', 'testsync']
+2025-06-02 19:40:01,163 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-06-02 19:40:01,170 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-06-02 19:40:01,172 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:40:01,172 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:40:01,174 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-02 19:40:01,188 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-06-02 19:40:01,188 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-06-02 19:40:02,811 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-06-02 19:40:03,075 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-06-02 19:40:03,075 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-06-02 19:40:03,078 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-06-02 19:40:03,079 - src.cogs.start - INFO - [/start] Randomly selected starter Esprit ID: sword_maiden_kai (Rarity: Epic).
+2025-06-02 19:40:03,081 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Kai.
+2025-06-02 19:40:03,088 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-06-02 19:40:03,095 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: f6a8e8ea-a099-4038-a596-c61ee4b42c40 (Sword Maiden Kai).
+2025-06-02 19:40:03,101 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-06-02 19:40:03,101 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Kai.
+2025-06-02 19:40:03,144 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-06-02 19:40:03,145 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-06-02 19:40:03,753 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-06-02 19:40:03,753 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-06-02 19:40:03,974 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-06-02 19:40:08,222 - src.cogs.summon_cog - ERROR - Summon command failed due to missing or invalid config.
+2025-06-02 19:42:36,308 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:42:36,308 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:42:36,312 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:42:36,313 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:42:36,313 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:42:36,313 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:42:36,315 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:42:36,316 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:42:36,341 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-06-02 19:42:36,353 - src.utils.image_generator - INFO - All bar UI assets loaded successfully.
+2025-06-02 19:42:36,354 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-06-02 19:42:36,354 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-06-02 19:42:36,355 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:42:36,355 - src.bot - INFO - Successfully loaded start cog.
+2025-06-02 19:42:36,357 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-02 19:42:36,368 - src.utils.config_manager - WARNING - Config file 'data/config/rarity_tiers.yaml' or 'data/config/rarity_tiers.json' not found in 'data/config'
+2025-06-02 19:42:36,369 - src.utils.config_manager - WARNING - Config file 'data/config/esprits.yaml' or 'data/config/esprits.json' not found in 'data/config'
+2025-06-02 19:42:36,369 - src.cogs.summon_cog - ERROR - Failed to load rarity_tiers.json. Summoning may not work correctly.
+2025-06-02 19:42:36,369 - src.cogs.summon_cog - ERROR - Failed to load esprits.json. Summoning may not work correctly.
+2025-06-02 19:42:36,369 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-02 19:42:36,369 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:42:38,623 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:42:38,623 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:42:38,623 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:42:38,854 - src.bot - INFO - Global Sync returned 4 commands. Names: ['start', 'reset_db', 'summon', 'testsync']
+2025-06-02 19:43:53,967 - src.cogs.summon_cog - ERROR - Summon command by jinenv failed due to missing or invalid config during execution.
+2025-06-02 19:51:30,729 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:51:30,729 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:51:30,733 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:51:30,733 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:51:30,733 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:51:30,734 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:51:30,736 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:51:30,737 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:51:30,757 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-06-02 19:51:30,769 - src.utils.image_generator - INFO - All bar UI assets loaded successfully.
+2025-06-02 19:51:30,769 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-06-02 19:51:30,769 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-06-02 19:51:30,770 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:51:30,770 - src.bot - INFO - Successfully loaded start cog.
+2025-06-02 19:51:30,771 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-02 19:51:30,784 - src.cogs.summon_cog - INFO - SummonCog: Attempting to load rarity_tiers from: 'data/config/rarity_tiers'
+2025-06-02 19:51:30,784 - src.utils.config_manager - WARNING - Config file 'data/config/rarity_tiers.yaml' or 'data/config/rarity_tiers.json' not found in 'data/config'
+2025-06-02 19:51:30,784 - src.cogs.summon_cog - INFO - SummonCog: Attempting to load esprits from: 'data/config/esprits'
+2025-06-02 19:51:30,784 - src.utils.config_manager - WARNING - Config file 'data/config/esprits.yaml' or 'data/config/esprits.json' not found in 'data/config'
+2025-06-02 19:51:30,784 - src.cogs.summon_cog - ERROR - SummonCog: Failed to load rarity_tiers.json after get_config. Summoning may not work correctly.
+2025-06-02 19:51:30,785 - src.cogs.summon_cog - ERROR - SummonCog: Failed to load esprits.json after get_config. Summoning may not work correctly.
+2025-06-02 19:51:30,785 - src.cogs.summon_cog - WARNING - SummonCog: rarity_tiers or esprits_data IS NOT populated correctly after loading attempts.
+2025-06-02 19:51:30,785 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-02 19:51:30,785 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:51:33,074 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:51:33,074 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:51:33,074 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:51:33,261 - src.bot - INFO - Global Sync returned 4 commands. Names: ['start', 'reset_db', 'summon', 'testsync']
+2025-06-02 19:51:48,746 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-06-02 19:51:48,754 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-06-02 19:51:48,754 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:51:48,754 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 19:51:48,756 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-02 19:51:48,769 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-06-02 19:51:48,769 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-06-02 19:51:52,199 - src.cogs.summon_cog - ERROR - Summon command by jinenv failed due to missing or invalid config during execution.
+2025-06-02 19:51:54,400 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-06-02 19:51:54,588 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-06-02 19:51:54,588 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-06-02 19:51:54,590 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-06-02 19:51:54,592 - src.cogs.start - INFO - [/start] Randomly selected starter Esprit ID: sword_maiden_amy (Rarity: Epic).
+2025-06-02 19:51:54,593 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Sword Maiden Amy.
+2025-06-02 19:51:54,602 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-06-02 19:51:54,609 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: d66e24b9-f2b2-47d4-8b8b-62fae821c7e6 (Sword Maiden Amy).
+2025-06-02 19:51:54,614 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-06-02 19:51:54,615 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Sword Maiden Amy.
+2025-06-02 19:51:54,653 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-06-02 19:51:54,653 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-06-02 19:51:55,073 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-06-02 19:51:55,073 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-06-02 19:51:55,271 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-06-02 19:55:40,083 - src.bot - INFO - Running setup_hook...
+2025-06-02 19:55:40,083 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 19:55:40,088 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 19:55:40,088 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 19:55:40,088 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:55:40,088 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-02 19:55:40,089 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'esprits'
+2025-06-02 19:55:40,089 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-02 19:55:40,089 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-02 19:55:40,089 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\esprits.yaml'
+2025-06-02 19:55:40,089 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-02 19:55:40,090 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\esprits.json'
+2025-06-02 19:55:40,090 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: False
+2025-06-02 19:55:40,090 - src.utils.config_manager - WARNING - ConfigManager.get_config: Config file for base 'esprits' NOT FOUND. Checked for YAML at: 'C:\nyxa\esprits.yaml' (Exists: False). Checked for JSON at: 'C:\nyxa\esprits.json' (Exists: False).
+2025-06-02 19:55:40,093 - src.database.db - INFO - EspritData table already contains 27 entries. Skipping population.
+2025-06-02 19:55:40,093 - src.bot - INFO - Static data population check completed.
+2025-06-02 19:55:40,115 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-02 19:55:40,116 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-06-02 19:55:40,127 - src.utils.image_generator - INFO - All bar UI assets loaded successfully.
+2025-06-02 19:55:40,127 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-02 19:55:40,128 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'rarity_visuals'
+2025-06-02 19:55:40,128 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-02 19:55:40,128 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-02 19:55:40,128 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\rarity_visuals.yaml'
+2025-06-02 19:55:40,129 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-02 19:55:40,129 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\rarity_visuals.json'
+2025-06-02 19:55:40,129 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: False
+2025-06-02 19:55:40,129 - src.utils.config_manager - WARNING - ConfigManager.get_config: Config file for base 'rarity_visuals' NOT FOUND. Checked for YAML at: 'C:\nyxa\rarity_visuals.yaml' (Exists: False). Checked for JSON at: 'C:\nyxa\rarity_visuals.json' (Exists: False).
+2025-06-02 19:55:40,129 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'game_settings'
+2025-06-02 19:55:40,129 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-02 19:55:40,129 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-02 19:55:40,130 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\game_settings.yaml'
+2025-06-02 19:55:40,130 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-02 19:55:40,130 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\game_settings.json'
+2025-06-02 19:55:40,130 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: False
+2025-06-02 19:55:40,130 - src.utils.config_manager - WARNING - ConfigManager.get_config: Config file for base 'game_settings' NOT FOUND. Checked for YAML at: 'C:\nyxa\game_settings.yaml' (Exists: False). Checked for JSON at: 'C:\nyxa\game_settings.json' (Exists: False).
+2025-06-02 19:55:40,131 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'esprits'
+2025-06-02 19:55:40,131 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-02 19:55:40,131 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-02 19:55:40,131 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\esprits.yaml'
+2025-06-02 19:55:40,131 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-02 19:55:40,131 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\esprits.json'
+2025-06-02 19:55:40,132 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: False
+2025-06-02 19:55:40,132 - src.utils.config_manager - WARNING - ConfigManager.get_config: Config file for base 'esprits' NOT FOUND. Checked for YAML at: 'C:\nyxa\esprits.yaml' (Exists: False). Checked for JSON at: 'C:\nyxa\esprits.json' (Exists: False).
+2025-06-02 19:55:40,132 - src.bot - INFO - Successfully loaded start cog.
+2025-06-02 19:55:40,133 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-02 19:55:40,135 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-02 19:55:40,135 - src.cogs.summon_cog - INFO - SummonCog: Attempting to load rarity_tiers from: 'data/config/rarity_tiers'
+2025-06-02 19:55:40,135 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-02 19:55:40,135 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-02 19:55:40,135 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-02 19:55:40,136 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-02 19:55:40,136 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-02 19:55:40,136 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-02 19:55:40,136 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-02 19:55:40,137 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-02 19:55:40,137 - src.cogs.summon_cog - INFO - SummonCog: Attempting to load esprits from: 'data/config/esprits'
+2025-06-02 19:55:40,137 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-02 19:55:40,137 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-02 19:55:40,137 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-02 19:55:40,138 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-02 19:55:40,138 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-02 19:55:40,138 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-02 19:55:40,138 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-02 19:55:40,139 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-02 19:55:40,139 - src.cogs.summon_cog - WARNING - SummonCog: rarity_tiers or esprits_data IS NOT populated correctly after loading attempts.
+2025-06-02 19:55:40,139 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-02 19:55:40,139 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 19:55:42,406 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 19:55:42,406 - src.bot - INFO - Bot is ready and online!
+2025-06-02 19:55:42,407 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 19:55:42,724 - src.bot - INFO - Global Sync returned 4 commands. Names: ['start', 'reset_db', 'summon', 'testsync']
+2025-06-02 19:55:57,144 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-06-02 19:55:57,152 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-06-02 19:55:57,152 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 19:55:57,153 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-02 19:55:57,153 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'esprits'
+2025-06-02 19:55:57,153 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-02 19:55:57,153 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-02 19:55:57,154 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\esprits.yaml'
+2025-06-02 19:55:57,154 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-02 19:55:57,154 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\esprits.json'
+2025-06-02 19:55:57,154 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: False
+2025-06-02 19:55:57,154 - src.utils.config_manager - WARNING - ConfigManager.get_config: Config file for base 'esprits' NOT FOUND. Checked for YAML at: 'C:\nyxa\esprits.yaml' (Exists: False). Checked for JSON at: 'C:\nyxa\esprits.json' (Exists: False).
+2025-06-02 19:55:57,156 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-02 19:55:57,156 - src.cogs.admin - ERROR - Admin 798476548734844969 failed to clear_db_data: 'NoneType' object has no attribute 'items'
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\admin.py", line 83, in reset_db
+    await populate_static_data() # This automatically uses a new session internally
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\src\database\db.py", line 37, in populate_static_data
+    for esprit_id, esprit_dict in esprits_data_from_json.items():
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'items'
+2025-06-02 19:56:07,476 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-06-02 19:56:07,688 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-06-02 19:56:07,688 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-06-02 19:56:07,695 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-06-02 19:56:07,925 - src.cogs.start - ERROR - Attempted to start user without any eligible starter Esprits in DB.
+2025-06-02 19:56:12,778 - src.cogs.summon_cog - ERROR - Summon command by jinenv failed due to missing or invalid config during execution.
