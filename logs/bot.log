@@ -3067,3 +3067,39 @@ AttributeError: 'ImageGenerator' object has no attribute 'bar_xp_bg'
 2025-06-02 18:36:09,260 - src.cogs.start - INFO - [/start] Initial followup message sent.
 2025-06-02 18:36:09,260 - src.cogs.start - INFO - [/start] Sending next steps message.
 2025-06-02 18:36:09,482 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
+2025-06-02 18:42:31,649 - src.bot - INFO - Running setup_hook...
+2025-06-02 18:42:31,649 - src.database.db - INFO - Attempting to create database tables...
+2025-06-02 18:42:31,669 - src.database.db - INFO - Database tables created or already exist.
+2025-06-02 18:42:31,669 - src.bot - INFO - Database initialized and tables created.
+2025-06-02 18:42:31,669 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-02 18:42:31,669 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 18:42:31,672 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-02 18:42:31,682 - src.database.db - INFO - Populated EspritData table with 27 entries.
+2025-06-02 18:42:31,682 - src.bot - INFO - Static data population check completed.
+2025-06-02 18:42:31,685 - src.utils.image_generator - INFO - Fonts loaded successfully from: C:\nyxa\assets\ui\fonts\PressStart2P.ttf
+2025-06-02 18:42:31,713 - src.utils.image_generator - INFO - All bar UI assets loaded successfully.
+2025-06-02 18:42:31,714 - src.utils.config_manager - INFO - Loaded config: data/config\rarity_visuals.json
+2025-06-02 18:42:31,714 - src.utils.config_manager - INFO - Loaded config: data/config\game_settings.json
+2025-06-02 18:42:31,714 - src.utils.config_manager - INFO - Loaded config: data/config\esprits.json
+2025-06-02 18:42:31,715 - src.bot - INFO - Successfully loaded Start cog.
+2025-06-02 18:42:31,715 - src.bot - INFO - Successfully loaded Admin cog.
+2025-06-02 18:42:31,716 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-02 18:42:33,937 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-02 18:42:33,937 - src.bot - INFO - Bot is ready and online!
+2025-06-02 18:42:33,937 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-02 18:42:34,310 - src.bot - INFO - Global Sync returned 3 commands. Names: ['start', 'reset_db', 'testsync']
+2025-06-02 18:42:40,986 - src.cogs.start - INFO - [/start] Command received by jin (798476548734844969).
+2025-06-02 18:42:41,173 - src.cogs.start - INFO - [/start] Response deferred for jin.
+2025-06-02 18:42:41,174 - src.cogs.start - INFO - [/start] Database session obtained for jin.
+2025-06-02 18:42:41,176 - src.cogs.start - INFO - [/start] User query executed. User exists: False.
+2025-06-02 18:42:41,179 - src.cogs.start - INFO - [/start] Randomly selected starter Esprit ID: ice_wyvern_juvenile (Rarity: Epic).
+2025-06-02 18:42:41,180 - src.cogs.start - INFO - [/start] Starter Esprit data queried. Found: Ice Wyvern Juvenile.
+2025-06-02 18:42:41,188 - src.cogs.start - INFO - [/start] New user created and committed: jinenv (798476548734844969).
+2025-06-02 18:42:41,195 - src.cogs.start - INFO - [/start] New UserEsprit created and committed: bc81dbe9-58ca-4c2b-88de-758df286e5b3 (Ice Wyvern Juvenile).
+2025-06-02 18:42:41,200 - src.cogs.start - INFO - [/start] User's active_esprit_id updated for jinenv.
+2025-06-02 18:42:41,200 - src.cogs.start - INFO - [/start] Attempting to generate summon image for Ice Wyvern Juvenile.
+2025-06-02 18:42:41,255 - src.cogs.start - INFO - [/start] Summon image generated successfully.
+2025-06-02 18:42:41,256 - src.cogs.start - INFO - [/start] Sending initial followup message.
+2025-06-02 18:42:41,724 - src.cogs.start - INFO - [/start] Initial followup message sent.
+2025-06-02 18:42:41,724 - src.cogs.start - INFO - [/start] Sending next steps message.
+2025-06-02 18:42:41,925 - src.cogs.start - INFO - [/start] Next steps message sent. Command finished successfully.
