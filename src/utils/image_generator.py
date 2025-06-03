@@ -1,246 +1,244 @@
-# This is the complete file content for src/utils/image_generator.py
+# src/utils/image_generator.py
+from __future__ import annotations
 
-from PIL import Image, ImageDraw, ImageFont
 import os
-import io
+import colorsys
+from collections import Counter
+from functools import lru_cache
+from typing import Tuple, Dict, Any
+
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 
 from src.utils.logger import get_logger
 from src.utils.config_manager import ConfigManager
 
 logger = get_logger(__name__)
 
+# ──────────────────────────────────────────────
+# constants & tunables
+# ──────────────────────────────────────────────
+BRIGHT_MIN = 40          # dominant-colour threshold
+SAT_MIN    = 0.15
+BLEND_WITH_RARITY = False    # if True -> dominant colour & rarity colour averaged
+
+PAD        = 40          # canvas padding
+SPRITE_H   = 512         # sprite height  (will be square)
+ICON_SIZE  = (32, 32)    # icon tiles
+ROW_H      = 64          # stat-row height
+CANVAS_W   = 800         # fixed width
+
+# ──────────────────────────────────────────────
 class ImageGenerator:
-    def __init__(self, assets_base_path="assets/"):
-        self.assets_base_path = assets_base_path
-        self.companion_assets_path = os.path.join(assets_base_path, "companions")
-        self.ui_assets_path = os.path.join(assets_base_path, "ui")
-        self.font_path = os.path.abspath(os.path.join(self.ui_assets_path, "fonts", "PressStart2P.ttf"))
+    """Renders a single ‘detail card’ for an Esprit instance."""
 
+    def __init__(self, assets_base: str = "assets") -> None:
+        self.assets_base = assets_base
+
+        # fonts ───────────────────────────────
+        fontfile = os.path.join(assets_base, "ui", "fonts", "PressStart2P.ttf")
         try:
-            self.font_small = ImageFont.truetype(self.font_path, 40)
-            self.font_medium = ImageFont.truetype(self.font_path, 52)
-            self.font_large = ImageFont.truetype(self.font_path, 68)
-            self.font_description = ImageFont.truetype(self.font_path, 32)
-            self.font_bar_text = ImageFont.truetype(self.font_path, 28)
-            logger.info(f"Fonts loaded successfully from: {self.font_path}")
-        except IOError as e:
-            logger.error(f"Error: Font file not found at '{self.font_path}'. Details: {e}", exc_info=True)
-            self.font_small = self.font_medium = self.font_large = self.font_description = self.font_bar_text = ImageFont.load_default()
+            self.font_lg  = ImageFont.truetype(fontfile, 72)
+            self.font_md  = ImageFont.truetype(fontfile, 54)
+        except OSError:
+            logger.warning("Could not load PressStart2P – using default font")
+            self.font_lg = self.font_md = ImageFont.load_default()
 
-        try:
-            bars_path = os.path.join(self.ui_assets_path, "bars")
-            self.bar_standard_bg = Image.open(os.path.join(bars_path, "empty_bar.png")).convert("RGBA")
-            self.bar_boss_bg = Image.open(os.path.join(bars_path, "boss_empty_bar.png")).convert("RGBA")
-            self.fill_xp = Image.open(os.path.join(bars_path, "xp_bar.png")).convert("RGBA")
-            self.fill_hp = Image.open(os.path.join(bars_path, "hp_bar.png")).convert("RGBA")
-            self.fill_mana = Image.open(os.path.join(bars_path, "mana_bar.png")).convert("RGBA")
-            self.fill_boss_hp = Image.open(os.path.join(bars_path, "boss_hp_bar.png")).convert("RGBA")
-            logger.info("All bar UI assets loaded successfully.")
-        except FileNotFoundError as e:
-            logger.error(f"Could not find one or more bar assets in '{bars_path}'. Details: {e}", exc_info=True)
-            self.bar_standard_bg = self.bar_boss_bg = self.fill_xp = self.fill_hp = self.fill_mana = self.fill_boss_hp = None
+        # config files ────────────────────────
+        cfg = ConfigManager()
+        self.rarity_cfg: Dict[str, Any] = cfg.get_config("data/config/rarity_visuals") or {}
+        self.icon_cfg:   Dict[str, Any] = cfg.get_config("data/config/stat_icons")     or {}
 
-        self.config_manager = ConfigManager()
-        self.rarity_visuals = self.config_manager.get_config('rarity_visuals')
-
-    def _hex_to_rgb(self, hex_color: str):
-        hex_color = hex_color.lstrip('#')
-        return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
-
-    def _wrap_text(self, text: str, font: ImageFont.FreeTypeFont, max_width: int):
-        lines = []
-        if not text:
-            return [""]
-        words = text.split(' ')
-        current_line = []
-        for word in words:
-            test_line = ' '.join(current_line + [word])
-            bbox = font.getbbox(test_line)
-            test_line_width = bbox[2] - bbox[0]
-            if test_line_width <= max_width:
-                current_line.append(word)
-            else:
-                if current_line:
-                    lines.append(' '.join(current_line))
-                current_line = [word]
-        if current_line:
-            lines.append(' '.join(current_line))
-        return lines
-
-    async def _load_and_resize_sprite(self, sprite_path: str, target_size=(128, 128)):
-        full_path = os.path.join(self.assets_base_path, sprite_path)
-        if not os.path.exists(full_path):
-            logger.warning(f"Sprite not found: {full_path}. Returning blank image.")
-            return Image.new('RGBA', target_size, (0, 0, 0, 0))
-        try:
-            with Image.open(full_path) as img:
-                if img.mode != 'RGBA':
-                    img = img.convert('RGBA')
-                resized_img = img.resize(target_size, Image.Resampling.NEAREST)
-                return resized_img
-        except Exception as e:
-            logger.error(f"Failed to load or resize sprite from {full_path}: {e}", exc_info=True)
-            return Image.new('RGBA', target_size, (255, 0, 0, 128))
-
-    async def render_esprit_detail_image(self, esprit_data_dict: dict, esprit_instance, include_description: bool = False):
-        canvas_width = 800
-        padding_top = 30
-        padding_bottom = 40
-        
-        sprite_target_size = (512, 512)
-        sprite_path = esprit_data_dict.get('visual_asset_path', 'esprits/default.png')
-        esprit_sprite = await self._load_and_resize_sprite(sprite_path, target_size=sprite_target_size)
-        sprite_x = (canvas_width - sprite_target_size[0]) // 2
-        sprite_y = padding_top
-        
-        temp_img_for_text_calc = Image.new('RGBA', (1,1))
-        temp_draw = ImageDraw.Draw(temp_img_for_text_calc)
-        
-        def get_text_height(text, font):
-            bbox = temp_draw.textbbox((0,0), text, font=font, anchor="lt")
-            return bbox[3] - bbox[1]
-
-        current_y = sprite_y + sprite_target_size[1] + 30
-        
-        name = esprit_data_dict.get('name', 'Unknown')
-        current_y += get_text_height(name, self.font_large) + 20
-
-        rarity = esprit_data_dict.get('rarity', 'Common')
-        current_y += get_text_height(f"Rarity: {rarity}", self.font_medium) + 20
-        
-        current_y += get_text_height(f"Level: {esprit_instance.current_level}", self.font_medium) + 40
-
-        stats_start_y = current_y
-        stat_line_height = 50
-        num_stats_rows = 5
-        current_y += num_stats_rows * stat_line_height + 40
-        
-        description_lines = []
-        if include_description:
-            description_text = esprit_data_dict.get('description', 'No description provided.')
-            description_max_width = canvas_width - 140
-            description_lines = self._wrap_text(description_text, self.font_description, description_max_width)
-            description_height_total = 0
-            for line in description_lines:
-                description_height_total += get_text_height(line, self.font_description) + 8
-            if description_lines: description_height_total -= 8
-            current_y += description_height_total + 40
-
-        xp_bar_y_start = current_y
-        desired_bar_width_for_calc = 600
-        bar_height_for_calc = 40
-        if self.bar_standard_bg:
-            original_bar_width_asset, original_bar_height_asset = self.bar_standard_bg.size
-            if original_bar_width_asset > 0:
-                scale_factor = desired_bar_width_for_calc / original_bar_width_asset
-                bar_height_for_calc = int(original_bar_height_asset * scale_factor)
-            else:
-                 bar_height_for_calc = original_bar_height_asset if original_bar_height_asset > 0 else 40
-        current_y += bar_height_for_calc + padding_bottom
-        
-        canvas_height = current_y
-        img = Image.new('RGBA', (canvas_width, canvas_height), (30, 30, 30, 255))
-        draw = ImageDraw.Draw(img)
-        
-        rarity_info = self.rarity_visuals.get(rarity, {})
-        border_hex_color = rarity_info.get('border_color', 'A9A9A9')
-        border_rgb_color = self._hex_to_rgb(border_hex_color) + (255,)
-        draw.rectangle([0, 0, canvas_width-1, canvas_height-1], outline=border_rgb_color, width=8)
-
-        img.paste(esprit_sprite, (sprite_x, sprite_y), esprit_sprite)
-
-        # --- [CORRECTED TEXT CENTERING FUNCTION] ---
-        def draw_centered_text_final(draw_obj, y_pos, text, font, fill_color):
-            # Directly tell Pillow to center the text using the canvas midpoint and anchor "mt"
-            # "mt" means the (x,y) point is the Middle-Top of the text bounding box
-            draw_obj.text((canvas_width / 2, y_pos), text, font=font, fill=fill_color, anchor="mt")
-        
-        def draw_two_color_stat(draw_obj, x_start, y_pos, name_text, value_text, font, name_color, value_color):
-            name_str = f"{name_text}:"
-            draw_obj.text((x_start, y_pos), name_str, font=font, fill=name_color)
-            name_bbox = font.getbbox(name_str)
-            name_width = name_bbox[2] - name_bbox[0]
-            value_x = x_start + name_width + 20
-            draw_obj.text((value_x, y_pos), str(value_text), font=font, fill=value_color)
-
-        text_y_draw = sprite_y + sprite_target_size[1] + 30
-        rarity_color_text = self._hex_to_rgb(rarity_info.get('color', 'FFFFFF')) + (255,)
-        
-        draw_centered_text_final(draw, text_y_draw, name, self.font_large, (255, 255, 255, 255))
-        text_y_draw += get_text_height(name, self.font_large) + 20
-        
-        draw_centered_text_final(draw, text_y_draw, f"Rarity: {rarity}", self.font_medium, rarity_color_text)
-        text_y_draw += get_text_height(f"Rarity: {rarity}", self.font_medium) + 20
-        
-        draw_centered_text_final(draw, text_y_draw, f"Level: {esprit_instance.current_level}", self.font_medium, (200, 200, 255, 255))
-
-        col1_x, col2_x = 100, 470
-        stat_name_color, stat_value_color = (150, 150, 150, 255), (255, 255, 255, 255)
-        stats_col1_data = [("HP", esprit_instance.current_hp), ("ATK", esprit_data_dict['base_attack']), ("DEF", esprit_data_dict['base_defense']), ("SPD", esprit_data_dict['base_speed']), ("MP", esprit_data_dict.get('base_mana', 0))]
-        stats_col2_data = [("MR", esprit_data_dict.get('base_magic_resist', 0)), ("CRIT", f"{esprit_data_dict.get('base_crit_rate', 0.0)*100:.1f}%"), ("BLOCK", f"{esprit_data_dict.get('base_block_rate', 0.0)*100:.1f}%"), ("DODGE", f"{esprit_data_dict.get('base_dodge_chance', 0.0)*100:.1f}%"), ("MP REG", esprit_data_dict.get('base_mana_regen', 0))]
-
-        current_stat_draw_y = stats_start_y
-        for i, (name_text, value) in enumerate(stats_col1_data):
-            draw_two_color_stat(draw, col1_x, current_stat_draw_y + i * stat_line_height, name_text, value, self.font_small, stat_name_color, stat_value_color)
-        for i, (name_text, value) in enumerate(stats_col2_data):
-            draw_two_color_stat(draw, col2_x, current_stat_draw_y + i * stat_line_height, name_text, value, self.font_small, stat_name_color, stat_value_color)
-
-        if include_description:
-            current_desc_draw_y = stats_start_y + num_stats_rows * stat_line_height + 40
-            for line in description_lines:
-                draw.text((70, current_desc_draw_y), line, font=self.font_description, fill=(230, 230, 230, 255))
-                current_desc_draw_y += get_text_height(line, self.font_description) + 8
-
-        if self.bar_standard_bg and self.fill_xp:
-            xp_max = esprit_instance.current_level * 100
-            xp_current = esprit_instance.current_xp
-            xp_percentage = xp_current / xp_max if xp_max > 0 else 0
-
-            bar_asset_bg_orig = self.bar_standard_bg
-            original_bar_width, original_bar_height = bar_asset_bg_orig.size
-            desired_bar_width = 600
-            
-            final_bar_width, final_bar_height = desired_bar_width, original_bar_height
-            resized_bar_bg = bar_asset_bg_orig
-            resized_fill = self.fill_xp
-
-            if original_bar_width > 0:
-                scale_factor = desired_bar_width / original_bar_width
-                desired_bar_height = int(original_bar_height * scale_factor)
-                
-                resized_bar_bg = bar_asset_bg_orig.resize((desired_bar_width, desired_bar_height), Image.Resampling.NEAREST)
-                resized_fill = self.fill_xp.resize((desired_bar_width, desired_bar_height), Image.Resampling.NEAREST)
-                final_bar_width, final_bar_height = desired_bar_width, desired_bar_height
-            else:
-                logger.warning("XP Bar background asset has zero width or not loaded.")
-                final_bar_width, final_bar_height = original_bar_width, original_bar_height
-            
-            bar_x = (canvas_width - final_bar_width) // 2
-            
-            img.paste(resized_bar_bg, (bar_x, xp_bar_y_start), resized_bar_bg)
-
-            fill_draw_width = int(final_bar_width * xp_percentage)
-            if xp_current > 0 and fill_draw_width == 0: fill_draw_width = 1
-            
-            if fill_draw_width > 0:
-                if fill_draw_width <= resized_fill.width and final_bar_height <= resized_fill.height:
-                    cropped_fill = resized_fill.crop((0, 0, fill_draw_width, final_bar_height))
-                    img.paste(cropped_fill, (bar_x, xp_bar_y_start), cropped_fill)
-                else:
-                    logger.warning(f"XP Bar fill crop dims invalid. Fill: {resized_fill.size}, Crop: (0,0,{fill_draw_width},{final_bar_height})")
-
-            xp_text = f"{xp_current} / {xp_max}"
-            text_x = bar_x + (final_bar_width / 2)
-            text_y = xp_bar_y_start + (final_bar_height / 2)
-            
-            outline_color = "black"
-            for dx_outline in [-1, 0, 1]: # Simplified stroke, or use a loop as before
-                for dy_outline in [-1, 0, 1]:
-                    if dx_outline == 0 and dy_outline == 0: continue # Skip center for outline
-                    # For a fuller stroke, you might draw more points or a slightly larger font in black
-                    draw.text((text_x + dx_outline, text_y + dy_outline), xp_text, font=self.font_bar_text, fill=outline_color, anchor="mm")
-            draw.text((text_x, text_y), xp_text, font=self.font_bar_text, fill="white", anchor="mm")
+        # sprite-sheet held open once & cached
+        sheet_path = os.path.join(self.assets_base, self.icon_cfg.get("sprite_sheet", ""))
+        if os.path.isfile(sheet_path):
+            self.sheet = Image.open(sheet_path).convert("RGBA")
         else:
-            logger.warning("XP Bar assets (background or fill) not loaded, skipping XP bar rendering.")
-            
-        return img
+            logger.error("Icon sprite-sheet not found: %s", sheet_path)
+            self.sheet = None
+
+        self.tile = self.icon_cfg.get("tile_size", 32)
+
+    # ────────────────── helpers
+    @staticmethod
+    def _hex(hexstr: str) -> Tuple[int, int, int]:
+        h = hexstr.lstrip("#")
+        if len(h) != 6:
+            return (255, 255, 255)
+        return tuple(int(h[i : i + 2], 16) for i in (0, 2, 4))
+
+    @lru_cache(maxsize=256)
+    def _slice_icon(self, col: int, row: int) -> Image.Image:
+        """Extract a tile from the sprite-sheet → resized to ICON_SIZE."""
+        if not self.sheet:
+            return Image.new("RGBA", ICON_SIZE, (0, 0, 0, 0))
+
+        box = (col * self.tile,
+               row * self.tile,
+               col * self.tile + self.tile,
+               row * self.tile + self.tile)
+
+        icon = self.sheet.crop(box).resize(ICON_SIZE, Image.Resampling.NEAREST)
+        return icon
+
+    def _icon_coords(self, key: str):
+        """Look up (col,row) in stat_icons.json – tolerant to spaces / case."""
+        icons = self.icon_cfg.get("icons", {})
+        key1  = key.lower().replace(" ", "")   # hp   / mpreg etc.
+        key2  = key.lower()                    # "mp reg"
+        return icons.get(key1) or icons.get(key2)
+
+    # dominant-colour utilities ───────────────
+    @staticmethod
+    def _dominant(img: Image.Image) -> Tuple[int, int, int]:
+        pixels = [px for px in img.getdata() if px[3] > 0]
+        if not pixels:
+            return (255, 255, 255)
+        r, g, b, _ = Counter(pixels).most_common(1)[0][0]
+        return (r, g, b)
+
+    @staticmethod
+    def _usable(rgb: Tuple[int, int, int]) -> bool:
+        r, g, b = rgb
+        bright = (r + g + b) / 3
+        h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+        return bright >= BRIGHT_MIN and s >= SAT_MIN
+
+    @staticmethod
+    def _blend(a: Tuple[int, int, int],
+               b: Tuple[int, int, int],
+               t: float = 0.5) -> Tuple[int, int, int]:
+        return tuple(int(a[i] * (1 - t) + b[i] * t) for i in range(3))
+
+    # add glow behind sprite ──────────────────
+    def _sprite_glow(self, sprite: Image.Image,
+                     rarity_rgb: Tuple[int, int, int]) -> Image.Image:
+        dom = self._dominant(sprite)
+        glow_rgb = dom if self._usable(dom) else rarity_rgb
+        if BLEND_WITH_RARITY and self._usable(dom):
+            glow_rgb = self._blend(dom, rarity_rgb, 0.5)
+
+        glow = Image.new("RGBA", sprite.size, (*glow_rgb, 255))
+        glow.putalpha(sprite.split()[-1])
+        glow = glow.filter(ImageFilter.GaussianBlur(18))
+
+        out = Image.new("RGBA", sprite.size, (0, 0, 0, 0))
+        out.paste(glow, (0, 0), glow)
+        out.paste(sprite, (0, 0), sprite)
+        return out
+
+    # ────────────────── public API
+    async def render_esprit_detail_image(
+        self,
+        esprit_data: dict | None = None,
+        esprit_instance=None,
+        include_description: bool = False,
+        # legacy-alias keeps old cogs happy ↓↓↓
+        esprit_data_dict: dict | None = None,
+) -> Image.Image:
+        # accept either name
+        if esprit_data is None:
+            esprit_data = esprit_data_dict or {}
+
+        # sprite (scaled) + glow ───────────────────────────
+        vis_path = os.path.join(self.assets_base,
+                                esprit_data.get("visual_asset_path", ""))
+        sprite = Image.open(vis_path).convert("RGBA").resize(
+            (SPRITE_H, SPRITE_H), Image.Resampling.NEAREST)
+
+        rarity = esprit_data.get("rarity", "Common")
+        rarity_rgb = self._hex(self.rarity_cfg.get(rarity, {}).get("color", "#FFFFFF"))
+        sprite = self._sprite_glow(sprite, rarity_rgb)
+
+        # canvas size (5 stat rows) ────────────────────────
+        H = (PAD + SPRITE_H + 30 + self.font_lg.size + 20 +
+             self.font_md.size * 2 + 40 + ROW_H * 5 + PAD)
+        base = Image.new("RGBA", (CANVAS_W, int(H)), (30, 30, 30, 255))
+        draw = ImageDraw.Draw(base)
+
+        # border
+        border_rgba = (*self._hex(self.rarity_cfg.get(rarity, {})
+                                  .get("border_color", "#A9A9A9")), 255)
+        draw.rectangle([0, 0, CANVAS_W - 1, int(H) - 1],
+                       outline=border_rgba, width=8)
+
+        # vignette
+        vign = Image.new("L", base.size, 0)
+        ImageDraw.Draw(vign).ellipse(
+            (-CANVAS_W * 0.2, -H * 0.1, CANVAS_W * 1.2, H * 1.5), fill=255)
+        vign = vign.filter(ImageFilter.GaussianBlur(250))
+        base = Image.composite(base,
+                               Image.new("RGBA", base.size, (10, 10, 10, 255)),
+                               vign)
+        draw = ImageDraw.Draw(base)
+
+        # sprite paste
+        base.paste(sprite, ((CANVAS_W - SPRITE_H) // 2, PAD), sprite)
+
+        # headings ─────────────────────────────────────────
+        y = PAD + SPRITE_H + 30
+        cx = CANVAS_W // 2
+
+        draw.text((cx, y), esprit_data.get("name", "Unknown"),
+                  font=self.font_lg,  fill="white", anchor="mt")
+        y += self.font_lg.size + 20
+
+        draw.text((cx, y), f"Rarity: {rarity}",
+                  font=self.font_md, fill=rarity_rgb, anchor="mt")
+        y += self.font_md.size + 20
+
+        draw.text((cx, y), f"Level: {esprit_instance.current_level}",
+                  font=self.font_md, fill=(200, 200, 255, 255), anchor="mt")
+        y += self.font_md.size + 20
+
+        # stats (left & right lists stay exactly as before) ───────────────
+        left = [("HP", esprit_instance.current_hp),
+                ("ATK", esprit_data["base_attack"]),
+                ("DEF", esprit_data["base_defense"]),
+                ("SPD", esprit_data["base_speed"]),
+                ("MP",  esprit_data.get("base_mana", 0))]
+
+        right = [("MR",    esprit_data.get("base_magic_resist", 0)),
+                 ("CRIT",  f"{esprit_data.get('base_crit_rate',0)*100:.1f}%"),
+                 ("BLOCK", f"{esprit_data.get('base_block_rate',0)*100:.1f}%"),
+                 ("DODGE", f"{esprit_data.get('base_dodge_chance',0)*100:.1f}%"),
+                 ("MP REG", esprit_data.get("base_mana_regen", 0))]
+
+        bar_x = CANVAS_W // 2
+
+        for i, ((lk, lv), (rk, rv)) in enumerate(zip(left, right)):
+            row_y  = y + i * ROW_H
+            text_y = int(row_y + (ROW_H - self.font_md.size) // 2)
+
+            # left cell ---------------------------------------------------
+            coords = self._icon_coords(lk)
+            if coords:
+                icon = self._slice_icon(*coords)
+                base.paste(icon,
+                           (bar_x - 40 - ICON_SIZE[0],
+                            row_y + (ROW_H - ICON_SIZE[1]) // 2),
+                           icon)
+
+            draw.text((bar_x - 40 - ICON_SIZE[0] - 10, text_y),
+                      str(lv), font=self.font_md,
+                      fill="white", anchor="rm")
+
+            # divider
+            draw.text((bar_x, text_y), "|",
+                      font=self.font_md,
+                      fill=(180, 180, 180, 255), anchor="mm")
+
+            # right cell --------------------------------------------------
+            coords = self._icon_coords(rk)
+            if coords:
+                icon = self._slice_icon(*coords)
+                base.paste(icon,
+                           (bar_x + 40,
+                            row_y + (ROW_H - ICON_SIZE[1]) // 2),
+                           icon)
+
+            draw.text((bar_x + 40 + ICON_SIZE[0] + 10, text_y),
+                      str(rv), font=self.font_md,
+                      fill="white", anchor="lm")
+
+        return base
+

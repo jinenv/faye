@@ -1,0 +1,17 @@
+{
+  "sprite_sheet": "ui/icons/stat_icons.png",
+  "tile_size": 32,
+  "icons": {
+    "hp":    [2, 162],
+    "atk":   [8,  172],
+    "def":   [7, 162],
+    "spd":   [10,  162],
+    "mr":    [2, 343],
+    "crit":  [7, 172],
+    "block": [8,  162],
+    "dodge": [9,  162],
+    "mp":    [14, 206],
+    "mpreg": [13, 206]
+  }
+}
+ 

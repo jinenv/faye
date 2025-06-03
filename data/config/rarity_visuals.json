@@ -1,44 +1,44 @@
 {
   "Supreme": {
-    "color": "FFFFFF", 
-    "border_color": "FFFFFF", 
-    "frame_asset": "frame_supreme.png",       
-    "background_asset": "background_supreme.png" 
+    "color": "#FFFFFF",
+    "border_color": "#FFFFFF",
+    "frame_asset": "frame_supreme.png",
+    "background_asset": "background_supreme.png"
   },
   "Mythic": {
-    "color": "FF0000", 
-    "border_color": "FF0000",
-    "frame_asset": "frame_mythic.png",        
-    "background_asset": "background_mythic.png" 
+    "color": "#FF0000",
+    "border_color": "#FF0000",
+    "frame_asset": "frame_mythic.png",
+    "background_asset": "background_mythic.png"
   },
   "Legendary": {
-    "color": "FFD700", 
-    "border_color": "FFD700",
-    "frame_asset": "frame_legendary.png",     
-    "background_asset": "background_legendary.png" 
+    "color": "#FFD700",
+    "border_color": "#FFD700",
+    "frame_asset": "frame_legendary.png",
+    "background_asset": "background_legendary.png"
   },
   "Epic": {
-    "color": "800080", 
-    "border_color": "800080",
-    "frame_asset": "frame_epic.png",          
-    "background_asset": "background_epic.png"   
+    "color": "#800080",
+    "border_color": "#800080",
+    "frame_asset": "frame_epic.png",
+    "background_asset": "background_epic.png"
   },
   "Rare": {
-    "color": "0000FF", 
-    "border_color": "0000FF",
-    "frame_asset": "frame_rare.png",          
-    "background_asset": "background_rare.png"  
+    "color": "#0000FF",
+    "border_color": "#0000FF",
+    "frame_asset": "frame_rare.png",
+    "background_asset": "background_rare.png"
   },
   "Uncommon": {
-    "color": "00C853", 
-    "border_color": "00C853",
-    "frame_asset": "frame_uncommon.png",      
+    "color": "#00C853",
+    "border_color": "#00C853",
+    "frame_asset": "frame_uncommon.png",
     "background_asset": "background_uncommon.png"
   },
   "Common": {
-    "color": "A9A9A9", 
-    "border_color": "A9A9A9",
-    "frame_asset": "frame_common.png",        
-    "background_asset": "background_common.png" 
+    "color": "#A9A9A9",
+    "border_color": "#A9A9A9",
+    "frame_asset": "frame_common.png",
+    "background_asset": "background_common.png"
   }
 }

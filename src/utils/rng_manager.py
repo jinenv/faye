@@ -1,48 +1,91 @@
 import random
 from typing import Dict, List, Optional, Tuple
 
+
 class RNGManager:
     """
-    A utility class for managing random number generation, especially for weighted choices.
+    Handles weighted-random selections for NyxaBot.
+    Designed so `SummonCog` can call
+        self.rng_manager.get_random_rarity(weights, luck_modifier=0.05)
+    without exploding.
     """
 
-    @staticmethod
-    def weighted_choice(choices: Dict[str, float]) -> Optional[str]:
-        """
-        Selects a choice based on provided weights (probabilities).
+    def __init__(self, seed: Optional[int] = None) -> None:
+        # Local RNG instance so tests can seed deterministically.
+        self._rng = random.Random(seed)
 
-        Args:
-            choices (Dict[str, float]): A dictionary where keys are the choices
-                                        and values are their corresponding probabilities/weights.
-                                        Probabilities do not need to sum to 1.0; they will be normalized.
-
-        Returns:
-            str: The selected choice, or None if choices are empty or invalid.
-        """
+    # ──────────────────────────────────────────────────────────────
+    # Internal helpers
+    # ──────────────────────────────────────────────────────────────
+    def _normalize(
+        self, choices: Dict[str, float]
+    ) -> List[Tuple[str, float]]:
+        """Return list of (key, normalized_weight)."""
         if not choices:
+            return []
+
+        total = sum(choices.values())
+        if total == 0:
+            # All weights zero → fallback to uniform distribution.
+            uniform = 1.0 / len(choices)
+            return [(k, uniform) for k in choices]
+
+        return [(k, w / total) for k, w in choices.items()]
+
+    def _weighted_pick(self, choices: Dict[str, float]) -> Optional[str]:
+        """
+        Core weighted-random routine.  
+        `choices` can be raw or already normalized; we normalize anyway.
+        """
+        pool = self._normalize(choices)
+        if not pool:
             return None
 
-        # Normalize weights (probabilities)
-        total_weight = sum(choices.values())
-        if total_weight == 0:
-            # If all weights are zero, choose randomly (or return None if no valid choice)
-            return random.choice(list(choices.keys())) if choices else None
+        rand_val = self._rng.random()  # 0.0–1.0
+        cumulative = 0.0
+        for key, prob in pool:
+            cumulative += prob
+            if rand_val <= cumulative:
+                return key
+        # Edge-case float spill-over
+        return pool[-1][0]
 
-        normalized_choices: List[Tuple[str, float]] = []
-        for choice, weight in choices.items():
-            normalized_choices.append((choice, weight / total_weight))
+    # ──────────────────────────────────────────────────────────────
+    # Public API
+    # ──────────────────────────────────────────────────────────────
+    def weighted_choice(self, choices: Dict[str, float]) -> Optional[str]:
+        """Public wrapper around `_weighted_pick` (kept for backward compat)."""
+        return self._weighted_pick(choices)
 
-        # Sort choices by weight for easier cumulative sum calculation (optional, but good practice)
-        normalized_choices.sort(key=lambda x: x[1])
+    def get_random_rarity(
+        self,
+        rarity_weights: Dict[str, float],
+        *,
+        luck_modifier: float = 0.0,
+    ) -> Optional[str]:
+        """
+        Main entry point for SummonCog.
 
-        # Perform weighted selection
-        rand_val = random.random() # A random float between 0.0 and 1.0
-        cumulative_probability = 0.0
+        Args
+        ----
+        rarity_weights : dict[str, float]
+            Raw probabilities (they need **not** sum to 1).
+        luck_modifier  : float (default 0.0)
+            Positive values increase the weight of *all* rarities,
+            but you can plug in more complex luck formulas later.
 
-        for choice, probability in normalized_choices:
-            cumulative_probability += probability
-            if rand_val <= cumulative_probability:
-                return choice
+        Returns
+        -------
+        str | None
+            Selected rarity, or None if `rarity_weights` is empty/invalid.
+        """
+        if not rarity_weights:
+            return None
 
-        # Fallback in case of floating point inaccuracies (should rarely happen)
-        return normalized_choices[-1][0] if normalized_choices else None
+        if luck_modifier:
+            rarity_weights = {
+                k: max(v * (1.0 + luck_modifier), 0.0)
+                for k, v in rarity_weights.items()
+            }
+
+        return self._weighted_pick(rarity_weights)
