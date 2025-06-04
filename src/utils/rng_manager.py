@@ -1,91 +1,60 @@
+# src/utils/rng_manager.py
+
 import random
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional
 
 
 class RNGManager:
     """
-    Handles weighted-random selections for NyxaBot.
-    Designed so `SummonCog` can call
-        self.rng_manager.get_random_rarity(weights, luck_modifier=0.05)
-    without exploding.
+    Provides a method to pick a weighted rarity.
+    Expects something like: {"Common": 0.5, "Uncommon": 0.25, …}
     """
 
-    def __init__(self, seed: Optional[int] = None) -> None:
-        # Local RNG instance so tests can seed deterministically.
-        self._rng = random.Random(seed)
-
-    # ──────────────────────────────────────────────────────────────
-    # Internal helpers
-    # ──────────────────────────────────────────────────────────────
-    def _normalize(
-        self, choices: Dict[str, float]
-    ) -> List[Tuple[str, float]]:
-        """Return list of (key, normalized_weight)."""
-        if not choices:
-            return []
-
+    @staticmethod
+    def _normalize(choices: Dict[str, float]) -> Dict[str, float]:
         total = sum(choices.values())
-        if total == 0:
-            # All weights zero → fallback to uniform distribution.
-            uniform = 1.0 / len(choices)
-            return [(k, uniform) for k in choices]
+        if total <= 0:
+            raise ValueError("Sum of weights must be > 0")
+        return {k: v / total for k, v in choices.items()}
 
-        return [(k, w / total) for k, w in choices.items()]
-
-    def _weighted_pick(self, choices: Dict[str, float]) -> Optional[str]:
+    @staticmethod
+    def _weighted_pick(choices: Dict[str, float]) -> Optional[str]:
         """
-        Core weighted-random routine.  
-        `choices` can be raw or already normalized; we normalize anyway.
+        Given a dict of {item_name: weight}, return one item_name at random
+        according to the weights. Returns None if choices is empty.
         """
-        pool = self._normalize(choices)
-        if not pool:
+        if not choices:
             return None
 
-        rand_val = self._rng.random()  # 0.0–1.0
+        norm = RNGManager._normalize(choices)
+        r = random.random()
         cumulative = 0.0
-        for key, prob in pool:
-            cumulative += prob
-            if rand_val <= cumulative:
-                return key
-        # Edge-case float spill-over
-        return pool[-1][0]
-
-    # ──────────────────────────────────────────────────────────────
-    # Public API
-    # ──────────────────────────────────────────────────────────────
-    def weighted_choice(self, choices: Dict[str, float]) -> Optional[str]:
-        """Public wrapper around `_weighted_pick` (kept for backward compat)."""
-        return self._weighted_pick(choices)
+        for name, weight in norm.items():
+            cumulative += weight
+            if r <= cumulative:
+                return name
+        # Edge‐case rounding
+        return next(reversed(norm), None)
 
     def get_random_rarity(
         self,
         rarity_weights: Dict[str, float],
-        *,
-        luck_modifier: float = 0.0,
+        luck_modifier: float = 0.0
     ) -> Optional[str]:
         """
-        Main entry point for SummonCog.
-
-        Args
-        ----
-        rarity_weights : dict[str, float]
-            Raw probabilities (they need **not** sum to 1).
-        luck_modifier  : float (default 0.0)
-            Positive values increase the weight of *all* rarities,
-            but you can plug in more complex luck formulas later.
-
-        Returns
-        -------
-        str | None
-            Selected rarity, or None if `rarity_weights` is empty/invalid.
+        rarity_weights: {"Common": 0.50, "Uncommon": 0.25, …}
+        luck_modifier: add this to each weight before normalizing (if desired).
         """
         if not rarity_weights:
             return None
 
-        if luck_modifier:
-            rarity_weights = {
-                k: max(v * (1.0 + luck_modifier), 0.0)
-                for k, v in rarity_weights.items()
-            }
+        # Apply luck_modifier (if nonzero) uniformly to each tier
+        if luck_modifier != 0:
+            adjusted: Dict[str, float] = {}
+            for k, v in rarity_weights.items():
+                new_weight = v + luck_modifier
+                # don't allow negative
+                adjusted[k] = max(new_weight, 0.0)
+            return self._weighted_pick(adjusted)
 
         return self._weighted_pick(rarity_weights)

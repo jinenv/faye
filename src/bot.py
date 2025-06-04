@@ -45,7 +45,6 @@ class NyxaBot(commands.Bot):
 
         # 2. Load Cogs
         cogs_to_load = [
-            "src.cogs.start",
             "src.cogs.admin",
             "src.cogs.summon_cog"  # Added SummonCog here
         ]
