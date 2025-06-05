@@ -12639,3 +12639,1114 @@ discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.summon_cog' rai
 2025-06-03 18:33:11,502 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
 2025-06-03 18:44:05,708 - src.cogs.summon_cog - INFO - Player jinenv summoned Fire Golem (rarity Common).
 2025-06-03 18:44:05,822 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:09:56,083 - src.bot - INFO - Running setup_hook...
+2025-06-03 19:09:56,083 - src.database.db - INFO - Attempting to create database tables...
+2025-06-03 19:09:56,088 - src.database.db - INFO - Database tables created or already exist.
+2025-06-03 19:09:56,088 - src.bot - INFO - Database initialized and tables created.
+2025-06-03 19:09:56,088 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-03 19:09:56,088 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:09:56,088 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-03 19:09:56,088 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:09:56,088 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:09:56,089 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-03 19:09:56,089 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:09:56,089 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:09:56,089 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:09:56,090 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:09:56,092 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-03 19:09:56,093 - src.bot - INFO - Static data population check completed.
+2025-06-03 19:09:56,094 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-03 19:09:56,135 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:09:56,135 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-03 19:09:56,135 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:09:56,135 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:09:56,136 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-03 19:09:56,136 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:09:56,136 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-03 19:09:56,136 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:09:56,137 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-03 19:09:56,137 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-03 19:09:56,137 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-03 19:09:56,137 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:09:56,137 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:09:56,138 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-03 19:09:56,138 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:09:56,138 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:09:56,138 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:09:56,139 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:09:56,139 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-03 19:09:56,139 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:09:56,139 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:09:56,139 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-03 19:09:56,139 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:09:56,140 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:09:56,140 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:09:56,140 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:09:56,140 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-03 19:09:56,141 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:09:56,141 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-03 19:09:56,141 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:09:56,141 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:09:56,142 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-03 19:09:56,142 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:09:56,142 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:09:56,142 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:09:56,142 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:09:56,143 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-03 19:09:56,143 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:09:56,143 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:09:56,143 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-03 19:09:56,143 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:09:56,144 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-03 19:09:56,144 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:09:56,144 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-03 19:09:56,243 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-03 19:09:56,243 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-03 19:09:58,572 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-03 19:09:58,572 - src.bot - INFO - Bot is ready and online!
+2025-06-03 19:09:58,572 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-03 19:09:59,235 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']
+2025-06-03 19:10:44,506 - src.cogs.summon_cog - INFO - Player miguel_cervantes69420 summoned Fire Golem (rarity Common).
+2025-06-03 19:10:44,626 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:11:05,614 - src.cogs.summon_cog - INFO - Player miguel_cervantes69420 summoned Untamed Wyvern (rarity Uncommon).
+2025-06-03 19:11:05,709 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:11:19,822 - src.cogs.summon_cog - INFO - Player miguel_cervantes69420 summoned Wind Wyvern Juvenile (rarity Epic).
+2025-06-03 19:11:19,926 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:11:28,808 - src.cogs.summon_cog - INFO - Player miguel_cervantes69420 summoned Untamed Wyvern (rarity Uncommon).
+2025-06-03 19:11:28,909 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:11:35,518 - src.cogs.summon_cog - INFO - Player miguel_cervantes69420 summoned Fire Golem (rarity Common).
+2025-06-03 19:11:35,624 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:11:43,111 - src.cogs.summon_cog - INFO - Player miguel_cervantes69420 summoned Fire Golem (rarity Common).
+2025-06-03 19:11:43,212 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:12:40,081 - src.cogs.admin - WARNING - Admin 798476548734844969 confirmed database data clear.
+2025-06-03 19:12:40,087 - src.cogs.admin - WARNING - All data cleared from UserEsprit, User, and EspritData tables.
+2025-06-03 19:12:40,089 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-03 19:12:40,089 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:12:40,089 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-03 19:12:40,089 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:12:40,090 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:12:40,090 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-03 19:12:40,090 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:12:40,091 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:12:40,091 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:12:40,091 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:12:40,092 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-03 19:12:40,107 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-03 19:12:40,109 - src.cogs.admin - INFO - Static EspritData repopulated after data clear.
+2025-06-03 19:12:49,131 - src.cogs.summon_cog - INFO - Player jinenv summoned Leaf Wyvern Youth (rarity Rare).
+2025-06-03 19:12:49,236 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:13:31,507 - src.cogs.summon_cog - INFO - Player kiminumi summoned Undead Sorcerer (rarity Uncommon).
+2025-06-03 19:13:31,609 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:13:55,353 - src.cogs.summon_cog - INFO - Player kiminumi summoned Fire Golem (rarity Common).
+2025-06-03 19:13:55,446 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:14:03,489 - src.cogs.summon_cog - INFO - Player kiminumi summoned Ice Wyvern Youth (rarity Rare).
+2025-06-03 19:14:03,597 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:14:08,528 - src.cogs.summon_cog - INFO - Player kiminumi summoned Ice Wyvern Youth (rarity Rare).
+2025-06-03 19:14:08,633 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:14:15,284 - src.cogs.summon_cog - INFO - Player kiminumi summoned Fire Golem (rarity Common).
+2025-06-03 19:14:15,382 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:17:46,195 - src.bot - INFO - Running setup_hook...
+2025-06-03 19:17:46,195 - src.database.db - INFO - Attempting to create database tables...
+2025-06-03 19:17:46,200 - src.database.db - INFO - Database tables created or already exist.
+2025-06-03 19:17:46,201 - src.bot - INFO - Database initialized and tables created.
+2025-06-03 19:17:46,201 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-03 19:17:46,201 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:17:46,201 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-03 19:17:46,201 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:17:46,201 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:17:46,202 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-03 19:17:46,202 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:17:46,202 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:17:46,202 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:17:46,203 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:17:46,206 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-03 19:17:46,206 - src.bot - INFO - Static data population check completed.
+2025-06-03 19:17:46,211 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-03 19:17:46,233 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:17:46,233 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-03 19:17:46,234 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:17:46,234 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:17:46,234 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-03 19:17:46,234 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:17:46,235 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-03 19:17:46,235 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:17:46,235 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-03 19:17:46,235 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-03 19:17:46,235 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-03 19:17:46,235 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:17:46,236 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:17:46,236 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-03 19:17:46,236 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:17:46,236 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:17:46,236 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:17:46,237 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:17:46,237 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-03 19:17:46,237 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:17:46,237 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:17:46,237 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-03 19:17:46,237 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:17:46,237 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:17:46,239 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:17:46,239 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:17:46,239 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-03 19:17:46,239 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:17:46,239 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-03 19:17:46,241 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:17:46,241 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:17:46,241 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-03 19:17:46,241 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:17:46,241 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:17:46,241 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:17:46,242 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:17:46,242 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-03 19:17:46,242 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:17:46,242 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:17:46,243 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-03 19:17:46,243 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:17:46,243 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-03 19:17:46,243 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:17:46,243 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-03 19:17:46,343 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-03 19:17:46,344 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-03 19:17:48,634 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-03 19:17:48,634 - src.bot - INFO - Bot is ready and online!
+2025-06-03 19:17:48,634 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-03 19:17:48,884 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']
+2025-06-03 19:18:15,995 - src.cogs.admin - WARNING - economy.json has been cleared.
+2025-06-03 19:18:15,996 - src.cogs.admin - WARNING - inventory.json has been cleared.
+2025-06-03 19:18:15,996 - src.cogs.admin - ERROR - Failed to clear database tables: '_AsyncGeneratorContextManager' object has no attribute 'execute'
+Traceback (most recent call last):
+  File "C:\nyxa\src\cogs\admin.py", line 151, in reset_db
+    await session.execute(delete(UserEsprit))
+          ^^^^^^^^^^^^^^^
+AttributeError: '_AsyncGeneratorContextManager' object has no attribute 'execute'
+2025-06-03 19:20:19,163 - src.bot - INFO - Running setup_hook...
+2025-06-03 19:20:19,163 - src.database.db - INFO - Attempting to create database tables...
+2025-06-03 19:20:19,167 - src.database.db - INFO - Database tables created or already exist.
+2025-06-03 19:20:19,167 - src.bot - INFO - Database initialized and tables created.
+2025-06-03 19:20:19,167 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-03 19:20:19,168 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:20:19,168 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-03 19:20:19,168 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:20:19,168 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:20:19,169 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-03 19:20:19,169 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:20:19,169 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:20:19,169 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:20:19,170 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:20:19,172 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-03 19:20:19,173 - src.bot - INFO - Static data population check completed.
+2025-06-03 19:20:19,186 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-03 19:20:19,208 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:20:19,208 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-03 19:20:19,209 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:20:19,209 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:20:19,209 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-03 19:20:19,209 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:20:19,209 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-03 19:20:19,209 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:20:19,210 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-03 19:20:19,210 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-03 19:20:19,210 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-03 19:20:19,210 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:20:19,210 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:20:19,211 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-03 19:20:19,211 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:20:19,211 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:20:19,211 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:20:19,211 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:20:19,211 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-03 19:20:19,212 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:20:19,212 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:20:19,212 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-03 19:20:19,212 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:20:19,213 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:20:19,213 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:20:19,213 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:20:19,213 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-03 19:20:19,214 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:20:19,214 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-03 19:20:19,214 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:20:19,214 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:20:19,215 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-03 19:20:19,215 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:20:19,215 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:20:19,215 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:20:19,216 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-03 19:20:19,216 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-03 19:20:19,216 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:20:19,216 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:20:19,216 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-03 19:20:19,216 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:20:19,216 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-03 19:20:19,216 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:20:19,218 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-03 19:20:19,309 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-03 19:20:19,309 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-03 19:20:21,573 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-03 19:20:21,573 - src.bot - INFO - Bot is ready and online!
+2025-06-03 19:20:21,573 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-03 19:20:21,935 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']
+2025-06-03 19:20:28,598 - src.cogs.admin - WARNING - economy.json has been cleared.
+2025-06-03 19:20:28,598 - src.cogs.admin - WARNING - inventory.json has been cleared.
+2025-06-03 19:20:28,605 - src.cogs.admin - WARNING - All rows deleted from UserEsprit, User, and EspritData tables.
+2025-06-03 19:20:28,605 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-03 19:20:28,605 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-03 19:20:28,606 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-03 19:20:28,606 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-03 19:20:28,606 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-03 19:20:28,606 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-03 19:20:28,606 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-03 19:20:28,607 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:20:28,607 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-03 19:20:28,607 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-03 19:20:28,609 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-03 19:20:28,624 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-03 19:20:28,625 - src.cogs.admin - INFO - Static EspritData successfully repopulated.
+2025-06-03 19:20:41,467 - src.cogs.summon_cog - INFO - Player jinenv summoned Fire Golem (rarity Common).
+2025-06-03 19:20:41,617 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-03 19:20:44,254 - src.cogs.summon_cog - INFO - Player jinenv summoned Fire Golem (rarity Common).
+2025-06-03 19:20:44,353 - src.cogs.summon_cog - INFO - SummonCog: detail-card image generated successfully.
+2025-06-04 04:38:40,666 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 04:38:40,667 - src.bot - INFO - Bot is ready and online!
+2025-06-04 14:13:11,488 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 14:13:11,488 - src.bot - INFO - Bot is ready and online!
+2025-06-04 14:50:53,309 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 14:50:53,309 - src.bot - INFO - Bot is ready and online!
+2025-06-04 15:01:35,235 - src.bot - INFO - Running setup_hook...
+2025-06-04 15:01:35,236 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 15:01:35,241 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 15:01:35,241 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 15:01:35,241 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 15:01:35,241 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:01:35,241 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:01:35,242 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:01:35,242 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:01:35,242 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:01:35,243 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:01:35,243 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:01:35,243 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:01:35,252 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:01:35,255 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 15:01:35,255 - src.bot - INFO - Static data population check completed.
+2025-06-04 15:01:35,257 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 15:01:35,334 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:01:35,334 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 15:01:35,334 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:01:35,334 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:01:35,334 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 15:01:35,335 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:01:35,335 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 15:01:35,335 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:01:35,340 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 15:01:35,340 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 15:01:35,341 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 15:01:35,341 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:01:35,341 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:01:35,341 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 15:01:35,342 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:01:35,342 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:01:35,342 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:01:35,346 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:01:35,347 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:01:35,347 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:01:35,347 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:01:35,348 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:01:35,348 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:01:35,348 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:01:35,348 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:01:35,348 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:01:35,348 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 15:01:35,356 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:01:35,356 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 15:01:35,356 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:01:35,356 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:01:35,357 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 15:01:35,357 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:01:35,357 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:01:35,357 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:01:35,358 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:01:35,358 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 15:01:35,358 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:01:35,358 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:01:35,358 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 15:01:35,358 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:01:35,358 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 15:01:35,358 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:01:35,364 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 15:01:35,495 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 15:01:35,495 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 15:01:37,734 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 15:01:37,734 - src.bot - INFO - Bot is ready and online!
+2025-06-04 15:01:37,734 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 15:01:38,127 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']
+2025-06-04 15:02:47,799 - src.cogs.admin - WARNING - economy.json has been cleared.
+2025-06-04 15:02:47,800 - src.cogs.admin - WARNING - inventory.json has been cleared.
+2025-06-04 15:02:47,808 - src.cogs.admin - WARNING - All rows deleted from UserEsprit, User, and EspritData tables.
+2025-06-04 15:02:47,809 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 15:02:47,809 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:02:47,809 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:02:47,810 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:02:47,810 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:02:47,810 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:02:47,811 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:02:47,811 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:02:47,811 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:02:47,812 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:02:47,813 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-04 15:02:47,830 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-04 15:02:47,830 - src.cogs.admin - INFO - Static EspritData successfully repopulated.
+2025-06-04 15:16:16,244 - src.bot - INFO - Running setup_hook...
+2025-06-04 15:16:16,244 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 15:16:16,249 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 15:16:16,249 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 15:16:16,249 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 15:16:16,249 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:16:16,249 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:16:16,249 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:16:16,251 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:16:16,251 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:16:16,251 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:16:16,251 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:16:16,252 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:16:16,252 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:16:16,256 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 15:16:16,257 - src.bot - INFO - Static data population check completed.
+2025-06-04 15:16:16,264 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 15:16:16,301 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:16:16,301 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 15:16:16,301 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:16:16,301 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:16:16,302 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 15:16:16,302 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:16:16,302 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 15:16:16,302 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:16:16,303 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 15:16:16,303 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 15:16:16,303 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 15:16:16,303 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:16:16,303 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:16:16,304 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 15:16:16,304 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:16:16,304 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:16:16,304 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:16:16,304 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:16:16,304 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:16:16,305 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:16:16,305 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:16:16,305 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:16:16,305 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:16:16,306 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:16:16,306 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:16:16,306 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:16:16,306 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 15:16:16,307 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:16:16,307 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 15:16:16,307 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:16:16,307 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:16:16,308 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 15:16:16,308 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:16:16,308 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:16:16,308 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:16:16,309 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:16:16,309 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 15:16:16,309 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:16:16,309 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:16:16,310 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 15:16:16,310 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:16:16,310 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 15:16:16,310 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:16:16,310 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 15:16:16,417 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 15:16:16,417 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 15:16:18,702 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 15:16:18,702 - src.bot - INFO - Bot is ready and online!
+2025-06-04 15:16:18,702 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 15:16:18,971 - src.bot - INFO - Global Sync returned 3 commands. Names: ['reset_db', 'summon', 'testsync']
+2025-06-04 15:24:12,851 - src.bot - INFO - Running setup_hook...
+2025-06-04 15:24:12,851 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 15:24:12,856 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 15:24:12,856 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 15:24:12,856 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 15:24:12,856 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:24:12,857 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:24:12,857 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:24:12,857 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:24:12,857 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:24:12,858 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:24:12,858 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:24:12,858 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:24:12,858 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:24:12,861 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 15:24:12,861 - src.bot - INFO - Static data population check completed.
+2025-06-04 15:24:12,882 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 15:24:12,916 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:24:12,916 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 15:24:12,916 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:24:12,916 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:24:12,917 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 15:24:12,917 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:24:12,917 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 15:24:12,918 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:24:12,918 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 15:24:12,918 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 15:24:12,918 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 15:24:12,918 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:24:12,918 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:24:12,919 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 15:24:12,919 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:24:12,919 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:24:12,919 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:24:12,920 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:24:12,920 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:24:12,920 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:24:12,920 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:24:12,921 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:24:12,921 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:24:12,921 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:24:12,921 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:24:12,921 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:24:12,922 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 15:24:12,922 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:24:12,922 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 15:24:12,922 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:24:12,922 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:24:12,923 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 15:24:12,923 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:24:12,923 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:24:12,923 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:24:12,923 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:24:12,923 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 15:24:12,923 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:24:12,923 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:24:12,925 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 15:24:12,925 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:24:12,925 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 15:24:12,925 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:24:12,926 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 15:24:13,023 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 15:24:13,023 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 15:24:15,287 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 15:24:15,287 - src.bot - INFO - Bot is ready and online!
+2025-06-04 15:24:15,287 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 15:24:15,517 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']
+2025-06-04 15:24:49,538 - src.cogs.admin - WARNING - economy.json successfully cleared.
+2025-06-04 15:24:49,539 - src.cogs.admin - WARNING - inventory.json successfully cleared.
+2025-06-04 15:24:49,540 - src.cogs.admin - INFO - EconomyManager and InventoryManager reloaded from empty JSON.
+2025-06-04 15:24:49,546 - src.cogs.admin - WARNING - SQL tables UserEsprit, User, EspritData wiped.
+2025-06-04 15:24:49,546 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 15:24:49,546 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:24:49,546 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:24:49,546 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:24:49,546 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:24:49,547 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:24:49,547 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:24:49,548 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:24:49,548 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:24:49,548 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:24:49,550 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-04 15:24:49,563 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-04 15:29:35,428 - src.bot - INFO - Running setup_hook...
+2025-06-04 15:29:35,428 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 15:29:35,434 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 15:29:35,434 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 15:29:35,434 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 15:29:35,434 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:29:35,434 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:29:35,435 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:29:35,435 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:29:35,435 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:29:35,435 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:29:35,435 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:29:35,435 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:29:35,436 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:29:35,439 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 15:29:35,439 - src.bot - INFO - Static data population check completed.
+2025-06-04 15:29:35,458 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 15:29:35,482 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:29:35,483 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 15:29:35,483 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:29:35,483 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:29:35,484 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 15:29:35,484 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:29:35,484 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 15:29:35,484 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:29:35,484 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 15:29:35,485 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 15:29:35,485 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 15:29:35,485 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:29:35,485 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:29:35,485 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 15:29:35,486 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:29:35,486 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:29:35,486 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:29:35,486 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:29:35,486 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:29:35,486 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:29:35,487 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:29:35,487 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:29:35,487 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:29:35,487 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:29:35,488 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:29:35,488 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:29:35,488 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 15:29:35,489 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:29:35,490 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 15:29:35,490 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:29:35,490 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:29:35,490 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 15:29:35,490 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:29:35,491 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:29:35,491 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:29:35,491 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 15:29:35,491 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 15:29:35,491 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:29:35,491 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:29:35,492 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 15:29:35,492 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:29:35,492 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 15:29:35,492 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:29:35,493 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 15:29:35,588 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 15:29:35,589 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 15:29:37,877 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 15:29:37,877 - src.bot - INFO - Bot is ready and online!
+2025-06-04 15:29:37,877 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 15:29:38,155 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']
+2025-06-04 15:29:48,552 - src.cogs.admin - WARNING - economy.json successfully cleared.
+2025-06-04 15:29:48,553 - src.cogs.admin - WARNING - inventory.json successfully cleared.
+2025-06-04 15:29:48,562 - src.cogs.admin - WARNING - SQL tables UserEsprit, User, EspritData wiped.
+2025-06-04 15:29:48,562 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 15:29:48,562 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 15:29:48,562 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 15:29:48,563 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 15:29:48,563 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 15:29:48,563 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 15:29:48,564 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 15:29:48,564 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:29:48,564 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 15:29:48,564 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 15:29:48,566 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-04 15:29:48,579 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-04 15:29:48,585 - src.cogs.admin - INFO - SummonCog: economy & inventory managers reloaded from empty JSON.
+2025-06-04 16:51:57,881 - src.cogs.admin - WARNING - economy.json successfully cleared.
+2025-06-04 16:51:57,882 - src.cogs.admin - WARNING - inventory.json successfully cleared.
+2025-06-04 16:51:57,901 - src.cogs.admin - WARNING - SQL tables UserEsprit, User, EspritData wiped.
+2025-06-04 16:51:57,901 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 16:51:57,901 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 16:51:57,902 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 16:51:57,902 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 16:51:57,902 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 16:51:57,903 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 16:51:57,903 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 16:51:57,903 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 16:51:57,903 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 16:51:57,904 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 16:51:57,905 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-04 16:51:57,912 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-04 16:51:57,915 - src.cogs.admin - INFO - SummonCog: economy & inventory managers reloaded from empty JSON.
+2025-06-04 17:56:55,382 - src.bot - INFO - Running setup_hook...
+2025-06-04 17:56:55,382 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 17:56:55,387 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 17:56:55,387 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 17:56:55,387 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 17:56:55,387 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 17:56:55,387 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 17:56:55,388 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 17:56:55,388 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 17:56:55,388 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 17:56:55,388 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 17:56:55,389 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 17:56:55,389 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 17:56:55,389 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 17:56:55,392 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 17:56:55,392 - src.bot - INFO - Static data population check completed.
+2025-06-04 17:56:55,395 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 17:56:55,428 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 17:56:55,428 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 17:56:55,428 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 17:56:55,428 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 17:56:55,429 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 17:56:55,429 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 17:56:55,429 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 17:56:55,429 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 17:56:55,430 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 17:56:55,430 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 17:56:55,430 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 17:56:55,430 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 17:56:55,430 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 17:56:55,431 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 17:56:55,431 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 17:56:55,431 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 17:56:55,431 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 17:56:55,431 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 17:56:55,431 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 17:56:55,432 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 17:56:55,432 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 17:56:55,432 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 17:56:55,432 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 17:56:55,432 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 17:56:55,433 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 17:56:55,433 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 17:56:55,433 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 17:56:55,434 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 17:56:55,434 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 17:56:55,434 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 17:56:55,434 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 17:56:55,435 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 17:56:55,435 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 17:56:55,435 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 17:56:55,435 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 17:56:55,435 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 17:56:55,435 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 17:56:55,436 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 17:56:55,436 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 17:56:55,436 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 17:56:55,436 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 17:56:55,437 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 17:56:55,437 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 17:56:55,437 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 17:56:55,538 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 17:56:55,538 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 17:56:57,780 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 17:56:57,780 - src.bot - INFO - Bot is ready and online!
+2025-06-04 17:56:57,780 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 17:56:58,147 - src.bot - INFO - Global Sync returned 3 commands. Names: ['reset_db', 'summon', 'testsync']
+2025-06-04 18:01:27,904 - src.bot - INFO - Running setup_hook...
+2025-06-04 18:01:27,905 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 18:01:27,908 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 18:01:27,908 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 18:01:27,908 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 18:01:27,909 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:01:27,909 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:01:27,909 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:01:27,909 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:01:27,910 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:01:27,910 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:01:27,910 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:01:27,910 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:01:27,911 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:01:27,913 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 18:01:27,914 - src.bot - INFO - Static data population check completed.
+2025-06-04 18:01:27,917 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 18:01:27,948 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:01:27,948 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 18:01:27,948 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:01:27,949 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:01:27,949 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 18:01:27,949 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:01:27,949 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 18:01:27,949 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:01:27,950 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 18:01:27,950 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 18:01:27,950 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 18:01:27,950 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:01:27,950 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:01:27,951 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 18:01:27,951 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:01:27,951 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:01:27,951 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:01:27,951 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:01:27,952 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:01:27,952 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:01:27,952 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:01:27,952 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:01:27,952 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:01:27,953 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:01:27,953 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:01:27,953 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:01:27,953 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 18:01:27,954 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:01:27,954 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 18:01:27,954 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:01:27,954 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:01:27,955 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 18:01:27,955 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:01:27,955 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:01:27,955 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:01:27,956 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:01:27,956 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 18:01:27,956 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:01:27,956 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:01:27,956 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 18:01:27,956 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:01:27,957 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 18:01:27,957 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:01:27,957 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 18:01:28,058 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 18:01:28,058 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 18:01:30,437 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 18:01:30,437 - src.bot - INFO - Bot is ready and online!
+2025-06-04 18:01:30,437 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 18:01:30,710 - src.bot - INFO - Global Sync returned 3 commands. Names: ['reset_db', 'summon', 'testsync']
+2025-06-04 18:01:38,713 - src.cogs.admin - WARNING - economy.json successfully cleared.
+2025-06-04 18:01:38,713 - src.cogs.admin - WARNING - inventory.json successfully cleared.
+2025-06-04 18:01:38,719 - src.cogs.admin - WARNING - SQL tables UserEsprit, User, EspritData wiped.
+2025-06-04 18:01:38,720 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 18:01:38,720 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:01:38,720 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:01:38,720 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:01:38,721 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:01:38,721 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:01:38,721 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:01:38,721 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:01:38,721 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:01:38,722 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:01:38,724 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-04 18:01:38,737 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-04 18:01:38,743 - src.cogs.admin - INFO - SummonCog: economy & inventory managers reloaded from empty JSON.
+2025-06-04 18:04:59,512 - src.bot - INFO - Running setup_hook...
+2025-06-04 18:04:59,512 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 18:04:59,517 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 18:04:59,517 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 18:04:59,517 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 18:04:59,517 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:04:59,517 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:04:59,517 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:04:59,518 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:04:59,518 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:04:59,518 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:04:59,519 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:04:59,519 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:04:59,519 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:04:59,522 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 18:04:59,523 - src.bot - INFO - Static data population check completed.
+2025-06-04 18:04:59,525 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 18:04:59,560 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:04:59,560 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 18:04:59,560 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:04:59,560 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:04:59,561 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 18:04:59,561 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:04:59,561 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 18:04:59,561 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:04:59,561 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 18:04:59,561 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 18:04:59,562 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 18:04:59,562 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:04:59,562 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:04:59,562 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 18:04:59,562 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:04:59,563 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:04:59,563 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:04:59,563 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:04:59,563 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:04:59,563 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:04:59,564 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:04:59,564 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:04:59,564 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:04:59,564 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:04:59,564 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:04:59,565 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:04:59,565 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 18:04:59,566 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:04:59,566 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 18:04:59,566 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:04:59,566 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:04:59,566 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 18:04:59,567 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:04:59,567 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:04:59,567 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:04:59,567 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:04:59,567 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 18:04:59,567 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:04:59,568 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:04:59,568 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 18:04:59,568 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:04:59,568 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 18:04:59,568 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:04:59,569 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 18:04:59,663 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 18:04:59,664 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 18:05:01,919 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 18:05:01,919 - src.bot - INFO - Bot is ready and online!
+2025-06-04 18:05:01,919 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 18:05:02,170 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']
+2025-06-04 18:05:09,919 - src.cogs.admin - WARNING - economy.json successfully cleared.
+2025-06-04 18:05:09,919 - src.cogs.admin - WARNING - inventory.json successfully cleared.
+2025-06-04 18:05:09,926 - src.cogs.admin - WARNING - SQL tables UserEsprit, User, EspritData wiped.
+2025-06-04 18:05:09,926 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 18:05:09,926 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:05:09,926 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:05:09,926 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:05:09,927 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:05:09,927 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:05:09,927 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:05:09,927 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:05:09,928 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:05:09,928 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:05:09,930 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-04 18:05:09,942 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-04 18:05:09,947 - src.cogs.admin - INFO - SummonCog: economy & inventory managers reloaded from empty JSON.
+2025-06-04 18:23:47,789 - src.bot - INFO - Running setup_hook...
+2025-06-04 18:23:47,789 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 18:23:47,794 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 18:23:47,794 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 18:23:47,794 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 18:23:47,794 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:23:47,794 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:23:47,794 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:23:47,794 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:23:47,796 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:23:47,796 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:23:47,796 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:23:47,796 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:23:47,797 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:23:47,801 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 18:23:47,801 - src.bot - INFO - Static data population check completed.
+2025-06-04 18:23:47,805 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 18:23:47,847 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:23:47,847 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 18:23:47,847 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:23:47,847 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:23:47,848 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 18:23:47,848 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:23:47,848 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 18:23:47,848 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:23:47,848 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 18:23:47,849 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 18:23:47,849 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 18:23:47,849 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:23:47,849 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:23:47,849 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 18:23:47,849 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:23:47,850 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:23:47,850 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:23:47,850 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:23:47,850 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:23:47,850 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:23:47,851 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:23:47,851 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:23:47,851 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:23:47,851 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:23:47,851 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:23:47,851 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:23:47,851 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 18:23:47,853 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:23:47,853 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 18:23:47,853 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:23:47,853 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:23:47,854 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 18:23:47,854 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:23:47,854 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:23:47,854 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:23:47,855 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:23:47,855 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 18:23:47,855 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:23:47,855 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:23:47,856 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 18:23:47,856 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:23:47,856 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 18:23:47,856 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:23:47,856 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 18:23:47,956 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 18:23:47,957 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 18:23:50,205 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 18:23:50,205 - src.bot - INFO - Bot is ready and online!
+2025-06-04 18:23:50,205 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 18:23:50,413 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']
+2025-06-04 18:25:02,336 - src.cogs.summon_cog - ERROR - Unhandled error in /summon: Command 'summon' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 827, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\src\cogs\summon_cog.py", line 380, in summon
+    await interaction.response.defer(ephemeral=False)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\interactions.py", line 661, in defer
+    await adapter.create_interaction_response(
+  File "C:\nyxa\.venv\Lib\site-packages\discord\webhook\async_.py", line 219, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\tree.py", line 1248, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 853, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 846, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'summon' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2025-06-04 18:25:04,530 - src.cogs.summon_cog - ERROR - Error in /balance: Command 'balance' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 827, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\src\cogs\summon_cog.py", line 177, in balance
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\interactions.py", line 801, in send_message
+    await adapter.create_interaction_response(
+  File "C:\nyxa\.venv\Lib\site-packages\discord\webhook\async_.py", line 219, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\tree.py", line 1248, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 853, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 846, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'balance' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2025-06-04 18:25:09,942 - src.cogs.summon_cog - ERROR - Error in /start: Command 'start' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 827, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\src\cogs\summon_cog.py", line 127, in start
+    self.economy.add_balance(user_id, self.START_AMOUNT)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\interactions.py", line 801, in send_message
+    await adapter.create_interaction_response(
+  File "C:\nyxa\.venv\Lib\site-packages\discord\webhook\async_.py", line 219, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\tree.py", line 1248, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 853, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 846, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'start' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2025-06-04 18:25:16,802 - src.cogs.admin - WARNING - economy.json successfully cleared.
+2025-06-04 18:25:16,803 - src.cogs.admin - WARNING - inventory.json successfully cleared.
+2025-06-04 18:25:16,808 - src.cogs.admin - WARNING - SQL tables UserEsprit, User, EspritData wiped.
+2025-06-04 18:25:16,808 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 18:25:16,809 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:25:16,809 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:25:16,809 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:25:16,809 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:25:16,810 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:25:16,810 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:25:16,810 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:25:16,810 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:25:16,811 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:25:16,812 - src.database.db - INFO - EspritData table is empty. Populating from esprits.json...
+2025-06-04 18:25:16,819 - src.database.db - INFO - Populated EspritData table with 29 entries.
+2025-06-04 18:25:16,821 - src.cogs.admin - INFO - SummonCog: economy & inventory managers reloaded from empty JSON.
+2025-06-04 18:25:25,697 - src.cogs.summon_cog - ERROR - Error in /start: Command 'start' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 827, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\src\cogs\summon_cog.py", line 124, in start
+    return await interaction.response.send_message(embed=embed, ephemeral=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\interactions.py", line 801, in send_message
+    await adapter.create_interaction_response(
+  File "C:\nyxa\.venv\Lib\site-packages\discord\webhook\async_.py", line 219, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\tree.py", line 1248, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 853, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 846, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'start' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2025-06-04 18:25:36,199 - src.cogs.summon_cog - ERROR - Unhandled error in /summon: Command 'summon' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 827, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\src\cogs\summon_cog.py", line 383, in summon
+    # 1) Validate: must be 1, 3, or 10
+  File "C:\nyxa\.venv\Lib\site-packages\discord\interactions.py", line 661, in defer
+    await adapter.create_interaction_response(
+  File "C:\nyxa\.venv\Lib\site-packages\discord\webhook\async_.py", line 219, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\tree.py", line 1248, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 853, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\nyxa\.venv\Lib\site-packages\discord\app_commands\commands.py", line 846, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'summon' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2025-06-04 18:26:17,485 - src.bot - INFO - Running setup_hook...
+2025-06-04 18:26:17,486 - src.database.db - INFO - Attempting to create database tables...
+2025-06-04 18:26:17,491 - src.database.db - INFO - Database tables created or already exist.
+2025-06-04 18:26:17,491 - src.bot - INFO - Database initialized and tables created.
+2025-06-04 18:26:17,491 - src.database.db - INFO - Checking to populate static EspritData...
+2025-06-04 18:26:17,492 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:26:17,492 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:26:17,492 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:26:17,492 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:26:17,492 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:26:17,493 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:26:17,493 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:26:17,493 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:26:17,493 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:26:17,496 - src.database.db - INFO - EspritData table already contains 29 entries. Skipping population.
+2025-06-04 18:26:17,497 - src.bot - INFO - Static data population check completed.
+2025-06-04 18:26:17,500 - src.bot - INFO - Successfully loaded admin cog.
+2025-06-04 18:26:17,535 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:26:17,535 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_tiers'
+2025-06-04 18:26:17,536 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:26:17,536 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:26:17,536 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_tiers.yaml'
+2025-06-04 18:26:17,536 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:26:17,537 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 18:26:17,537 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:26:17,537 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_tiers.json'
+2025-06-04 18:26:17,537 - src.cogs.summon_cog - INFO - SummonCog: Loaded 7 rarity tiers.
+2025-06-04 18:26:17,537 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 18:26:17,538 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:26:17,538 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:26:17,538 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 18:26:17,538 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:26:17,538 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:26:17,539 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:26:17,539 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:26:17,539 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/esprits'
+2025-06-04 18:26:17,539 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:26:17,539 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:26:17,539 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\esprits.yaml'
+2025-06-04 18:26:17,539 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:26:17,541 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:26:17,541 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:26:17,541 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\esprits.json'
+2025-06-04 18:26:17,542 - src.cogs.summon_cog - INFO - SummonCog: Loaded 29 Esprits.
+2025-06-04 18:26:17,542 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-04 18:26:17,542 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-04 18:26:17,543 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:26:17,543 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:26:17,543 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-04 18:26:17,543 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:26:17,543 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:26:17,543 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:26:17,544 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-04 18:26:17,544 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/stat_icons'
+2025-06-04 18:26:17,544 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-04 18:26:17,544 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-04 18:26:17,545 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\stat_icons.yaml'
+2025-06-04 18:26:17,545 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-04 18:26:17,545 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 18:26:17,545 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-04 18:26:17,546 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\stat_icons.json'
+2025-06-04 18:26:17,652 - src.bot - INFO - Successfully loaded summon_cog cog.
+2025-06-04 18:26:17,653 - src.bot - INFO - DEBUG: Added direct '/testsync' command to bot.tree for diagnostic.
+2025-06-04 18:26:20,022 - src.bot - INFO - Logged in as Nyxa#2791 (ID: 1376313409427210320)
+2025-06-04 18:26:20,022 - src.bot - INFO - Bot is ready and online!
+2025-06-04 18:26:20,022 - src.bot - INFO - Attempting GLOBAL slash command sync (may take 10-60 minutes to appear) during on_ready...
+2025-06-04 18:26:20,303 - src.bot - INFO - Global Sync returned 7 commands. Names: ['reset_db', 'start', 'balance', 'inventory', 'daily', 'summon', 'testsync']

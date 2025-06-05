@@ -1,10 +1,14 @@
 # src/cogs/summon_cog.py
 
 import random
+import io
 import discord
+
 from discord.ext import commands
 from discord import app_commands
-from typing import Dict, Any, Optional
+from typing import Dict, Any, List, Optional, Tuple
+
+from PIL import Image
 
 from ..utils.logger import get_logger
 from ..utils.config_manager import ConfigManager
@@ -12,17 +16,27 @@ from ..utils.rng_manager import RNGManager
 from ..utils.image_generator import ImageGenerator
 from ..utils.economy_manager import EconomyManager
 from ..utils.inventory_manager import InventoryManager
-from ..utils.render_helpers import render_pil_to_discord_file
 
 logger = get_logger(__name__)
 
 
 class SummonCog(commands.Cog):
+    """
+    This single Cog now contains:
+      • /start       → register (500 gold + 1 Epic Esprit)
+      • /balance     → show gold & dust
+      • /inventory   → list owned Esprits
+      • /daily       → claim 100 gold once per 24h
+      • /summon n    → paginated detail‐cards (amount ∈ {1,3,10})
+
+    We keep everything here so you don’t have to jump between files.
+    """
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         cfg = ConfigManager()
 
-        # ─── Load rarity weights ──────────────────────────
+        # ── Load rarity weights ──────────────────────────────────
         raw_rarity = cfg.get_config("data/config/rarity_tiers") or {}
         self.rarity_weights: Dict[str, float] = {}
         for tier_name, tier_data in raw_rarity.items():
@@ -35,15 +49,15 @@ class SummonCog(commands.Cog):
         else:
             logger.info(f"SummonCog: Loaded {len(self.rarity_weights)} rarity tiers.")
 
-        # ─── Load rarity visuals (for colors) ────────────
-        self.rarity_cfg = cfg.get_config("data/config/rarity_visuals") or {}
+        # ── Load rarity visuals (to pick border_color later) ─────
+        self.rarity_cfg: Dict[str, Any] = cfg.get_config("data/config/rarity_visuals") or {}
         if not isinstance(self.rarity_cfg, dict):
             logger.warning("SummonCog: rarity_visuals config missing or invalid.")
             self.rarity_cfg = {}
 
-        # ─── Load Esprits ──────────────────────────────────
+        # ── Load Esprits ────────────────────────────────────────
         raw_esprits = cfg.get_config("data/config/esprits") or {}
-        self.esprits_list: list[Dict[str, Any]] = []
+        self.esprits_list: List[Dict[str, Any]] = []
         for esprit_id, esprit_data in raw_esprits.items():
             entry = esprit_data.copy()
             entry["esprit_id"] = esprit_id
@@ -61,22 +75,19 @@ class SummonCog(commands.Cog):
         self.economy = EconomyManager("data/economy.json")
         self.inventory = InventoryManager("data/inventory.json")
 
-        # Constants
-        self.DAILY_AMOUNT = 100    # gold from /daily
-        self.SUMMON_COST   = 100   # gold per /summon
-        self.START_AMOUNT  = 500   # gold + Epic Esprit from /start
+        # Costs & constants
+        self.START_AMOUNT = 500
+        self.COST_SINGLE = 100
+        self.COST_TRIPLE = 300
+        self.COST_TEN    = 1000
+        self.DAILY_AMOUNT = 100
 
-        # Dust ranges by rarity
-        self.DUST_RANGES = {
-            "Common":      (1, 10),
-            "Uncommon":    (10, 25),
-            "Rare":        (25, 50),
-            "Epic":        (50, 100),
-            "Legendary":   (100, 200),
-            "Mythic":      (200, 500),
-            # If you have a “Supreme” tier, just add it here:
-            # "Supreme":   (500, 1000),
-        }
+        # When resizing each detail‐card so it’s still legible on mobile:
+        self.SCALE_FACTOR = 0.6
+
+    # ────────────────────────────────────────────────────────────────────────────
+    #    SHARED HELPERS
+    # ────────────────────────────────────────────────────────────────────────────
 
     def _get_rarity_color_hex(self, rarity: str) -> str:
         cfg_entry = self.rarity_cfg.get(rarity)
@@ -85,113 +96,20 @@ class SummonCog(commands.Cog):
         return "#FFFFFF"
 
     def _choose_random_esprit(self, rarity: str) -> Optional[Dict[str, Any]]:
-        candidates = [e for e in self.esprits_list if e.get("rarity") == rarity]
-        return random.choice(candidates) if candidates else None
+        pool = [e for e in self.esprits_list if e.get("rarity") == rarity]
+        return random.choice(pool) if pool else None
 
-    def _choose_random_by_tier(self, tier: str) -> Optional[Dict[str, Any]]:
-        return self._choose_random_esprit(tier)
-
-    class _SummonView(discord.ui.View):
-        """
-        A Discord UI View with three buttons: [Claim] [Discard] [Info].
-        - Claim: adds the Esprit to inventory.
-        - Discard: awards dust based on rarity‐specific random range.
-        - Info: shows ephemeral details.
-        """
-        def __init__(
-            self,
-            parent: "SummonCog",
-            summoned: Dict[str, Any],
-            temp_instance: Any,
-            author_id: int
-        ):
-            super().__init__(timeout=None)
-            self.parent = parent
-            self.summoned = summoned
-            self.temp_instance = temp_instance
-            self.author_id = author_id
-            self.esprit_id = summoned.get("esprit_id")
-
-        async def _disable_buttons(self, interaction: discord.Interaction):
-            for child in self.children:
-                child.disabled = True
-            await interaction.response.edit_message(view=self)
-
-        @discord.ui.button(label="Claim", style=discord.ButtonStyle.success, custom_id="claim_button")
-        async def claim_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-            if interaction.user.id != self.author_id:
-                return await interaction.response.send_message(
-                    "Only the summoner may claim this Esprit.", ephemeral=True
-                )
-
-            # Add to inventory
-            self.parent.inventory.add_esprit(self.author_id, self.esprit_id)
-            await self._disable_buttons(interaction)
-            await interaction.followup.send(
-                f"✅ You claimed **{self.summoned.get('name')}** into your inventory!",
-                ephemeral=True
-            )
-
-        @discord.ui.button(label="Discard", style=discord.ButtonStyle.danger, custom_id="discard_button")
-        async def discard_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-            if interaction.user.id != self.author_id:
-                return await interaction.response.send_message(
-                    "Only the summoner may discard this Esprit.", ephemeral=True
-                )
-
-            rarity = self.summoned.get("rarity", "Common")
-            # Look up the correct range; if not found, default to (1, 10)
-            rmin, rmax = self.parent.DUST_RANGES.get(rarity, (1, 10))
-            dust_awarded = random.randint(rmin, rmax)
-
-            self.parent.economy.add_dust(self.author_id, dust_awarded)
-            await self._disable_buttons(interaction)
-            await interaction.followup.send(
-                f"🗑️ You discarded **{self.summoned.get('name')}** "
-                f"and received **{dust_awarded} dust**.",
-                ephemeral=True
-            )
-
-        @discord.ui.button(label="Info", style=discord.ButtonStyle.primary, custom_id="info_button")
-        async def info_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-            if interaction.user.id != self.author_id:
-                return await interaction.response.send_message(
-                    "Only the summoner may view this info.", ephemeral=True
-                )
-
-            # Show a detailed ephemeral embed
-            e = discord.Embed(
-                title=f"{self.summoned.get('name', 'Unknown')} — Details",
-                color=discord.Color.blue()
-            )
-            si = self.summoned
-            ti = self.temp_instance
-            description = (
-                f"**Rarity:** {si.get('rarity')}\n"
-                f"**Level:** {ti.current_level}\n"
-                f"**HP:** {ti.current_hp}\n"
-                f"**ATK:** {si.get('base_attack', 0)}\n"
-                f"**DEF:** {si.get('base_defense', 0)}\n"
-                f"**SPD:** {si.get('base_speed', 0)}\n"
-                f"**MP:** {si.get('base_mana', 0)}\n"
-                f"**MR:** {si.get('base_magic_resist', 0)}\n"
-                f"**CRIT:** {si.get('base_crit_rate', 0)*100:.1f}%\n"
-                f"**BLOCK:** {si.get('base_block_rate', 0)*100:.1f}%\n"
-                f"**DODGE:** {si.get('base_dodge_chance', 0)*100:.1f}%\n"
-                f"**MP REG:** {si.get('base_mana_regen', 0)}\n\n"
-                f"**Description:** {si.get('description', 'No description.')}"
-            )
-            e.description = description
-            await interaction.response.send_message(embed=e, ephemeral=True)
-
+    # ────────────────────────────────────────────────────────────────────────────
+    #    /start COMMAND
+    # ────────────────────────────────────────────────────────────────────────────
     @app_commands.command(
         name="start",
         description="Register your account: +500 gold and a random Epic Esprit."
     )
     async def start(self, interaction: discord.Interaction):
         """
-        1) If user already has any gold or inventory, say “already started.”
-        2) Otherwise, give 500 gold + random Epic Esprit into inventory.
+        If the user already has any gold or any inventory, we tell them they’ve already started.
+        Otherwise, give 500 gold + a random Epic Esprit into their inventory.
         """
         user_id = interaction.user.id
         bal = self.economy.get_balance(user_id)
@@ -201,8 +119,7 @@ class SummonCog(commands.Cog):
             embed = discord.Embed(
                 title="🔄 Already Started",
                 description=(
-                    f"You already have **{bal} gold** and "
-                    f"**{len(inv)}** Esprits in inventory.\n"
+                    f"You already have **{bal} gold** and **{len(inv)} Esprits**.\n"
                     "Use /balance, /inventory, or /summon to continue."
                 ),
                 color=discord.Color.light_grey()
@@ -213,10 +130,10 @@ class SummonCog(commands.Cog):
         self.economy.add_balance(user_id, self.START_AMOUNT)
 
         # Grant a random Epic Esprit
-        epic_esprit = self._choose_random_by_tier("Epic")
-        if epic_esprit:
-            self.inventory.add_esprit(user_id, epic_esprit["esprit_id"])
-            esprit_name = epic_esprit["name"]
+        epic = self._choose_random_esprit("Epic")
+        if epic:
+            self.inventory.add_esprit(user_id, epic["esprit_id"])
+            esprit_name = epic["name"]
         else:
             esprit_name = "None (config error)"
 
@@ -232,7 +149,25 @@ class SummonCog(commands.Cog):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="balance", description="Check your current gold and dust.")
+    @start.error
+    async def start_error(self, interaction: discord.Interaction, error):
+        logger.error(f"Error in /start: {error}", exc_info=True)
+        if not interaction.response.is_done():
+            await interaction.response.send_message(
+                "Unexpected error. Please try again later.", ephemeral=True
+            )
+        else:
+            await interaction.followup.send(
+                "Unexpected error. Please try again later.", ephemeral=True
+            )
+
+    # ────────────────────────────────────────────────────────────────────────────
+    #    /balance COMMAND
+    # ────────────────────────────────────────────────────────────────────────────
+    @app_commands.command(
+        name="balance",
+        description="Check your current gold and dust."
+    )
     async def balance(self, interaction: discord.Interaction):
         user_id = interaction.user.id
         bal = self.economy.get_balance(user_id)
@@ -244,8 +179,26 @@ class SummonCog(commands.Cog):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="inventory", description="View your owned Esprits.")
-    async def inventory(self, interaction: discord.Interaction):
+    @balance.error
+    async def balance_error(self, interaction: discord.Interaction, error):
+        logger.error(f"Error in /balance: {error}", exc_info=True)
+        if not interaction.response.is_done():
+            await interaction.response.send_message(
+                "Unexpected error. Please try again later.", ephemeral=True
+            )
+        else:
+            await interaction.followup.send(
+                "Unexpected error. Please try again later.", ephemeral=True
+            )
+
+    # ────────────────────────────────────────────────────────────────────────────
+    #    /inventory COMMAND
+    # ────────────────────────────────────────────────────────────────────────────
+    @app_commands.command(
+        name="inventory",
+        description="View your owned Esprits."
+    )
+    async def inventory_cmd(self, interaction: discord.Interaction):
         user_id = interaction.user.id
         inv_ids = self.inventory.get_inventory(user_id)
         if not inv_ids:
@@ -261,8 +214,8 @@ class SummonCog(commands.Cog):
         for eid in inv_ids:
             obj = next((e for e in self.esprits_list if e["esprit_id"] == eid), None)
             names.append(obj["name"] if obj else f"(unknown: {eid})")
-        desc = "\n".join(f"- {n}" for n in names)
 
+        desc = "\n".join(f"- {n}" for n in names)
         embed = discord.Embed(
             title="📦 Your Inventory",
             description=desc,
@@ -270,6 +223,21 @@ class SummonCog(commands.Cog):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
+    @inventory_cmd.error
+    async def inventory_error(self, interaction: discord.Interaction, error):
+        logger.error(f"Error in /inventory: {error}", exc_info=True)
+        if not interaction.response.is_done():
+            await interaction.response.send_message(
+                "Unexpected error. Please try again later.", ephemeral=True
+            )
+        else:
+            await interaction.followup.send(
+                "Unexpected error. Please try again later.", ephemeral=True
+            )
+
+    # ────────────────────────────────────────────────────────────────────────────
+    #    /daily COMMAND
+    # ────────────────────────────────────────────────────────────────────────────
     @app_commands.command(
         name="daily",
         description="Claim your daily 100 gold reward."
@@ -294,142 +262,217 @@ class SummonCog(commands.Cog):
             mins, secs = divmod(rem, 60)
             embed = discord.Embed(
                 title="⏳ Already Claimed",
-                description=(
-                    f"You can claim your next daily reward in "
-                    f"**{hrs}h {mins}m {secs}s**."
-                ),
+                description=(f"You can claim your next daily reward in "
+                             f"**{hrs}h {mins}m {secs}s**."),
                 color=discord.Color.red()
             )
             await interaction.response.send_message(embed=embed, ephemeral=True)
 
+    @daily.error
+    async def daily_error(self, interaction: discord.Interaction, error):
+        logger.error(f"Error in /daily: {error}", exc_info=True)
+        if not interaction.response.is_done():
+            await interaction.response.send_message(
+                "Unexpected error. Please try again later.", ephemeral=True
+            )
+        else:
+            await interaction.followup.send(
+                "Unexpected error. Please try again later.", ephemeral=True
+            )
+
+    # ────────────────────────────────────────────────────────────────────────────
+    #    PAGINATED /summon COMMAND
+    # ────────────────────────────────────────────────────────────────────────────
+    class PaginatedView(discord.ui.View):
+        """
+        A View that holds a list of (image_bytes: bytes, esprit_data_dict) pairs.
+        It lets the summoner page through with ◀️ / ▶️. Each page rebuilds
+        the embed to match that card’s rarity color + sigil.
+        """
+        def __init__(self,
+                     parent: "SummonCog",
+                     user_id: int,
+                     pages: List[Tuple[bytes, Dict[str, Any]]]):
+            super().__init__(timeout=None)
+            self.parent = parent
+            self.user_id = user_id
+            self.pages = pages
+            self.total = len(pages)
+            self.current_index = 0  # Start on page 0
+
+        def _build_embed_and_file(self) -> Tuple[discord.Embed, discord.File]:
+            """
+            Build an embed and a fresh discord.File for the CURRENT page index:
+            - Title shows “Page X/Y”
+            - Color is the rarity color of that page’s Esprit
+            - Description shows “Sigil: <value>” if applicable
+            """
+            idx = self.current_index
+            image_bytes, esprit = self.pages[idx]
+
+            # Determine embed color from rarity:
+            hex_color = self.parent._get_rarity_color_hex(esprit.get("rarity", "Common"))
+            try:
+                color = discord.Color(int(hex_color.lstrip("#"), 16))
+            except:
+                color = discord.Color.light_gray()
+
+            # Build description (sigil line):
+            sigil_val = esprit.get("sigil", None)
+            sigil_icon = esprit.get("sigil_icon", "")
+            if sigil_val not in (None, "", 0):
+                desc = f"{sigil_icon} Sigil: **{sigil_val}**"
+            else:
+                desc = None
+
+            # Embed text:
+            title_text = f"✨ Summoning Result ({idx+1}/{self.total}) ✨"
+            embed = discord.Embed(title=title_text, description=desc, color=color)
+
+            # Create a new discord.File each time from bytes:
+            filename = f"summon_{self.user_id}_{random.randint(0,9999)}.png"
+            file_obj = discord.File(fp=io.BytesIO(image_bytes), filename=filename)
+            embed.set_image(url=f"attachment://{filename}")
+            return embed, file_obj
+
+        @discord.ui.button(label="◀️ Previous", style=discord.ButtonStyle.secondary, custom_id="prev_card")
+        async def previous_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+            if interaction.user.id != self.user_id:
+                return await interaction.response.send_message(
+                    "Only the summoner can page through these cards.", ephemeral=True
+                )
+
+            # Step back (wrap around):
+            self.current_index = (self.current_index - 1) % self.total
+            embed, file_obj = self._build_embed_and_file()
+
+            await interaction.response.edit_message(
+                embed=embed,
+                attachments=[file_obj],
+                view=self
+            )
+
+        @discord.ui.button(label="Next ▶️", style=discord.ButtonStyle.secondary, custom_id="next_card")
+        async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+            if interaction.user.id != self.user_id:
+                return await interaction.response.send_message(
+                    "Only the summoner can page through these cards.", ephemeral=True
+                )
+
+            # Step forward (wrap around):
+            self.current_index = (self.current_index + 1) % self.total
+            embed, file_obj = self._build_embed_and_file()
+
+            await interaction.response.edit_message(
+                embed=embed,
+                attachments=[file_obj],
+                view=self
+            )
+
     @app_commands.command(
         name="summon",
-        description="Summon a random Esprit (costs 100 gold)."
+        description="Summon 1, 3, or 10 Esprits at once (with pagination!)."
     )
-    async def summon(self, interaction: discord.Interaction):
+    @app_commands.describe(amount="Must be 1, 3, or 10")
+    async def summon(self, interaction: discord.Interaction, amount: int):
         """
-        1) Check if user has ≥100 gold. If not, error.
-        2) Deduct 100 gold.
-        3) Pick a rarity by weights → random Esprit.
-        4) Build detail‐card image via PIL.
-        5) Send embed with:
-           • Title: “✨ Summoning Result ✨”
-           • Description: “🔱 Sigil: <combat_power>” (if defined)
-           • The generated PNG as embed image
-           • Footer: “🔁 X duplicates • 🎟️ Y pulls left”
-           • Three buttons: [Claim] [Discard] [Info]
+        If amount==1, cost=100g; amount==3, cost=300g; amount==10, cost=1000g.
+        Rolls that many Esprits, renders each detail‐card PIL, resizes it to ~60%
+        so mobile can read it, then sends page 1 of N with ◀️▶️ buttons.
         """
         await interaction.response.defer(ephemeral=False)
         user_id = interaction.user.id
 
-        # 1) Check gold balance
-        if not self.economy.deduct_balance(user_id, self.SUMMON_COST):
+        # 1) Validate: must be 1, 3, or 10
+        if amount not in (1, 3, 10):
+            return await interaction.followup.send(
+                "❌ Invalid `amount`. You may only summon 1, 3, or 10 at a time.", ephemeral=True
+            )
+
+        # 2) Determine cost and try to deduct
+        cost = (
+            self.COST_SINGLE if amount == 1
+            else (self.COST_TRIPLE if amount == 3 else self.COST_TEN)
+        )
+        if not self.economy.deduct_balance(user_id, cost):
             bal = self.economy.get_balance(user_id)
-            embed = discord.Embed(
-                title="❌ Not Enough Gold",
-                description=(
-                    f"Summoning costs **{self.SUMMON_COST} gold**, "
-                    f"but you only have **{bal} gold**."
-                ),
-                color=discord.Color.red()
-            )
-            return await interaction.followup.send(embed=embed, ephemeral=True)
-
-        # 2) Pick a rarity
-        chosen_rarity = self.rng.get_random_rarity(
-            self.rarity_weights, luck_modifier=0.0
-        )
-        if not chosen_rarity:
-            self.economy.add_balance(user_id, self.SUMMON_COST)
-            await interaction.followup.send(
-                "❌ Failed to determine rarity. Your gold has been refunded.",
+            return await interaction.followup.send(
+                f"❌ You need **{cost} gold** to summon {amount} Esprits, but you only have **{bal} gold**.",
                 ephemeral=True
             )
-            logger.error("RNGManager.get_random_rarity returned None.")
-            return
 
-        # 3) Choose a random Esprit of that rarity
-        summoned = self._choose_random_esprit(chosen_rarity)
-        if not summoned:
-            self.economy.add_balance(user_id, self.SUMMON_COST)
-            await interaction.followup.send(
-                f"❌ No Esprits found for rarity '{chosen_rarity}'. Your gold has been refunded.",
-                ephemeral=True
-            )
-            logger.warning(f"No Esprits in config have rarity '{chosen_rarity}'.")
-            return
+        # 3) Roll that many Esprits, render PIL cards, resize, convert to bytes
+        pages: List[Tuple[bytes, Dict[str, Any]]] = []
 
-        esprit_name   = summoned.get("name", "Unknown Esprit")
-        esprit_rarity = summoned.get("rarity", "Common")
-        esprit_sigil_value = summoned.get("sigil", None)
-        esprit_sigil_icon  = summoned.get("sigil_icon", "🔱")
-        esprit_id = summoned.get("esprit_id")
-
-        logger.info(f"Player {interaction.user} summoned {esprit_name} (rarity {esprit_rarity}).")
-
-        # ─── Build a minimal “instance” for stats ──────────
-        class _TempInstance:
-            current_level = 1
-            current_hp    = summoned.get("base_hp", 0)
-
-        temp_instance = _TempInstance()
-
-        # 4) Generate the detail‐card image
-        summon_image_file = None
-        try:
-            summon_image_pil = await self.image_generator.render_esprit_detail_image(
-                esprit_data_dict=summoned,
-                esprit_instance=temp_instance
-            )
-            if summon_image_pil is not None:
-                summon_image_file = render_pil_to_discord_file(
-                    summon_image_pil, filename="summon_result.png"
+        for _ in range(amount):
+            chosen_rarity = self.rng.get_random_rarity(self.rarity_weights, luck_modifier=0.0)
+            if not chosen_rarity:
+                # Refund and abort if RNG fails
+                self.economy.add_balance(user_id, cost)
+                return await interaction.followup.send(
+                    "❌ Summon RNG failed. Your gold has been refunded.", ephemeral=True
                 )
-                logger.info("SummonCog: detail-card image generated successfully.")
-            else:
-                logger.info("SummonCog: sprite file missing; skipping image.")
-        except Exception as e_img:
-            self.economy.add_balance(user_id, self.SUMMON_COST)
-            logger.error(f"SummonCog: Error generating detail-card image: {e_img}", exc_info=True)
-            await interaction.followup.send(
-                "❌ Error generating card image. Your gold has been refunded.",
-                ephemeral=True
-            )
-            return
 
-        # 5) Build the embed
-        rarity_color_hex = self._get_rarity_color_hex(esprit_rarity)
-        try:
-            embed_color = discord.Color(int(rarity_color_hex.lstrip("#"), 16))
-        except:
-            embed_color = discord.Color.light_grey()
+            spirit = self._choose_random_esprit(chosen_rarity)
+            if not spirit:
+                self.economy.add_balance(user_id, cost)
+                return await interaction.followup.send(
+                    f"❌ No Esprits of rarity `{chosen_rarity}` found. Gold refunded.", ephemeral=True
+                )
 
-        if esprit_sigil_value not in (None, "", 0):
-            desc_text = f"{esprit_sigil_icon} Sigil: {esprit_sigil_value}"
-        else:
-            desc_text = None
+            # Build a minimal "instance" for stats:
+            class _TempInst:
+                current_level = 1
+                current_hp = spirit.get("base_hp", 0)
 
-        embed = discord.Embed(
-            title="✨ Summoning Result ✨",
-            description=desc_text,
-            color=embed_color
+            temp_inst = _TempInst()
+
+            try:
+                card_pil: Image.Image = await self.image_generator.render_esprit_detail_image(
+                    esprit_data_dict=spirit,
+                    esprit_instance=temp_inst
+                )
+            except Exception as exc:
+                # Refund on any rendering error
+                self.economy.add_balance(user_id, cost)
+                logger.error(f"Error rendering detail-card: {exc}", exc_info=True)
+                return await interaction.followup.send(
+                    "❌ Error generating card images. Your gold has been refunded.", ephemeral=True
+                )
+
+            if not card_pil:
+                self.economy.add_balance(user_id, cost)
+                return await interaction.followup.send(
+                    "❌ Missing sprite asset. Gold refunded.", ephemeral=True
+                )
+
+            # Resize so each card stays legible on mobile
+            w, h = card_pil.size
+            new_w = int(w * self.SCALE_FACTOR)
+            new_h = int(h * self.SCALE_FACTOR)
+            resized = card_pil.resize((new_w, new_h), Image.Resampling.NEAREST)
+
+            # Convert to PNG bytes
+            with io.BytesIO() as buffer:
+                resized.save(buffer, format="PNG")
+                image_bytes = buffer.getvalue()
+
+            # Immediately add to inventory
+            self.inventory.add_esprit(user_id, spirit["esprit_id"])
+
+            # Keep (bytes, spirit_dict) for pagination
+            pages.append((image_bytes, spirit))
+
+        # 4) Now that we have all `pages`, build a PaginatedView
+        view = SummonCog.PaginatedView(self, user_id, pages)
+
+        # 5) Build the page-0 embed and send it with its file
+        embed, file_obj = view._build_embed_and_file()
+        await interaction.followup.send(
+            embed=embed,
+            file=file_obj,
+            view=view
         )
-
-        if summon_image_file:
-            embed.set_image(url="attachment://summon_result.png")
-
-        duplicate_count = 0  # TODO: replace with actual duplicate logic
-        pulls_left      = 0  # TODO: track pulls left
-        footer_text = f"🔁 {duplicate_count} duplicates • 🎟️ {pulls_left} pulls left"
-        embed.set_footer(text=footer_text)
-
-        # Create the view with three buttons
-        view = SummonCog._SummonView(self, summoned, temp_instance, user_id)
-
-        if summon_image_file:
-            await interaction.followup.send(embed=embed, file=summon_image_file, view=view)
-        else:
-            await interaction.followup.send(embed=embed, view=view)
 
     @summon.error
     async def summon_error(self, interaction: discord.Interaction, error):
@@ -448,7 +491,5 @@ class SummonCog(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(SummonCog(bot))
-
-
 
 
