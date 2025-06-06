@@ -437,3 +437,5 @@ nyxa/
 ### Extending the system is as simple as adding a field to a model, running a migration (or deleting and recreating nyxa.db in dev), and adjusting relevant cogs to reference that new field.
 
 ### By following this pattern, any future feature—new currencies, new tables, new commands—will slot in without rewriting existing code or risking data inconsistency. This “SQL Manager” design lays a stable foundation for all upcoming Nyxa expansions.
+
+`6-5-2025`
