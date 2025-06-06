@@ -1,27 +1,20 @@
 # run.py
+
 import os
 import asyncio
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load environment variables from .env
 load_dotenv()
 
-# Import the bot instance directly from src.bot
-# This assumes src.bot.py creates an instance named 'nyxa_bot'
-from src.bot import nyxa_bot
-
-# Get the bot token from environment variables
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-async def main():
-    if not BOT_TOKEN:
-        print("Error: BOT_TOKEN not found in .env file.")
-        return
-
-    # Start the bot
-    await nyxa_bot.start(BOT_TOKEN)
+from src.bot import main  # Import the main() entrypoint from src/bot.py
 
 if __name__ == "__main__":
+    BOT_TOKEN = os.getenv("DISCORD_TOKEN")
+    if not BOT_TOKEN:
+        print("Error: DISCORD_TOKEN not found in .env file.")
+        exit(1)
+
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
