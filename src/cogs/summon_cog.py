@@ -3,6 +3,8 @@
 import random
 import io
 import discord
+import asyncio
+from functools import partial
 
 from discord.ext import commands
 from discord import app_commands
@@ -31,7 +33,8 @@ class SummonCog(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        cfg = ConfigManager()
+        # Use the shared config manager from the bot instance
+        cfg = self.bot.config_manager
 
         # Load rarity weights
         raw_rarity = cfg.get_config("data/config/rarity_tiers") or {}
@@ -68,11 +71,7 @@ class SummonCog(commands.Cog):
         self.rng = RNGManager()
         self.image_generator = ImageGenerator()
 
-        # --- Costs & constants (Old hardcoded values)
-        # --- self.COST_SINGLE = 100
-        # --- self.COST_TRIPLE = 300
-        # --- self.COST_TEN    = 1000
-        # +++ NEW: Load game settings to get summon costs
+        # Load game settings to get summon costs
         self.game_settings = cfg.get_config("data/config/game_settings") or {}
         summon_config = self.game_settings.get("summon_types", {}).get("standard", {})
         
@@ -175,113 +174,99 @@ class SummonCog(commands.Cog):
             else (self.COST_TRIPLE if amount == 3 else self.COST_TEN)
         )
 
-        async with get_session() as session:
-            stmt_user = select(User).where(User.user_id == user_id)
-            user_obj = (await session.execute(stmt_user)).scalar_one_or_none()
+        try:
+            async with get_session() as session:
+                stmt_user = select(User).where(User.user_id == user_id)
+                user_obj = (await session.execute(stmt_user)).scalar_one_or_none()
 
-            if user_obj is None:
-                return await interaction.followup.send(
-                    "❌ You need to `/start` first before you can summon.", ephemeral=True
-                )
-
-            if user_obj.gold < cost:
-                return await interaction.followup.send(
-                    f"❌ You need **{cost} gold** to summon {amount} Esprits, but you only have **{user_obj.gold} gold**.",
-                    ephemeral=True
-                )
-
-            user_obj.gold -= cost
-            session.add(user_obj)
-            await session.commit()
-
-            pages: List[Tuple[bytes, Dict[str, Any]]] = []
-
-            for _count in range(amount):
-                chosen_rarity = self.rng.get_random_rarity(self.rarity_weights, luck_modifier=0.0)
-                if not chosen_rarity:
-                    user_obj.gold += cost
-                    session.add(user_obj)
-                    await session.commit()
+                if user_obj is None:
                     return await interaction.followup.send(
-                        "❌ Summon RNG failed. Your gold has been refunded.", ephemeral=True
+                        "❌ You need to `/start` first before you can summon.", ephemeral=True
                     )
 
-                spirit_dict = self._choose_random_esprit(chosen_rarity)
-                if not spirit_dict:
-                    user_obj.gold += cost
-                    session.add(user_obj)
-                    await session.commit()
+                if user_obj.gold < cost:
                     return await interaction.followup.send(
-                        f"❌ No Esprits of rarity `{chosen_rarity}` found. Gold refunded.",
+                        f"❌ You need **{cost} gold** to summon {amount} Esprits, but you only have **{user_obj.gold} gold**.",
                         ephemeral=True
                     )
 
-                class _TempInst:
-                    current_level = 1
-                    current_hp = spirit_dict.get("base_hp", 0)
-                temp_inst = _TempInst()
+                user_obj.gold -= cost
+                session.add(user_obj)
 
-                try:
-                    card_pil: Image.Image = await self.image_generator.render_esprit_detail_image(
+                pages: List[Tuple[bytes, Dict[str, Any]]] = []
+                new_esprits_to_add: List[UserEsprit] = []
+                
+                loop = asyncio.get_running_loop()
+
+                for _count in range(amount):
+                    chosen_rarity = self.rng.get_random_rarity(self.rarity_weights, luck_modifier=0.0)
+                    spirit_dict = self._choose_random_esprit(chosen_rarity)
+
+                    if not chosen_rarity or not spirit_dict:
+                        raise ValueError(f"Failed to roll a valid Esprit for rarity: {chosen_rarity}")
+
+                    # Create a temporary instance for rendering
+                    temp_inst = type('obj', (object,), {'current_level': 1, 'current_hp': spirit_dict.get("base_hp", 0)})()
+
+                    # --- Run blocking image generation in an executor ---
+                    render_func = partial(
+                        self.image_generator.render_esprit_detail_image,
                         esprit_data_dict=spirit_dict,
                         esprit_instance=temp_inst
                     )
-                except Exception as exc:
-                    user_obj.gold += cost
-                    session.add(user_obj)
-                    await session.commit()
-                    logger.error(f"Error rendering detail-card: {exc}", exc_info=True)
-                    return await interaction.followup.send(
-                        "❌ Error generating card images. Your gold has been refunded.",
-                        ephemeral=True
+                    card_pil: Image.Image = await loop.run_in_executor(None, render_func)
+
+                    if not card_pil:
+                        raise IOError(f"Failed to render image for {spirit_dict.get('name')}")
+                    
+                    w, h = card_pil.size
+                    resized = card_pil.resize((int(w * self.SCALE_FACTOR), int(h * self.SCALE_FACTOR)), Image.Resampling.NEAREST)
+                    with io.BytesIO() as buffer:
+                        resized.save(buffer, format="PNG")
+                        image_bytes = buffer.getvalue()
+                    # --- End Image generation ---
+
+                    new_u_e = UserEsprit(
+                        owner_id=user_id,
+                        esprit_data_id=spirit_dict["esprit_id"],
+                        current_hp=spirit_dict.get("base_hp", 0),
+                        current_level=1,
+                        current_xp=0
                     )
+                    new_esprits_to_add.append(new_u_e)
+                    pages.append((image_bytes, spirit_dict))
 
-                if not card_pil:
-                    user_obj.gold += cost
-                    session.add(user_obj)
-                    await session.commit()
-                    return await interaction.followup.send(
-                        "❌ Missing sprite asset. Gold refunded.", ephemeral=True
-                    )
-
-                w, h = card_pil.size
-                new_w = int(w * self.SCALE_FACTOR)
-                new_h = int(h * self.SCALE_FACTOR)
-                resized = card_pil.resize((new_w, new_h), Image.Resampling.NEAREST)
-
-                with io.BytesIO() as buffer:
-                    resized.save(buffer, format="PNG")
-                    image_bytes = buffer.getvalue()
-
-                new_u_e = UserEsprit(
-                    owner_id=user_id,
-                    esprit_data_id=spirit_dict["esprit_id"],
-                    current_hp=spirit_dict.get("base_hp", 0),
-                    current_level=1,
-                    current_xp=0
-                )
-                session.add(new_u_e)
+                session.add_all(new_esprits_to_add)
                 await session.commit()
 
-                pages.append((image_bytes, spirit_dict))
+                view = SummonCog.PaginatedView(self, interaction.user.id, pages)
+                embed, file_obj = view._build_embed_and_file()
+                await interaction.followup.send(embed=embed, file=file_obj, view=view)
 
-            view = SummonCog.PaginatedView(self, interaction.user.id, pages)
-            embed, file_obj = view._build_embed_and_file()
-            await interaction.followup.send(embed=embed, file=file_obj, view=view)
+        except (ValueError, IOError, Exception) as error:
+            logger.error(f"Unhandled error in /summon, transaction rolled back: {error}", exc_info=True)
+            if interaction.response.is_done():
+                await interaction.followup.send(
+                    "An unexpected error occurred while summoning. Your gold was not spent. Please try again later.",
+                    ephemeral=True
+                )
+            else:
+                await interaction.response.send_message(
+                    "An unexpected error occurred. Your gold was not spent. Please try again later.",
+                    ephemeral=True
+                )
 
 
     @summon.error
     async def summon_error(self, interaction: discord.Interaction, error):
-        logger.error(f"Unhandled error in /summon: {error}", exc_info=True)
-        if interaction.response.is_done():
-            await interaction.followup.send(
-                "An unexpected error occurred while trying to summon. Please try again later.",
-                ephemeral=True
+        logger.error(f"A command-level error occurred in /summon: {error}", exc_info=True)
+        if not interaction.response.is_done():
+             await interaction.response.send_message(
+                "A critical error occurred. Please try again later.", ephemeral=True
             )
         else:
-            await interaction.response.send_message(
-                "An unexpected error occurred. Please try again later.",
-                ephemeral=True
+            await interaction.followup.send(
+                "A critical error occurred. Please try again later.", ephemeral=True
             )
 
 

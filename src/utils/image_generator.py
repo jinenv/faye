@@ -136,7 +136,7 @@ class ImageGenerator:
 
 
     # ───────────────────── public API ─────────────────────
-    async def render_esprit_detail_image(
+    def render_esprit_detail_image(
         self,
         esprit_data: dict | None = None,
         esprit_instance=None,

@@ -9,6 +9,7 @@ from discord.ext import commands
 
 from src.database.db import create_db_and_tables, populate_static_data
 from src.utils.logger import get_logger
+from src.utils.config_manager import ConfigManager
 
 logger = get_logger(__name__)
 
@@ -20,12 +21,15 @@ class NyxaBot(commands.Bot):
         intents.message_content = True
         super().__init__(command_prefix="!", intents=intents)
 
+        # Create a single, shared instance of the ConfigManager
+        self.config_manager = ConfigManager()
+
     async def setup_hook(self):
         # 1) Ensure database tables exist
         await create_db_and_tables()
 
-        # 2) Seed static EspritData if needed
-        await populate_static_data()
+        # 2) Seed static EspritData if needed (pass the shared config manager)
+        await populate_static_data(self.config_manager)
         logger.info("Database tables created (if missing) and EspritData seeded.")
 
         # 3) Load cogs (order doesn’t strictly matter except you want /start first)
@@ -59,4 +63,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-

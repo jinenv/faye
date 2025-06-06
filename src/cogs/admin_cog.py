@@ -30,37 +30,40 @@ class AdminCog(commands.Cog):
         description="(Admin only) Wipe all users and Esprit data, then repopulate static data."
     )
     async def reset_db(self, interaction: discord.Interaction):
-        # You may wish to add an actual admin‐check here, e.g.:
+        # You may wish to add an actual admin‐check here
         # if not interaction.user.guild_permissions.administrator:
         #     return await interaction.response.send_message("You must be an administrator to use this.", ephemeral=True)
 
         try:
-            # 1) Delete all UserEsprit rows
-            # 2) Delete all User rows
-            # 3) Delete all EspritData rows
+            # 1. Defer the response immediately since this can take time
+            await interaction.response.defer(ephemeral=True, thinking=True)
+            
+            # 2. Perform all database operations
             async with get_session() as session:
                 await session.execute(delete(UserEsprit))
                 await session.execute(delete(User))
                 await session.execute(delete(EspritData))
                 await session.commit()
 
-            # 4) Recreate tables (in case the schema changed) and re‐seed static data
             await create_db_and_tables()
-            await populate_static_data()
+            await populate_static_data(self.bot.config_manager)
 
-            await interaction.response.send_message(
+            # 3. Send the success message using followup
+            await interaction.followup.send(
                 "✅ Database has been wiped and static EspritData repopulated.",
                 ephemeral=True
             )
-            logger.warning("AdminCog: /reset_db called → tables wiped and EspritData re‐seeded.")
+            logger.warning(f"AdminCog: /reset_db called by {interaction.user.name} → tables wiped and EspritData re‐seeded.")
+        
         except Exception as e:
             logger.error(f"Error in /reset_db: {e}", exc_info=True)
-            await interaction.response.send_message(
-                "❌ An error occurred while resetting the database.",
-                ephemeral=True
-            )
+            # 4. Send the error message using followup
+            # Check if the interaction is already responded to before sending another message
+            if not interaction.is_done():
+                 await interaction.response.send_message("❌ An error occurred while resetting the database.", ephemeral=True)
+            else:
+                await interaction.followup.send("❌ An error occurred while resetting the database.", ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(AdminCog(bot))
-

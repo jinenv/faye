@@ -10,7 +10,6 @@ from sqlalchemy.future import select
 
 from src.database.db import get_session
 from src.database.models import User, UserEsprit, EspritData
-# +++ Import ConfigManager
 from src.utils.config_manager import ConfigManager
 
 logger = logging.getLogger(__name__)
@@ -23,11 +22,8 @@ class EconomyCog(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        # --- self.DAILY_AMOUNT = 100
-        # +++ Load from config
-        cfg = ConfigManager()
-        self.game_settings = cfg.get_config("data/config/game_settings") or {}
-        # Using "daily_summon_cost" from your config as the daily reward amount
+        # Use the shared config manager from the bot instance
+        self.game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
         self.DAILY_AMOUNT = self.game_settings.get("daily_summon_cost", 100)
 
     @app_commands.command(
@@ -200,8 +196,6 @@ class EconomyCog(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(EconomyCog(bot))
-
-
 
 
 

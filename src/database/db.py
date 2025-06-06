@@ -20,9 +20,8 @@ async def create_db_and_tables():
     log.info("Database tables created or already exist.")
 
 # Populate EspritData if empty:
-async def populate_static_data():
+async def populate_static_data(config_manager: ConfigManager):
     log.info("Checking to populate static EspritData...")
-    config_manager = ConfigManager()
     esprits_data_from_json = config_manager.get_config('data/config/esprits')
 
     async with AsyncSessionLocal() as session:
