@@ -1,6 +1,6 @@
 {
   "starting_level": 1,        
-  "starting_gold": 500,
+  "starting_gold": 1000,
   "start_command_free_summon": true,
   "daily_summon_cost": 100,
   "daily_free_summons": 1,

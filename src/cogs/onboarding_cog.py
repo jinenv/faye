@@ -12,24 +12,29 @@ from sqlalchemy.orm import selectinload
 
 from src.database.db import get_session
 from src.database.models import User, UserEsprit, EspritData
+# +++ Import ConfigManager
+from src.utils.config_manager import ConfigManager
 
 logger = logging.getLogger(__name__)
 
 
 class OnboardingCog(commands.Cog):
     """
-    /start → register a new user (1000 gold + 1 random Epic Esprit)
-    and set created_at automatically.
+    /start → register a new user, giving them gold and a random Epic Esprit
+    based on settings in game_settings.json.
     """
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        # In a real setup, you might pull these from "data/config/game_settings.json"
-        self.START_GOLD = 1000
+        # --- self.START_GOLD = 1000
+        # +++ Load game settings from the JSON file.
+        cfg = ConfigManager()
+        self.game_settings = cfg.get_config("data/config/game_settings") or {}
+        self.START_GOLD = self.game_settings.get("starting_gold", 1000)
 
     @app_commands.command(
         name="start",
-        description="Register your account: +1000 gold and summon one Epic Esprit."
+        description="Register your account and get your starting bonus."
     )
     async def start(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
@@ -75,11 +80,9 @@ class OnboardingCog(commands.Cog):
                     dust=0,
                     last_daily_claim=None,
                     active_esprit_id=None
-                    # created_at will be filled automatically by the server_default 
                 )
                 session.add(new_user)
                 await session.commit()
-                # Refresh to get created_at, although you may not need it here
                 await session.refresh(new_user)
 
                 # 4) Create a UserEsprit for that random Epic
