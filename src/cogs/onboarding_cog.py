@@ -7,7 +7,8 @@ from datetime import datetime
 import discord
 from discord import app_commands
 from discord.ext import commands
-from sqlalchemy import select, insert, update
+from sqlalchemy import select, insert, update, func
+from sqlalchemy.orm import selectinload
 
 from src.database.db import get_session
 from src.database.models import User, UserEsprit, EspritData
@@ -17,18 +18,18 @@ logger = logging.getLogger(__name__)
 
 class OnboardingCog(commands.Cog):
     """
-    /start → register a new user (500 gold + 1 random Epic Esprit)
+    /start → register a new user (1000 gold + 1 random Epic Esprit)
     and set created_at automatically.
     """
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         # In a real setup, you might pull these from "data/config/game_settings.json"
-        self.START_GOLD = 500
+        self.START_GOLD = 1000
 
     @app_commands.command(
         name="start",
-        description="Register your account: +500 gold and summon one Epic Esprit."
+        description="Register your account: +1000 gold and summon one Epic Esprit."
     )
     async def start(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
@@ -37,7 +38,7 @@ class OnboardingCog(commands.Cog):
         try:
             async with get_session() as session:
                 # 1) Check if the user already exists
-                stmt_user = select(User).where(User.user_id == user_id)
+                stmt_user = select(User).options(selectinload(User.owned_esprits)).where(User.user_id == user_id)
                 res_user = await session.execute(stmt_user)
                 existing = res_user.scalar_one_or_none()
 
