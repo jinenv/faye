@@ -1,44 +1,30 @@
 {
-  "Supreme": {
+  "Deity": {
     "color": "#FFFFFF",
-    "border_color": "#FFFFFF",
-    "frame_asset": "frame_supreme.png",
-    "background_asset": "background_supreme.png"
+    "border_color": "#FFFFFF"
   },
-  "Mythic": {
+  "Supreme": {
     "color": "#FF0000",
-    "border_color": "#FF0000",
-    "frame_asset": "frame_mythic.png",
-    "background_asset": "background_mythic.png"
+    "border_color": "#FF0000"
   },
-  "Legendary": {
+  "Celestial": {
     "color": "#FFD700",
-    "border_color": "#FFD700",
-    "frame_asset": "frame_legendary.png",
-    "background_asset": "background_legendary.png"
+    "border_color": "#FFD700"
   },
   "Epic": {
     "color": "#800080",
-    "border_color": "#800080",
-    "frame_asset": "frame_epic.png",
-    "background_asset": "background_epic.png"
+    "border_color": "#800080"
   },
   "Rare": {
     "color": "#0000FF",
-    "border_color": "#0000FF",
-    "frame_asset": "frame_rare.png",
-    "background_asset": "background_rare.png"
+    "border_color": "#0000FF"
   },
   "Uncommon": {
     "color": "#00C853",
-    "border_color": "#00C853",
-    "frame_asset": "frame_uncommon.png",
-    "background_asset": "background_uncommon.png"
+    "border_color": "#00C853"
   },
   "Common": {
     "color": "#A9A9A9",
-    "border_color": "#A9A9A9",
-    "frame_asset": "frame_common.png",
-    "background_asset": "background_common.png"
+    "border_color": "#A9A9A9"
   }
 }

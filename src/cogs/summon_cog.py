@@ -33,7 +33,6 @@ class SummonCog(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        # Use the shared config manager from the bot instance
         cfg = self.bot.config_manager
 
         # Load rarity weights
@@ -76,12 +75,10 @@ class SummonCog(commands.Cog):
         summon_config = self.game_settings.get("summon_types", {}).get("standard", {})
         
         self.COST_SINGLE = summon_config.get("cost_gold", 100)
-        # Derive multi-pull costs from the single cost for consistency
         self.COST_TRIPLE = self.COST_SINGLE * 3
         self.COST_TEN = self.COST_SINGLE * 10
 
-        # For resizing detail cards
-        self.SCALE_FACTOR = 0.6
+        self.SCALE_FACTOR = 0.6 # This is no longer used by the new image generator, can be removed.
 
 
     def _get_rarity_color_hex(self, rarity: str) -> str:
@@ -116,15 +113,8 @@ class SummonCog(commands.Cog):
             except:
                 color = discord.Color.light_gray()
 
-            sigil_val = esprit.get("sigil", None)
-            sigil_icon = esprit.get("sigil_icon", "")
-            if sigil_val not in (None, "", 0):
-                desc = f"{sigil_icon} Sigil: **{sigil_val}**"
-            else:
-                desc = None
-
             title_text = f"✨ Summoning Result ({idx+1}/{self.total}) ✨"
-            embed = discord.Embed(title=title_text, description=desc, color=color)
+            embed = discord.Embed(title=title_text, color=color)
 
             filename = f"summon_{self.user_id}_{random.randint(0,9999)}.png"
             file_obj = discord.File(fp=io.BytesIO(image_bytes), filename=filename)
@@ -199,19 +189,19 @@ class SummonCog(commands.Cog):
                 loop = asyncio.get_running_loop()
 
                 for _count in range(amount):
-                    chosen_rarity = self.rng.get_random_rarity(self.rarity_weights, luck_modifier=0.0)
+                    chosen_rarity = self.rng.get_random_rarity(self.rarity_weights)
                     spirit_dict = self._choose_random_esprit(chosen_rarity)
 
                     if not chosen_rarity or not spirit_dict:
                         raise ValueError(f"Failed to roll a valid Esprit for rarity: {chosen_rarity}")
 
-                    # Create a temporary instance for rendering
                     temp_inst = type('obj', (object,), {'current_level': 1, 'current_hp': spirit_dict.get("base_hp", 0)})()
 
                     # --- Run blocking image generation in an executor ---
+                    # THIS IS THE LINE THAT WAS FIXED
                     render_func = partial(
-                        self.image_generator.render_esprit_detail_image,
-                        esprit_data_dict=spirit_dict,
+                        self.image_generator.render_esprit_card,
+                        esprit_data=spirit_dict,
                         esprit_instance=temp_inst
                     )
                     card_pil: Image.Image = await loop.run_in_executor(None, render_func)
@@ -219,12 +209,10 @@ class SummonCog(commands.Cog):
                     if not card_pil:
                         raise IOError(f"Failed to render image for {spirit_dict.get('name')}")
                     
-                    w, h = card_pil.size
-                    resized = card_pil.resize((int(w * self.SCALE_FACTOR), int(h * self.SCALE_FACTOR)), Image.Resampling.NEAREST)
+                    # The new image generator produces the final card size, no resizing needed here.
                     with io.BytesIO() as buffer:
-                        resized.save(buffer, format="PNG")
+                        card_pil.save(buffer, format="PNG")
                         image_bytes = buffer.getvalue()
-                    # --- End Image generation ---
 
                     new_u_e = UserEsprit(
                         owner_id=user_id,

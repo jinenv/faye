@@ -13,9 +13,9 @@
       "cost_gold": 100,
       "free_daily_rolls": 1,
       "rarity_distribution": {
-        "Supreme": 0.001,
-        "Mythic": 0.004,
-        "Legendary": 0.02,
+        "Deity": 0.001,
+        "Supreme": 0.004,
+        "Celestial": 0.02,
         "Epic": 0.075,
         "Rare": 0.15,
         "Uncommon": 0.25,
