@@ -1,17 +1,17 @@
 {
-  "Supreme": {
+  "Deity": {
     "probability": 0.001,
     "display_order": 1,
     "emoji": "👑",
     "color": "#FFC0CB"
   },
-  "Mythic": {
+  "Supreme": {
     "probability": 0.004,
     "display_order": 2,
     "emoji": "🌌",
     "color": "#800080"
   },
-  "Legendary": {
+  "Celestial": {
     "probability": 0.02,
     "display_order": 3,
     "emoji": "🌟",

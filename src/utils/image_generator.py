@@ -33,8 +33,8 @@ class ImageGenerator:
         self.assets_base = assets_base
         fontfile = os.path.join(assets_base, "ui", "fonts", "PressStart2P.ttf")
         try:
-            self.font_lg = ImageFont.truetype(fontfile, 28) # Slightly larger name font
-            self.font_md = ImageFont.truetype(fontfile, 18) # Slightly larger rarity font
+            self.font_lg = ImageFont.truetype(fontfile, 28)
+            self.font_md = ImageFont.truetype(fontfile, 18)
         except OSError:
             logger.warning("Could not load PressStart2P – falling back to default font")
             self.font_lg = self.font_md = ImageFont.load_default()
@@ -48,17 +48,23 @@ class ImageGenerator:
         return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4)) if len(h) == 6 else (255, 255, 255)
 
     def _generate_background(self, sprite: Image.Image) -> Image.Image:
+        # Create a blurred version of the sprite art as a base
         bg = sprite.resize((CARD_W, CARD_H), Image.Resampling.LANCZOS)
-        bg = bg.filter(ImageFilter.GaussianBlur(15)) # Slightly more blur
-        darken_layer = Image.new("RGBA", bg.size, (0, 0, 0, 160)) # Slightly darker
-        bg.paste(darken_layer, (0, 0), darken_layer)
+        bg = bg.filter(ImageFilter.GaussianBlur(15))
+        
+        # Create a semi-transparent black layer to darken the background
+        darken_layer = Image.new("RGBA", bg.size, (0, 0, 0, 160))
+        
+        # --- THIS IS THE FIX ---
+        # Use alpha_composite for proper RGBA blending instead of paste
+        bg = Image.alpha_composite(bg, darken_layer)
+        
         return bg
 
     def _draw_info_panel(self, esprit_data: dict, esprit_instance) -> Image.Image:
         panel = Image.new("RGBA", (CARD_W, CARD_H), (0, 0, 0, 0))
         draw = ImageDraw.Draw(panel)
 
-        # Create a subtle gradient for the bottom info panel
         gradient = Image.new("L", (1, INFO_PANEL_H))
         for y in range(INFO_PANEL_H):
             alpha_val = min(255, int(80 + 175 * (y / INFO_PANEL_H)))
@@ -72,7 +78,6 @@ class ImageGenerator:
         rarity = esprit_data.get("rarity", "Common")
         rarity_color = self._hex_to_rgb(self.rarity_cfg.get(rarity, {}).get("color", "#FFFFFF"))
         
-        # --- Draw Name and Rarity ---
         y = CARD_H - INFO_PANEL_H + 30
         x_pad = 25
         
@@ -93,13 +98,13 @@ class ImageGenerator:
         new_w, new_h = int(w * scale), int(h * scale)
         sprite_img = sprite_img.resize((new_w, new_h), Image.Resampling.NEAREST)
         
-        # Anchor the sprite to the bottom of the card for a heroic pose
         sprite_x = (CARD_W - new_w) // 2
         sprite_y = CARD_H - new_h
         card.paste(sprite_img, (sprite_x, sprite_y), sprite_img)
 
         info_panel = self._draw_info_panel(esprit_data, esprit_instance)
-        card.paste(info_panel, (0, 0), info_panel)
+        # Use alpha_composite here as well for safety
+        card = Image.alpha_composite(card, info_panel)
 
         rarity = esprit_data.get("rarity", "Common")
         border_color = self._hex_to_rgb(self.rarity_cfg.get(rarity, {}).get("border_color", "#FFFFFF"))
