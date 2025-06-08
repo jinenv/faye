@@ -19,7 +19,6 @@ async def create_db_and_tables():
         await conn.run_sync(SQLModel.metadata.create_all)
     log.info("Database tables created or already exist.")
 
-# Populate EspritData if empty:
 async def populate_static_data(config_manager: ConfigManager):
     log.info("Checking to populate static EspritData...")
     esprits_data_from_json = config_manager.get_config('data/config/esprits')
@@ -35,7 +34,8 @@ async def populate_static_data(config_manager: ConfigManager):
                     name=esprit_dict['name'],
                     description=esprit_dict['description'],
                     rarity=esprit_dict['rarity'],
-                    class_name=esprit_dict.get('class', 'Unknown'), # <- ADDED THIS LINE
+                    # THE FIX IS HERE: "class_name" instead of "class"
+                    class_name=esprit_dict.get('class_name', 'Unknown'),
                     visual_asset_path=esprit_dict['visual_asset_path'],
                     base_hp=esprit_dict['base_hp'],
                     base_attack=esprit_dict['base_attack'],

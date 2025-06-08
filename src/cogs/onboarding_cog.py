@@ -1,128 +1,57 @@
 # src/cogs/onboarding_cog.py
-
-import logging
-import random
-from datetime import datetime
-
 import discord
-from discord import app_commands
 from discord.ext import commands
-from sqlalchemy import select, insert, update, func
+from discord import app_commands
+import random
+from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from src.database.db import get_session
 from src.database.models import User, UserEsprit, EspritData
-from src.utils.config_manager import ConfigManager
+from src.utils.logger import get_logger
 
-logger = logging.getLogger(__name__)
-
+logger = get_logger(__name__)
 
 class OnboardingCog(commands.Cog):
-    """
-    /start → register a new user, giving them gold and a random Epic Esprit
-    based on settings in game_settings.json.
-    """
-
+    """Handles the player onboarding process."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        # Use the shared config manager from the bot instance
-        self.game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
-        self.START_GOLD = self.game_settings.get("starting_gold", 1000)
+        game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
+        self.START_GOLD = game_settings.get("starting_gold", 1000)
 
-    @app_commands.command(
-        name="start",
-        description="Register your account and get your starting bonus."
-    )
+    @app_commands.command(name="start", description="Begin your adventure and get your starting bonus.")
     async def start(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
-        user_id = str(interaction.user.id)
+        async with get_session() as session:
+            existing = await session.get(User, str(interaction.user.id))
+            if existing:
+                await interaction.followup.send(embed=discord.Embed(title="🔄 Already Registered", description="You already have an account! Use other commands to play.", color=discord.Color.orange()))
+                return
 
-        try:
-            async with get_session() as session:
-                stmt_user = select(User).options(selectinload(User.owned_esprits)).where(User.user_id == user_id)
-                res_user = await session.execute(stmt_user)
-                existing = res_user.scalar_one_or_none()
+            stmt = select(EspritData).where(EspritData.rarity == "Epic")
+            epic_pool = (await session.execute(stmt)).scalars().all()
+            if not epic_pool:
+                logger.error("CRITICAL: No Epic-tier Esprits found for the start command.")
+                await interaction.followup.send(embed=discord.Embed(title="❌ Error", description="Could not find any Epic-tier Esprits to give you. Please contact an admin.", color=discord.Color.red()))
+                return
 
-                if existing:
-                    await interaction.followup.send(
-                        f"🔄 You already have an account, **{interaction.user.display_name}**! "
-                        f"You have **{existing.gold} gold** and **{len(existing.owned_esprits)} Esprits**.\n"
-                        "Use `/balance`, `/inventory`, or `/summon`.",
-                        ephemeral=True
-                    )
-                    return
+            chosen_esprit = random.choice(epic_pool)
+            new_user = User(user_id=str(interaction.user.id), username=interaction.user.display_name, level=1, xp=0, gold=self.START_GOLD, dust=0, fragments=0, loot_chests=0)
+            
+            session.add(new_user)
+            await session.flush()
 
-                stmt_all = select(EspritData).where(EspritData.rarity == "Epic")
-                res_all = await session.execute(stmt_all)
-                epic_pool = res_all.scalars().all()
-
-                if not epic_pool:
-                    await interaction.followup.send(
-                        "❌ Could not find any Epic‐tier Esprits to give you. Contact an admin.",
-                        ephemeral=True
-                    )
-                    return
-
-                chosen = random.choice(epic_pool)
-
-                new_user = User(
-                    user_id=user_id,
-                    username=interaction.user.name,
-                    level=1,
-                    xp=0,
-                    gold=self.START_GOLD,
-                    dust=0
-                )
-
-                new_ue = UserEsprit(
-                    owner_id=user_id,
-                    esprit_data_id=chosen.esprit_id,
-                    current_hp=chosen.base_hp,
-                    current_level=1,
-                    current_xp=0,
-                )
-                
-                new_user.active_esprit_id = new_ue.id
-
-                session.add(new_user)
-                session.add(new_ue)
-                await session.commit()
-
-                embed = discord.Embed(
-                    title="🚀 Account Created",
-                    description=(
-                        f"Welcome, **{interaction.user.display_name}**!\n"
-                        f"You received **{self.START_GOLD} gold** and an **Epic Esprit: {chosen.name}**."
-                    ),
-                    color=discord.Color.green()
-                )
-                await interaction.followup.send(embed=embed, ephemeral=True)
-
-        except Exception as exc:
-            logger.critical(f"OnboardingCog: Critical error in /start: {exc}", exc_info=True)
-            if not interaction.response.is_done():
-                await interaction.response.send_message(
-                    "A critical error occurred. Your account was not created. Please try again later.", ephemeral=True
-                )
-            else:
-                await interaction.followup.send(
-                    "A critical error occurred. Your account was not created. Please try again later.", ephemeral=True
-                )
-
-    @start.error
-    async def start_error(self, interaction: discord.Interaction, error):
-        logger.error(f"Error in /start: {error}", exc_info=True)
-        if not interaction.response.is_done():
-            await interaction.response.send_message(
-                "Unexpected error. Please try again later.", ephemeral=True
-            )
-        else:
-            await interaction.followup.send(
-                "Unexpected error. Please try again later.", ephemeral=True
-            )
-
+            new_user_esprit = UserEsprit(owner_id=new_user.user_id, esprit_data_id=chosen_esprit.esprit_id, current_hp=chosen_esprit.base_hp, current_level=1, current_xp=0)
+            session.add(new_user_esprit)
+            await session.flush()
+            
+            new_user.active_esprit_id = new_user_esprit.id
+            session.add(new_user)
+            await session.commit()
+            
+            logger.info(f"New user registered: {interaction.user.display_name} ({interaction.user.id})")
+            embed = discord.Embed(title="🚀 Adventure Awaits!", description=f"Welcome, **{interaction.user.display_name}**!\nAn account has been created for you. You received **{self.START_GOLD} gold** and an Epic Esprit: **{chosen_esprit.name}**.", color=discord.Color.green())
+            await interaction.followup.send(embed=embed)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(OnboardingCog(bot))
-
-
