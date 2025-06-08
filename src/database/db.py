@@ -35,6 +35,7 @@ async def populate_static_data(config_manager: ConfigManager):
                     name=esprit_dict['name'],
                     description=esprit_dict['description'],
                     rarity=esprit_dict['rarity'],
+                    class_name=esprit_dict.get('class', 'Unknown'), # <- ADDED THIS LINE
                     visual_asset_path=esprit_dict['visual_asset_path'],
                     base_hp=esprit_dict['base_hp'],
                     base_attack=esprit_dict['base_attack'],
@@ -51,7 +52,7 @@ async def populate_static_data(config_manager: ConfigManager):
             await session.commit()
             log.info(f"Populated EspritData with {len(esprits_data_from_json)} entries.")
         else:
-            log.info(f"EspritData table already contains {count} entries. Skipping.")
+            log.info(f"EspritData table already contains {count} entries. Skipping population.")
 
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,

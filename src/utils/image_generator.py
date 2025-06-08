@@ -1,115 +1,116 @@
 # src/utils/image_generator.py
 from __future__ import annotations
-
 import os
-import textwrap
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from functools import lru_cache
-from typing import Tuple, Dict, Any
-
-from PIL import (
-    Image,
-    ImageDraw,
-    ImageFont,
-    ImageFilter,
-)
 
 from src.utils.logger import get_logger
 from src.utils.config_manager import ConfigManager
 
 logger = get_logger(__name__)
 
-# --- V4 CARD CONSTANTS (Minimalist) ---
 CARD_W, CARD_H = 450, 630
-SPRITE_H = 600      # Target height for the main character sprite
-INFO_PANEL_H = 120  # Drastically reduced panel height
+SPRITE_H = 550
+RARITY_ICON_SIZE = (48, 48)
 
 class ImageGenerator:
-    """
-    Generates a V4 (Minimalist) Esprit card.
-    Focuses purely on art, name, and rarity for a clean summon reveal.
-    """
-
     def __init__(self, assets_base: str = "assets"):
         self.assets_base = assets_base
         fontfile = os.path.join(assets_base, "ui", "fonts", "PressStart2P.ttf")
         try:
-            self.font_lg = ImageFont.truetype(fontfile, 28)
-            self.font_md = ImageFont.truetype(fontfile, 18)
+            self.font_header = ImageFont.truetype(fontfile, 40)
         except OSError:
-            logger.warning("Could not load PressStart2P – falling back to default font")
-            self.font_lg = self.font_md = ImageFont.load_default()
+            logger.warning("Could not load PressStart2P font")
+            self.font_header = ImageFont.load_default()
 
         cfg = ConfigManager()
-        self.rarity_cfg = cfg.get_config("data/config/rarity_visuals") or {}
+        self.rarity_visuals = cfg.get_config("data/config/rarity_visuals") or {}
 
     @staticmethod
-    def _hex_to_rgb(h: str) -> Tuple[int, int, int]:
-        h = h.lstrip("#")
-        return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4)) if len(h) == 6 else (255, 255, 255)
+    def _hex_to_rgb(h: str):
+        return tuple(int(h.lstrip("#")[i:i+2], 16) for i in (0, 2, 4))
 
-    def _generate_background(self, sprite: Image.Image) -> Image.Image:
-        # Create a blurred version of the sprite art as a base
-        bg = sprite.resize((CARD_W, CARD_H), Image.Resampling.LANCZOS)
-        bg = bg.filter(ImageFilter.GaussianBlur(15))
-        
-        # Create a semi-transparent black layer to darken the background
-        darken_layer = Image.new("RGBA", bg.size, (0, 0, 0, 160))
-        
-        # --- THIS IS THE FIX ---
-        # Use alpha_composite for proper RGBA blending instead of paste
-        bg = Image.alpha_composite(bg, darken_layer)
-        
-        return bg
+    @lru_cache(maxsize=32)
+    def _load_rarity_icon(self, path: str) -> Image.Image | None:
+        try:
+            icon = Image.open(path).convert("RGBA")
+            return icon.resize(RARITY_ICON_SIZE, Image.Resampling.LANCZOS)
+        except FileNotFoundError:
+            logger.warning(f"Rarity icon not found at path: {path}")
+            return None
 
-    def _draw_info_panel(self, esprit_data: dict, esprit_instance) -> Image.Image:
-        panel = Image.new("RGBA", (CARD_W, CARD_H), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(panel)
+    def _create_rarity_aura(self, size: tuple, color: tuple) -> Image.Image:
+        """Creates a large, soft, circular glow image."""
+        aura = Image.new("RGBA", size, (0, 0, 0, 0))
+        draw = ImageDraw.Draw(aura)
+        
+        # Determine the center and max radius
+        center_x, center_y = size[0] / 2, size[1] / 2
+        max_radius = min(center_x, center_y)
 
-        gradient = Image.new("L", (1, INFO_PANEL_H))
-        for y in range(INFO_PANEL_H):
-            alpha_val = min(255, int(80 + 175 * (y / INFO_PANEL_H)))
-            gradient.putpixel((0, y), alpha_val)
-        alpha = gradient.resize((CARD_W, INFO_PANEL_H), Image.Resampling.LANCZOS)
-        
-        panel_bg = Image.new("RGBA", (CARD_W, INFO_PANEL_H), (10, 10, 10, 255))
-        panel_bg.putalpha(alpha)
-        panel.paste(panel_bg, (0, CARD_H - INFO_PANEL_H), panel_bg)
-        
-        rarity = esprit_data.get("rarity", "Common")
-        rarity_color = self._hex_to_rgb(self.rarity_cfg.get(rarity, {}).get("color", "#FFFFFF"))
-        
-        y = CARD_H - INFO_PANEL_H + 30
-        x_pad = 25
-        
-        draw.text((x_pad, y), esprit_data.get("name", "Unknown"), font=self.font_lg, fill="white")
-        y += 40
-        draw.text((x_pad, y), f"Lv. {esprit_instance.current_level} {rarity}", font=self.font_md, fill=rarity_color)
-        
-        return panel
+        # Draw concentric circles with decreasing opacity to create a soft radial gradient
+        for i in range(int(max_radius), 0, -5):
+            alpha = int(150 * (1 - (i / max_radius))**2) # Exponential falloff
+            current_color = color + (alpha,)
+            draw.ellipse(
+                (center_x - i, center_y - i, center_x + i, center_y + i),
+                fill=current_color
+            )
+            
+        return aura.filter(ImageFilter.GaussianBlur(radius=60))
 
-    def render_esprit_card(self, esprit_data: dict, esprit_instance) -> Image.Image:
+    def _draw_text_with_outline(self, draw, position, text, font, fill, anchor="lt"):
+        x, y = position
+        outline = "black"
+        draw.text((x-2, y-2), text, font=font, fill=outline, anchor=anchor)
+        draw.text((x+2, y-2), text, font=font, fill=outline, anchor=anchor)
+        draw.text((x-2, y+2), text, font=font, fill=outline, anchor=anchor)
+        draw.text((x+2, y+2), text, font=font, fill=outline, anchor=anchor)
+        draw.text(position, text, font=font, fill=fill, anchor=anchor)
+
+    def render_esprit_card(self, esprit_data: dict, **kwargs) -> Image.Image:
+        # 1. Start with a solid black canvas
+        card = Image.new("RGBA", (CARD_W, CARD_H), (0, 0, 0, 255))
+        draw = ImageDraw.Draw(card)
+
+        # 2. Get rarity info
+        rarity_name = esprit_data.get("rarity", "Unknown")
+        rarity_visual_info = self.rarity_visuals.get(rarity_name, {})
+        glow_color = self._hex_to_rgb(rarity_visual_info.get("color", "#808080")) # Default to grey
+
+        # 3. Create and paste the new "Rarity Aura"
+        aura = self._create_rarity_aura((CARD_W, CARD_H), glow_color)
+        card.paste(aura, (0, 0), aura)
+
+        # 4. Load and paste the main character sprite
         raw_path = os.path.join(self.assets_base, esprit_data.get("visual_asset_path", ""))
         sprite_img = Image.open(raw_path).convert("RGBA")
-
-        card = self._generate_background(sprite_img)
-
+        
         w, h = sprite_img.size
         scale = SPRITE_H / h
-        new_w, new_h = int(w * scale), int(h * scale)
-        sprite_img = sprite_img.resize((new_w, new_h), Image.Resampling.NEAREST)
+        sprite_img = sprite_img.resize((int(w * scale), int(h * scale)), Image.Resampling.NEAREST)
         
-        sprite_x = (CARD_W - new_w) // 2
-        sprite_y = CARD_H - new_h
+        sprite_x = (CARD_W - sprite_img.width) // 2
+        sprite_y = (CARD_H - sprite_img.height) // 2 + 30
         card.paste(sprite_img, (sprite_x, sprite_y), sprite_img)
+        
+        # 5. Draw Text and Icons
+        padding = 25
+        
+        # Name (Top Center)
+        name_text = esprit_data.get("name", "Unknown")
+        self._draw_text_with_outline(draw, (CARD_W / 2, padding), name_text, self.font_header, "white", anchor="mt")
 
-        info_panel = self._draw_info_panel(esprit_data, esprit_instance)
-        # Use alpha_composite here as well for safety
-        card = Image.alpha_composite(card, info_panel)
-
-        rarity = esprit_data.get("rarity", "Common")
-        border_color = self._hex_to_rgb(self.rarity_cfg.get(rarity, {}).get("border_color", "#FFFFFF"))
-        draw = ImageDraw.Draw(card)
-        draw.rectangle([0, 0, CARD_W - 1, CARD_H - 1], outline=border_color, width=3)
+        # Rarity Icon (Bottom Left)
+        icon_path = rarity_visual_info.get("icon_asset")
+        if icon_path:
+            full_icon_path = os.path.join(self.assets_base, icon_path)
+            rarity_icon = self._load_rarity_icon(full_icon_path)
+            if rarity_icon:
+                card.paste(rarity_icon, (padding, CARD_H - RARITY_ICON_SIZE[1] - padding), rarity_icon)
+        
+        # 6. Final Border
+        border_color = self._hex_to_rgb(rarity_visual_info.get("border_color", "#FFFFFF"))
+        draw.rectangle([0, 0, CARD_W - 1, CARD_H - 1], outline=border_color, width=5)
 
         return card
-

@@ -11,6 +11,7 @@ class EspritData(SQLModel, table=True):
     name: str
     description: str
     rarity: str
+    class_name: str = Field(default="Unknown") # <--- THIS IS THE REQUIRED FIELD
     visual_asset_path: str
 
     base_hp: int
