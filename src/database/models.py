@@ -28,14 +28,18 @@ class User(SQLModel, table=True):
     """Stores data for each registered player."""
     user_id: str = Field(primary_key=True, index=True)
     username: str
-    level: int
-    xp: int
-    gold: int
-    dust: int = 0
-    fragments: int = Field(default=0, nullable=False)
+    level: int = Field(default=1)
+    xp: int = Field(default=0)
+    
+    # --- CURRENCY RESTRUCTURE (per directive) ---
+    nyxies: int = Field(default=0, nullable=False)        # Replaces 'gold'
+    moonglow: int = Field(default=0, nullable=False)      # Replaces 'dust'
+    azurite_shards: int = Field(default=0, nullable=False) # Replaces 'fragments'
+    essence: int = Field(default=0, nullable=False)       # New crafting material
+    
+    # --- OTHER INVENTORY & METADATA ---
     loot_chests: int = Field(default=0, nullable=False)
     last_daily_claim: Optional[datetime] = Field(default=None, nullable=True)
-    active_esprit_id: Optional[str] = Field(default=None, nullable=True)
     created_at: datetime = Field(
         default=None,
         sa_column=sa.Column(
@@ -44,6 +48,14 @@ class User(SQLModel, table=True):
             server_default=sa.func.current_timestamp()
         )
     )
+    
+    # --- TEAM MANAGEMENT (per directive) ---
+    # Foreign Keys to the UserEsprit table's 'id' field.
+    active_esprit_id: Optional[str] = Field(default=None, foreign_key="useresprit.id", nullable=True)
+    support1_esprit_id: Optional[str] = Field(default=None, foreign_key="useresprit.id", nullable=True)
+    support2_esprit_id: Optional[str] = Field(default=None, foreign_key="useresprit.id", nullable=True)
+    
+    # --- RELATIONSHIPS ---
     owned_esprits: List["UserEsprit"] = Relationship(
         back_populates="owner",
         sa_relationship_kwargs={"cascade": "all, delete-orphan"}
@@ -52,7 +64,6 @@ class User(SQLModel, table=True):
 class UserEsprit(SQLModel, table=True):
     """Represents a specific instance of an Esprit owned by a user."""
     id: str = Field(primary_key=True, default_factory=lambda: __import__("uuid").uuid4().hex)
-    # THE FIX IS HERE: "user.user_id" instead of "user.user.id"
     owner_id: str = Field(foreign_key="user.user_id", index=True)
     esprit_data_id: str = Field(foreign_key="espritdata.esprit_id", index=True)
     current_hp: int
