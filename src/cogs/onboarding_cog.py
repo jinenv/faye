@@ -17,7 +17,7 @@ class OnboardingCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
-        self.START_GOLD = game_settings.get("starting_gold", 1000)
+        self.START_NYXIE = game_settings.get("starting_nyxie", 1000)
 
     @app_commands.command(name="start", description="Begin your adventure and get your starting bonus.")
     async def start(self, interaction: discord.Interaction):
@@ -36,7 +36,7 @@ class OnboardingCog(commands.Cog):
                 return
 
             chosen_esprit = random.choice(epic_pool)
-            new_user = User(user_id=str(interaction.user.id), username=interaction.user.display_name, level=1, xp=0, gold=self.START_GOLD, dust=0, fragments=0, loot_chests=0)
+            new_user = User(user_id=str(interaction.user.id), username=interaction.user.display_name, level=1, xp=0, nyxies=self.START_NYXIE, moonglow=0, azurite_shards=0, loot_chests=0)
             
             session.add(new_user)
             await session.flush()
@@ -50,7 +50,7 @@ class OnboardingCog(commands.Cog):
             await session.commit()
             
             logger.info(f"New user registered: {interaction.user.display_name} ({interaction.user.id})")
-            embed = discord.Embed(title="🚀 Adventure Awaits!", description=f"Welcome, **{interaction.user.display_name}**!\nAn account has been created for you. You received **{self.START_GOLD} gold** and an Epic Esprit: **{chosen_esprit.name}**.", color=discord.Color.green())
+            embed = discord.Embed(title="🚀 Adventure Awaits!", description=f"Welcome, **{interaction.user.display_name}**!\nAn account has been created for you. You received **{self.START_NYXIE} nyxies** and an Epic Esprit: **{chosen_esprit.name}**.", color=discord.Color.green())
             await interaction.followup.send(embed=embed)
 
 async def setup(bot: commands.Bot):

@@ -39,7 +39,7 @@ A primary gameplay loop will be introduced through new combat commands.
 
 ### Expanded Economy and Item System
 The economy will be deepened to support the new combat loop.
-- A new `fragments` currency will be introduced as the primary reward from combat and the main cost for summoning.
+- A new `azurite_shards` currency will be introduced as the primary reward from combat and the main cost for summoning.
 - A full item system will be implemented, requiring new `ItemData` and `UserItem` tables in the database.
 
 ### Endgame and Social Systems

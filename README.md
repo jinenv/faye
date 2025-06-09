@@ -22,10 +22,10 @@ Nyxa is a feature-rich, scalable RPG bot for Discord, built with Python. It feat
 
 The bot currently supports the following commands and features:
 
--   **`/start`**: Onboards new users by creating an account, granting a configurable amount of starting gold, and giving them a free Epic-tier Esprit.
--   **`/summon <amount>`**: Allows users to spend gold to summon 1, 3, or 10 new Esprits. Results are delivered in an interactive, paginated embed that showcases each Esprit with a dynamically generated image card.
--   **`/balance`**: Lets users check their current gold and dust balances.
--   **`/daily`**: Provides a daily claim for a set amount of gold, with a 24-hour cooldown.
+-   **`/start`**: Onboards new users by creating an account, granting a configurable amount of starting nyxies, and giving them a free Epic-tier Esprit.
+-   **`/summon <amount>`**: Allows users to spend nyxies to summon 1, 3, or 10 new Esprits. Results are delivered in an interactive, paginated embed that showcases each Esprit with a dynamically generated image card.
+-   **`/balance`**: Lets users check their current nyxies and moonglow balances.
+-   **`/daily`**: Provides a daily claim for a set amount of nyxies, with a 24-hour cooldown.
 -   **`/inventory`**: Displays a list of all Esprits the user currently owns.
 -   **Dynamic Image Generation**: Creates detailed, high-quality "stat cards" for summoned Esprits using the Pillow library.
 -   **Administrative Tools**: Includes an admin-only `/reset_db` command for wiping and re-seeding the database during development.
@@ -64,7 +64,7 @@ Stores information for each registered player.
 | `user_id`          | `VARCHAR`  | Primary Key (Discord User ID).         |
 | `username`         | `VARCHAR`  | User's Discord name.                   |
 | `level`, `xp`      | `INTEGER`  | Player's level and experience.         |
-| `gold`, `dust`     | `INTEGER`  | Player's currency balances.            |
+| `nyxies`, `moonglow`     | `INTEGER`  | Player's currency balances.            |
 | `last_daily_claim` | `DATETIME` | Timestamp of the last `/daily` claim.  |
 | `active_esprit_id` | `VARCHAR`  | Foreign Key to the active `UserEsprit`.|
 
@@ -122,7 +122,7 @@ Follow these steps to set up and run the bot locally.
 Game balance and settings can be modified by editing the JSON files in the `data/config/` directory.
 
 -   `esprits.json`: Contains the master list of all Esprits and their base stats.
--   `game_settings.json`: Controls core economic parameters like starting gold and summon costs.
+-   `game_settings.json`: Controls core economic parameters like starting nyxies and summon costs.
 -   `rarity_tiers.json`: Defines the different rarity levels and their summon probabilities.
 -   `rarity_visuals.json`: Specifies the colors and other visual elements associated with each rarity tier.
 -   `stat_icons.json`: Maps stat names to their corresponding icon coordinates in the stat icon sprite sheet.

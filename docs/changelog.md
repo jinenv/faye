@@ -40,5 +40,5 @@ This release represents a complete redesign of the core summoning experience and
 ## [1.1.0] - 2025-06-06
 
 ### Changed
-- **Centralized Game Settings**: Refactored all cogs to pull economic values (e.g., starting gold, daily rewards, summon costs) from a single configuration file at `data/config/game_settings.json`.
+- **Centralized Game Settings**: Refactored all cogs to pull economic values (e.g., starting nyxies, daily rewards, summon costs) from a single configuration file at `data/config/game_settings.json`.
 - **Removed Hardcoded Values**: Eliminated "magic numbers" for economic parameters from the Python codebase, separating configuration from logic and improving maintainability.

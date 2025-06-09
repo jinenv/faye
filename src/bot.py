@@ -3,7 +3,7 @@ import os
 import asyncio
 import discord
 from discord.ext import commands
-from src.database.db import create_db_and_tables, populate_static_data
+from src.database.db import create_db_and_tables
 from src.utils.logger import get_logger
 from src.utils.config_manager import ConfigManager
 
@@ -19,7 +19,6 @@ class NyxaBot(commands.Bot):
     async def setup_hook(self):
         # prepare DB & configs
         await create_db_and_tables()
-        await populate_static_data(self.config_manager)
         logger.info("Database ready & static data seeded.")
         
         # load all cogs (slash-only now)

@@ -18,7 +18,7 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
   - **`models.py`**:  
     - Defines three core tables:  
       1. `EspritData` (master list of all Esprits & their base stats)  
-      2. `User` (registered players, their gold, dust, level, XP, timestamps)  
+      2. `User` (registered players, their nyxies, moonglow, level, XP, timestamps)  
       3. `UserEsprit` (which Esprits each user owns, current HP/level/XP)  
 
 - **Configuration Files** (`data/config/*.json`):  
@@ -32,10 +32,10 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
        - Checks if user exists; if not, picks a random starter Esprit, creates `User` & `UserEsprit`, sets `active_esprit_id`, generates an image, and sends welcome + tips.  
        - Enforces “policy acceptance” via a button view before creating the user record (still included in the same cog).  
   2. **`economy_cog.py`**  
-     - `/balance` (shows gold, dust, gems, etc.).  
+     - `/balance` (shows nyxies, moonglow, gems, etc.).  
      - `/daily` (24-hour reward, scales with level, updates `last_daily_claim`).  
      - `/inventory` (lists all `UserEsprit` rows for the user, shows names/rarities).  
-     - `/leaderboard` (top users by level/gold/XP).  
+     - `/leaderboard` (top users by level/nyxies/XP).  
      - All operations use `async with get_session()` + ORM queries/commits.  
   3. **`summon_cog.py`**  
      - `/summon [amount]` (10-pull or single summons).  
@@ -59,7 +59,7 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
 
 - **Onboarding**:  
   - `/start` logic existed but did not integrate with a relational database.  
-  - Starter Esprits and gold were tracked only in JSON (or not persisted properly).
+  - Starter Esprits and nyxies were tracked only in JSON (or not persisted properly).
 
 - **Summon**:  
   - Used JSON as well (e.g. “add summoned Esprist to `inventory.json`”).  
@@ -68,7 +68,7 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
 ### After (SQLModel / SQLAlchemy + AsyncSession)
 1. **Single Source of Truth**  
    - **ORM models** now define every column/relationship (no JSON fallback for player data).  
-   - Gold, dust, XP, level, `created_at`, `last_daily_claim`, etc. live in the `user` table.  
+   - Nyxies, moonglow, XP, level, `created_at`, `last_daily_claim`, etc. live in the `user` table.  
    - Each owned Esprit is a row in `useresprit`.
 
 2. **Atomic, Async Transactions**  
@@ -111,7 +111,7 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
 | `user_id`          | `VARCHAR`    | Primary key: Discord user ID (string).                                                |
 | `username`         | `VARCHAR`    | Stored Discord username (not necessarily unique if a user changes their tag).         |
 | `level`, `xp`      | `INTEGER`    | Level & experience points.                                                             |
-| `gold`, `dust`     | `INTEGER`    | Main & secondary currencies.                                                           |
+| `nyxies`, `moonglow`     | `INTEGER`    | Main & secondary currencies.                                                           |
 | `last_daily_claim` | `DATETIME`   | Timestamp of last `/daily` usage (UTC ISO format).                                     |
 | `active_esprit_id` | `VARCHAR`    | FK → `useresprit.id`; which `UserEsprit` is currently “active.”                         |
 | `created_at`       | `DATETIME`   | Defaults to `CURRENT_TIMESTAMP`.                                                       |
@@ -200,8 +200,8 @@ class User(SQLModel, table=True):
     username: str
     level: int = Field(default=1)
     xp: int = Field(default=0)
-    gold: int = Field(default=0)
-    dust: int = Field(default=0)
+    nyxies: int = Field(default=0)
+    moonglow: int = Field(default=0)
 
     # ← New column
     gems: int = Field(default=0, nullable=False)
@@ -238,8 +238,8 @@ new_user = User(
     username=interaction.user.name,
     level=self.game_settings["starting_level"],
     xp=0,
-    gold=self.game_settings["starting_gold"],
-    dust=0,
+    nyxies=self.game_settings["starting_gold"],
+    moonglow=0,
     gems=self.game_settings.get("starting_gems", 0),
     active_esprit_id=None
 )
@@ -251,8 +251,8 @@ Expose in EconomyCog (balance, daily, etc.):
 embed = discord.Embed(
     title="💰 Wallet",
     description=(
-        f"Gold: **{user.gold:,}**\n"
-        f"Dust: **{user.dust:,}**\n"
+        f"Nyxies: **{user.nyxies:,}**\n"
+        f"Moonglow: **{user.moonglow:,}**\n"
         f"Gems: **{user.gems:,}**"
     )
 )
@@ -296,7 +296,7 @@ class AuctionCog(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="list", description="List your Esprit for sale")
-    @app_commands.describe(esprit="Which Esprit to sell", price="Price in gold")
+    @app_commands.describe(esprit="Which Esprit to sell", price="Price in nyxies")
     async def list(self, interaction: discord.Interaction, esprit: str, price: int):
         user_id = str(interaction.user.id)
         async with get_session() as session:
@@ -322,7 +322,7 @@ class AuctionCog(commands.Cog):
             await session.commit()
 
         await interaction.response.send_message(
-            f"Your Esprit has been listed for **{price:,} gold**!"
+            f"Your Esprit has been listed for **{price:,} nyxies**!"
         )
 
 async def setup(bot):
@@ -384,7 +384,7 @@ New devs immediately see “models.py” as the full data schema, “db.py” as
 | User Data                 | Tracked in economy.json / inventory.json   | Tracked in User & UserEsprit tables (ORM models)                    |
 | Static Data (Esprits)     | JSON loaded on each summon or ad-hoc load  | Seeded once at startup via populate_static_data()                   |
 | Command Logic             | Mixed file I/O and raw SQL/JSON parsing    | All commands use `async with get_session()` + ORM                   |
-| Onboarding (`/start`)     | Partial, not linked to database schema     | Full—creates user row, starter Esprit, initial gold, commits to DB  |
+| Onboarding (`/start`)     | Partial, not linked to database schema     | Full—creates user row, starter Esprit, initial nyxies, commits to DB  |
 | Economy (`/balance`, etc) | File-based, risk of out-of-sync data       | DB-based, consistent, atomic updates                                |
 | Summons                   | JSON/in-memory; inconsistent pagination    | DB-based; interactive multi-pull pagination view                    |
 | Admin Tools               | Manual JSON deletes / raw SQL              | `/reset_db` resets ORM tables and reseeds EspritData                |

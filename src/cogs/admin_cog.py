@@ -104,8 +104,8 @@ class AdminCog(commands.Cog):
             "give": {
                 "name": "🎁 Give Commands", "emoji": "🎁", "description": "Commands for adding currency or items to a user.",
                 "commands": [
-                    {"name": "/give gold", "usage": "<user> <amount>", "desc": "Adds gold to a user's balance."},
-                    {"name": "/give dust", "usage": "<user> <amount>", "desc": "Adds dust to a user's balance."},
+                    {"name": "/give nyxies", "usage": "<user> <amount>", "desc": "Adds nyxies to a user's balance."},
+                    {"name": "/give moonglow", "usage": "<user> <amount>", "desc": "Adds moonglow to a user's balance."},
                     {"name": "/give xp", "usage": "<user> <amount>", "desc": "Adds experience points to a user."},
                     {"name": "/give esprit", "usage": "<user> <esprit_name>", "desc": "Creates a new instance of an Esprit for a user."},
                 ]
@@ -113,8 +113,8 @@ class AdminCog(commands.Cog):
             "remove": {
                 "name": "➖ Remove Commands", "emoji": "➖", "description": "Commands for subtracting currency or items.",
                 "commands": [
-                    {"name": "/remove gold", "usage": "<user> <amount>", "desc": "Removes gold from a user, down to a minimum of 0."},
-                    {"name": "/remove dust", "usage": "<user> <amount>", "desc": "Removes dust from a user, down to a minimum of 0."},
+                    {"name": "/remove nyxies", "usage": "<user> <amount>", "desc": "Removes nyxies from a user, down to a minimum of 0."},
+                    {"name": "/remove moonglow", "usage": "<user> <amount>", "desc": "Removes moonglow from a user, down to a minimum of 0."},
                     {"name": "/remove xp", "usage": "<user> <amount>", "desc": "Removes XP from a user, down to a minimum of 0."},
                     {"name": "/remove esprit", "usage": "<user> <esprit_id>", "desc": "Deletes a specific Esprit instance by its unique ID."},
                 ]
@@ -122,8 +122,8 @@ class AdminCog(commands.Cog):
             "set": {
                 "name": "⚙️ Set Commands", "emoji": "⚙️", "description": "Commands for setting an exact value.",
                 "commands": [
-                    {"name": "/set gold", "usage": "<user> <amount>", "desc": "Sets a user's gold to an exact amount."},
-                    {"name": "/set dust", "usage": "<user> <amount>", "desc": "Sets a user's dust to an exact amount."},
+                    {"name": "/set nyxies", "usage": "<user> <amount>", "desc": "Sets a user's nyxies to an exact amount."},
+                    {"name": "/set moonglow", "usage": "<user> <amount>", "desc": "Sets a user's moonglow to an exact amount."},
                     {"name": "/set level", "usage": "<user> <level>", "desc": "Sets a user's level and resets their XP to 0."},
                     {"name": "/set esprit_level", "usage": "<esprit_id> <level>", "desc": "Sets a specific Esprit's level and resets its XP to 0."},
                 ]
@@ -198,12 +198,12 @@ class AdminCog(commands.Cog):
             user_obj = await session.get(User, str(user.id))
             if not user_obj: return await interaction.followup.send(f"❌ {user.mention} has no data.")
             esprit_count = (await session.execute(select(func.count(UserEsprit.id)).where(UserEsprit.owner_id == str(user.id)))).scalar_one()
-        embed = discord.Embed(title=f"🔍 Inspect: {user.display_name}", color=discord.Color.gold())
+        embed = discord.Embed(title=f"🔍 Inspect: {user.display_name}", color=discord.Color.nyxies())
         embed.set_thumbnail(url=user.display_avatar.url)
         embed.add_field(name="User ID", value=f"`{user_obj.user_id}`", inline=False)
         embed.add_field(name="Level | XP", value=f"{user_obj.level} | {user_obj.xp:,}", inline=True)
         embed.add_field(name="Esprits", value=f"{esprit_count:,}", inline=True)
-        embed.add_field(name="Gold | Dust", value=f"{user_obj.gold:,} | {user_obj.dust:,}", inline=True)
+        embed.add_field(name="Nyxies | Moonglow", value=f"{user_obj.nyxies:,} | {user_obj.moonglow:,}", inline=True)
         embed.add_field(name="Last Daily", value=f"{discord.utils.format_dt(user_obj.last_daily_claim, 'R') if user_obj.last_daily_claim else 'Never'}", inline=False)
         embed.add_field(name="Created At", value=f"{discord.utils.format_dt(user_obj.created_at, 'F')}", inline=False)
         await interaction.followup.send(embed=embed)
@@ -269,21 +269,21 @@ class AdminCog(commands.Cog):
             )
 
     # --- Give Commands ---
-    @give_group.command(name="gold", description="Give gold to a user")
-    async def give_gold(self, interaction: discord.Interaction, user: discord.User, amount: int):
+    @give_group.command(name="nyxies", description="Give nyxies to a user")
+    async def give_nyxie(self, interaction: discord.Interaction, user: discord.User, amount: int):
         async with self._get_user_context(interaction, user) as (session, user_obj):
             if not session: return
             if amount <= 0: await interaction.followup.send("❌ Amount must be positive."); return
-            user_obj.gold += amount; session.add(user_obj)
-            await interaction.followup.send(f"✅ Gave **{amount:,}** gold. New balance: **{user_obj.gold:,}**.")
+            user_obj.nyxies += amount; session.add(user_obj)
+            await interaction.followup.send(f"✅ Gave **{amount:,}** nyxies. New balance: **{user_obj.nyxies:,}**.")
 
-    @give_group.command(name="dust", description="Give dust to a user")
+    @give_group.command(name="moonglow", description="Give moonglow to a user")
     async def give_dust(self, interaction: discord.Interaction, user: discord.User, amount: int):
         async with self._get_user_context(interaction, user) as (session, user_obj):
             if not session: return
             if amount <= 0: await interaction.followup.send("❌ Amount must be positive."); return
-            user_obj.dust += amount; session.add(user_obj)
-            await interaction.followup.send(f"✅ Gave **{amount:,}** dust. New balance: **{user_obj.dust:,}**.")
+            user_obj.moonglow += amount; session.add(user_obj)
+            await interaction.followup.send(f"✅ Gave **{amount:,}** moonglow. New balance: **{user_obj.moonglow:,}**.")
 
     @give_group.command(name="xp", description="Give XP to a user")
     async def give_xp(self, interaction: discord.Interaction, user: discord.User, amount: int):
@@ -307,21 +307,21 @@ class AdminCog(commands.Cog):
             await interaction.followup.send(f"✅ Gave **{esprit_data.name}** (ID: `{new_esprit.id}`) to {user.mention}.")
 
     # --- Remove Commands ---
-    @remove_group.command(name="gold", description="Remove gold from a user")
-    async def remove_gold(self, interaction: discord.Interaction, user: discord.User, amount: int):
+    @remove_group.command(name="nyxies", description="Remove nyxies from a user")
+    async def remove_nyxie(self, interaction: discord.Interaction, user: discord.User, amount: int):
         async with self._get_user_context(interaction, user) as (session, user_obj):
             if not session: return
             if amount <= 0: await interaction.followup.send("❌ Amount must be positive."); return
-            user_obj.gold = max(0, user_obj.gold - amount); session.add(user_obj)
-            await interaction.followup.send(f"✅ Removed **{amount:,}** gold. New balance: **{user_obj.gold:,}**.")
+            user_obj.nyxies = max(0, user_obj.nyxies - amount); session.add(user_obj)
+            await interaction.followup.send(f"✅ Removed **{amount:,}** nyxies. New balance: **{user_obj.nyxies:,}**.")
 
-    @remove_group.command(name="dust", description="Remove dust from a user")
+    @remove_group.command(name="moonglow", description="Remove moonglow from a user")
     async def remove_dust(self, interaction: discord.Interaction, user: discord.User, amount: int):
         async with self._get_user_context(interaction, user) as (session, user_obj):
             if not session: return
             if amount <= 0: await interaction.followup.send("❌ Amount must be positive."); return
-            user_obj.dust = max(0, user_obj.dust - amount); session.add(user_obj)
-            await interaction.followup.send(f"✅ Removed **{amount:,}** dust. New balance: **{user_obj.dust:,}**.")
+            user_obj.moonglow = max(0, user_obj.moonglow - amount); session.add(user_obj)
+            await interaction.followup.send(f"✅ Removed **{amount:,}** moonglow. New balance: **{user_obj.moonglow:,}**.")
 
     @remove_group.command(name="xp", description="Remove XP from a user")
     async def remove_xp(self, interaction: discord.Interaction, user: discord.User, amount: int):
@@ -350,21 +350,21 @@ class AdminCog(commands.Cog):
             await interaction.followup.send(f"✅ Removed Esprit ID `{esprit_id}` from {user.mention}.")
 
     # --- Set Commands ---
-    @set_group.command(name="gold", description="Set a user's exact gold amount")
-    async def set_gold(self, interaction: discord.Interaction, user: discord.User, amount: int):
+    @set_group.command(name="nyxies", description="Set a user's exact nyxies amount")
+    async def set_nyxie(self, interaction: discord.Interaction, user: discord.User, amount: int):
         async with self._get_user_context(interaction, user) as (session, user_obj):
             if not session: return
             if amount < 0: await interaction.followup.send("❌ Amount cannot be negative."); return
-            user_obj.gold = amount; session.add(user_obj)
-            await interaction.followup.send(f"✅ Set {user.mention}'s gold to **{amount:,}**.")
+            user_obj.nyxies = amount; session.add(user_obj)
+            await interaction.followup.send(f"✅ Set {user.mention}'s nyxies to **{amount:,}**.")
 
-    @set_group.command(name="dust", description="Set a user's exact dust amount")
+    @set_group.command(name="moonglow", description="Set a user's exact moonglow amount")
     async def set_dust(self, interaction: discord.Interaction, user: discord.User, amount: int):
         async with self._get_user_context(interaction, user) as (session, user_obj):
             if not session: return
             if amount < 0: await interaction.followup.send("❌ Amount cannot be negative."); return
-            user_obj.dust = amount; session.add(user_obj)
-            await interaction.followup.send(f"✅ Set {user.mention}'s dust to **{amount:,}**.")
+            user_obj.moonglow = amount; session.add(user_obj)
+            await interaction.followup.send(f"✅ Set {user.mention}'s moonglow to **{amount:,}**.")
 
     @set_group.command(name="level", description="Set a user's level and reset their XP")
     async def set_level(self, interaction: discord.Interaction, user: discord.User, level: int):

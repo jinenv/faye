@@ -2,7 +2,7 @@
 import random
 
 # --- NAME FRAGMENT CORPUS ---
-# Add more fragments to these lists to increase variety.
+# Add more azurite_shards to these lists to increase variety.
 # You can find inspiration by searching for "fantasy name generators" or "anime names".
 
 THEMES = {

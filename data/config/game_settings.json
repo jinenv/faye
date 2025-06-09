@@ -1,16 +1,16 @@
 {
   "starting_level": 1,        
-  "starting_gold": 1000,
+  "starting_nyxie": 1000,
   "start_command_free_summon": true,
   "daily_summon_cost": 100,
   "daily_free_summons": 1,
   "xp_per_level_base": 100,
   "xp_per_level_multiplier": 1.5,
   "base_adventure_xp": 50,
-  "base_adventure_gold": 20,
+  "base_adventure_nyxie": 20,
   "summon_types": {
     "standard": {
-      "cost_gold": 100,
+      "cost_nyxie": 100,
       "free_daily_rolls": 1,
       "rarity_distribution": {
         "Deity": 0.001,

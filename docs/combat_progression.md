@@ -25,7 +25,7 @@
 
 ### /explore (5-minute cooldown)
 - Random monster encounters
-- Rewards: 5-15 fragments, 10-50 gold, materials
+- Rewards: 5-15 azurite_shards, 10-50 nyxies, materials
 - Primary fragment income source
 - Quick, repeatable content loop
 
@@ -39,14 +39,14 @@
 ## Economy & Progression
 
 ### Fragment System
-- Single currency for summons: 100 fragments = 1 pull
+- Single currency for summons: 100 azurite_shards = 1 pull
 - Sources: Exploration, tower milestones, achievements
 - No energy/stamina gates: Just time-based cooldowns
-- Gold: Instant summons, premium purchases
+- Nyxies: Instant summons, premium purchases
 
 ### Milestone Rewards
 - Sigil Power milestones: 1K, 5K, 10K, 25K thresholds
-- Rewards: Fragments + gold + mystery chests
+- Rewards: Azurite Shards + nyxies + mystery chests
 - Total account power metric across all Esprits
 - Long-term progression goals beyond collection
 
@@ -57,7 +57,7 @@
 - Screenshot-worthy achievements
 
 ## Interconnected Systems
-- Explore/Tower → Fragments → Summons → Stronger teams → Higher tower progress
+- Explore/Tower → Azurite Shards → Summons → Stronger teams → Higher tower progress
 - Everything feeds back into collection and progression
 - No dead-end currencies or isolated mechanics
 - Clear upgrade path: Collect → Upgrade → Progress → Repeat

@@ -11,7 +11,7 @@ These tasks focus on building out the primary gameplay loop to drive user engage
 -   [ ] **Define XP Curve:** Finalize the XP formula in `data/config/game_settings.json`. Define `xp_per_level_base` and `xp_per_level_multiplier`.
 -   [ ] **Create Progression Utility:** Develop a new utility, e.g., `src/utils/progression_manager.py`, to handle all XP and level-up logic. This utility should be responsible for calculating level based on XP and vice-versa.
 -   [ ] **Implement Stat Growth:** Define a formula for how an Esprit's stats increase upon leveling up. This could be a simple linear increase or based on a growth factor defined in `data/config/esprits.json`.
--   [ ] **Create Profile Command:** Add a `/profile` command that displays a user's level, XP, gold, dust, and their active Esprit's level and XP.
+-   [ ] **Create Profile Command:** Add a `/profile` command that displays a user's level, XP, nyxies, moonglow, and their active Esprit's level and XP.
 
 ### 1.2. PvE Combat Loop
 
@@ -21,7 +21,7 @@ These tasks focus on building out the primary gameplay loop to drive user engage
     -   Determine attack order based on the `base_speed` stat.
     -   Calculate damage (e.g., `ATK - DEF`).
     -   Incorporate other stats like `crit_rate` and `dodge_chance`.
--   [ ] **Integrate Rewards:** On victory, grant the user gold and call the progression utility to award XP to the user and their Esprit.
+-   [ ] **Integrate Rewards:** On victory, grant the user nyxies and call the progression utility to award XP to the user and their Esprit.
 -   [ ] **(Optional) Interactive Combat:** Create a `CombatView(discord.ui.View)` with buttons for "Attack", "Use Item", "Flee" to make battles more interactive.
 
 ### 1.3. Item & Inventory System

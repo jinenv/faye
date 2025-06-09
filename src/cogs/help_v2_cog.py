@@ -90,7 +90,7 @@ class QuickActionButton(discord.ui.Button):
                 description=(
                     "**New to Nyxa? Follow these steps:**\n\n"
                     "1️⃣ **`/start`** - Create your account & get your first Epic Esprit\n"
-                    "2️⃣ **`/daily`** - Claim your daily gold reward (100 gold)\n"
+                    "2️⃣ **`/daily`** - Claim your daily nyxies reward (100 nyxies)\n"
                     "3️⃣ **`/summon 1`** - Try your first summon with beautiful art\n"
                     "4️⃣ **`/esprit collection`** - View your growing collection\n"
                     "5️⃣ **`/help`** - Return here to explore more features!\n\n"
@@ -231,13 +231,13 @@ class HelpV2Cog(commands.Cog):
                 "description": "New to Nyxa? Perfect place to begin your journey!",
                 "color": 0x00ff00,
                 "commands": [
-                    {"cmd": "/start", "desc": "🎯 Begin your adventure", "usage": "Get your first Epic Esprit and 1000 starting gold"},
-                    {"cmd": "/balance", "desc": "💰 Check your gold", "usage": "See your current summoning currency"},
-                    {"cmd": "/inventory", "desc": "📦 View your items", "usage": "Check dust, fragments, and loot chests"},
+                    {"cmd": "/start", "desc": "🎯 Begin your adventure", "usage": "Get your first Epic Esprit and 1000 starting nyxies"},
+                    {"cmd": "/balance", "desc": "💰 Check your nyxies", "usage": "See your current summoning currency"},
+                    {"cmd": "/inventory", "desc": "📦 View your items", "usage": "Check moonglow, azurite_shards, and loot chests"},
                 ],
                 "tips": [
                     "💡 Your first Esprit is always Epic rarity!",
-                    "🎁 You start with 1000 gold for summoning",
+                    "🎁 You start with 1000 nyxies for summoning",
                     "🌐 Progress syncs across all servers with Nyxa",
                 ]
             },
@@ -247,8 +247,8 @@ class HelpV2Cog(commands.Cog):
                 "description": "Collect stunning Esprits with advanced gacha mechanics",
                 "color": 0xff6b9d,
                 "commands": [
-                    {"cmd": "/summon amount:1", "desc": "🎲 Single summon", "usage": "100 gold for one beautiful Esprit card"},
-                    {"cmd": "/summon amount:10", "desc": "🎰 Multi summon", "usage": "1000 gold for 10 Esprits with better rates"},
+                    {"cmd": "/summon amount:1", "desc": "🎲 Single summon", "usage": "100 nyxies for one beautiful Esprit card"},
+                    {"cmd": "/summon amount:10", "desc": "🎰 Multi summon", "usage": "1000 nyxies for 10 Esprits with better rates"},
                 ],
                 "tips": [
                     "⭐ Rarity rates: Common 60% → Deity 0.1%",
@@ -277,14 +277,14 @@ class HelpV2Cog(commands.Cog):
                 "description": "Master the multi-currency economic ecosystem",
                 "color": 0xffd60a,
                 "commands": [
-                    {"cmd": "/daily", "desc": "☀️ Daily rewards", "usage": "Claim 100 free gold every 24 hours"},
-                    {"cmd": "/balance", "desc": "💳 Check balance", "usage": "View current gold amount"},
+                    {"cmd": "/daily", "desc": "☀️ Daily rewards", "usage": "Claim 100 free nyxies every 24 hours"},
+                    {"cmd": "/balance", "desc": "💳 Check balance", "usage": "View current nyxies amount"},
                     {"cmd": "/inventory", "desc": "🎒 Full inventory", "usage": "See all currencies and items"},
                 ],
                 "tips": [
-                    "💎 Gold: Primary summoning currency",
-                    "✨ Dust: Used for Esprit upgrades (coming soon)",
-                    "🔥 Fragments: Crafting rare materials",
+                    "💎 Nyxies: Primary summoning currency",
+                    "✨ Moonglow: Used for Esprit upgrades (coming soon)",
+                    "🔥 Azurite Shards: Crafting rare materials",
                 ]
             },
             "combat": {
@@ -300,7 +300,7 @@ class HelpV2Cog(commands.Cog):
                 "tips": [
                     "⚡ Turn-based tactical combat system",
                     "🎯 Use Esprit stats and abilities strategically",
-                    "🏆 Win battles to earn XP, gold, and rare items",
+                    "🏆 Win battles to earn XP, nyxies, and rare items",
                 ]
             },
             "advanced": {

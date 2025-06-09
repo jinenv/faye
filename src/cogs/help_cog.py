@@ -20,15 +20,15 @@ class HelpCog(commands.Cog):
                 "commands": [
                     {
                         "name": "/start",
-                        "description": "Begin your adventure and get your first Epic Esprit + starting gold"
+                        "description": "Begin your adventure and get your first Epic Esprit + starting nyxies"
                     },
                     {
                         "name": "/balance", 
-                        "description": "Check your current gold balance"
+                        "description": "Check your current nyxies balance"
                     },
                     {
                         "name": "/inventory",
-                        "description": "View your currencies and items (dust, fragments, chests)"
+                        "description": "View your currencies and items (moonglow, azurite_shards, chests)"
                     }
                 ]
             },
@@ -41,7 +41,7 @@ class HelpCog(commands.Cog):
                     },
                     {
                         "name": "💡 Tip",
-                        "description": "Single summons cost 100 gold, 10-pulls cost 1000 gold"
+                        "description": "Single summons cost 100 nyxies, 10-pulls cost 1000 nyxies"
                     }
                 ]
             },
@@ -63,15 +63,15 @@ class HelpCog(commands.Cog):
                 "commands": [
                     {
                         "name": "/daily",
-                        "description": "Claim your daily gold reward (24-hour cooldown)"
+                        "description": "Claim your daily nyxies reward (24-hour cooldown)"
                     },
                     {
                         "name": "/balance",
-                        "description": "Check your current gold balance"
+                        "description": "Check your current nyxies balance"
                     },
                     {
                         "name": "/inventory", 
-                        "description": "View dust, fragments, and loot chests"
+                        "description": "View moonglow, azurite_shards, and loot chests"
                     },
                     {
                         "name": "🔜 Marketplace",
@@ -109,7 +109,7 @@ class HelpCog(commands.Cog):
                     },
                     {
                         "name": "💎 Currencies",
-                        "description": "Gold (summoning), Dust (upgrades), Fragments (crafting)"
+                        "description": "Nyxies (summoning), Moonglow (upgrades), Azurite Shards (crafting)"
                     },
                     {
                         "name": "🌐 Cross-Server",
@@ -211,15 +211,15 @@ class HelpCog(commands.Cog):
                 "commands": [
                     {
                         "name": "/start",
-                        "description": "Begin your adventure and get your first Epic Esprit + starting gold"
+                        "description": "Begin your adventure and get your first Epic Esprit + starting nyxies"
                     },
                     {
                         "name": "/balance", 
-                        "description": "Check your current gold balance"
+                        "description": "Check your current nyxies balance"
                     },
                     {
                         "name": "/inventory",
-                        "description": "View your currencies and items (dust, fragments, chests)"
+                        "description": "View your currencies and items (moonglow, azurite_shards, chests)"
                     }
                 ]
             },
@@ -232,7 +232,7 @@ class HelpCog(commands.Cog):
                     },
                     {
                         "name": "💡 Tip",
-                        "description": "Single summons cost 100 gold, 10-pulls cost 1000 gold"
+                        "description": "Single summons cost 100 nyxies, 10-pulls cost 1000 nyxies"
                     }
                 ]
             },
@@ -254,15 +254,15 @@ class HelpCog(commands.Cog):
                 "commands": [
                     {
                         "name": "/daily",
-                        "description": "Claim your daily gold reward (24-hour cooldown)"
+                        "description": "Claim your daily nyxies reward (24-hour cooldown)"
                     },
                     {
                         "name": "/balance",
-                        "description": "Check your current gold balance"
+                        "description": "Check your current nyxies balance"
                     },
                     {
                         "name": "/inventory", 
-                        "description": "View dust, fragments, and loot chests"
+                        "description": "View moonglow, azurite_shards, and loot chests"
                     },
                     {
                         "name": "🔜 Marketplace",
@@ -300,7 +300,7 @@ class HelpCog(commands.Cog):
                     },
                     {
                         "name": "💎 Currencies",
-                        "description": "Gold (summoning), Dust (upgrades), Fragments (crafting)"
+                        "description": "Nyxies (summoning), Moonglow (upgrades), Azurite Shards (crafting)"
                     },
                     {
                         "name": "🌐 Cross-Server",
@@ -340,7 +340,7 @@ class HelpCog(commands.Cog):
                 "🌐 **Trade** with players across servers\n\n"
                 "**Select a module below to get started!**"
             ),
-            color=discord.Color.gold()
+            color=discord.Color.nyxies()
         )
         
         embed.add_field(

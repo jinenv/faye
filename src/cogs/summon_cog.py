@@ -30,7 +30,7 @@ class SummonCog(commands.Cog):
         self.image_generator = ImageGenerator(self.assets_base)
 
         game_settings = cfg.get_config("data/config/game_settings") or {}
-        self.COST_SINGLE = game_settings.get("summon_types", {}).get("standard", {}).get("cost_gold", 100)
+        self.COST_SINGLE = game_settings.get("summon_types", {}).get("standard", {}).get("cost_nyxie", 100)
         self.COST_TEN = self.COST_SINGLE * 10
 
     def _get_rarity_color(self, rarity_name: str) -> discord.Color:
@@ -97,10 +97,10 @@ class SummonCog(commands.Cog):
                 user_obj = await session.get(User, user_id)
                 if not user_obj:
                     return await interaction.followup.send("❌ You need to `/start` first.", ephemeral=True)
-                if user_obj.gold < cost:
-                    return await interaction.followup.send(f"❌ You need **{cost} gold** to perform this summon.", ephemeral=True)
+                if user_obj.nyxies < cost:
+                    return await interaction.followup.send(f"❌ You need **{cost} nyxies** to perform this summon.", ephemeral=True)
                 
-                user_obj.gold -= cost
+                user_obj.nyxies -= cost
                 session.add(user_obj)
                 
                 pages = []
@@ -132,7 +132,7 @@ class SummonCog(commands.Cog):
                 await interaction.followup.send(embed=embed, files=files, view=view)
         except Exception as e:
             logger.error(f"Error in /summon: {e}", exc_info=True)
-            await interaction.followup.send("An unexpected error occurred. Your gold was not spent.", ephemeral=True)
+            await interaction.followup.send("An unexpected error occurred. Your nyxies was not spent.", ephemeral=True)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(SummonCog(bot))

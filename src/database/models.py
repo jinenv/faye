@@ -32,9 +32,9 @@ class User(SQLModel, table=True):
     xp: int = Field(default=0)
     
     # --- CURRENCY RESTRUCTURE (per directive) ---
-    nyxies: int = Field(default=0, nullable=False)        # Replaces 'gold'
-    moonglow: int = Field(default=0, nullable=False)      # Replaces 'dust'
-    azurite_shards: int = Field(default=0, nullable=False) # Replaces 'fragments'
+    nyxies: int = Field(default=0, nullable=False)        # Replaces 'nyxies'
+    moonglow: int = Field(default=0, nullable=False)      # Replaces 'moonglow'
+    azurite_shards: int = Field(default=0, nullable=False) # Replaces 'azurite_shards'
     essence: int = Field(default=0, nullable=False)       # New crafting material
     
     # --- OTHER INVENTORY & METADATA ---
