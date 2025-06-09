@@ -136,3 +136,4 @@ class SummonCog(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(SummonCog(bot))
+    logger.info("✅ SummonCog loaded")

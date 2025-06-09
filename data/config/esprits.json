@@ -951,11 +951,11 @@
     "base_mana": 42,
     "class_name": "Support"
   },
-  "celeste_the_lightward": {
-    "name": "Celeste",
+  "celia_the_lightward": {
+    "name": "Celia",
     "description": "A devoted temple guardian, Celeste channels divine light through her sacred staff to shield allies and ward against darkness.",
     "rarity": "Rare",
-    "visual_asset_path": "esprits/rare/celeste_the_lightward.png",
+    "visual_asset_path": "esprits/rare/celia_the_lightward.png",
     "base_hp": 140,
     "base_attack": 11,
     "base_defense": 12,

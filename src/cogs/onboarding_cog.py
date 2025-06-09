@@ -55,3 +55,4 @@ class OnboardingCog(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(OnboardingCog(bot))
+    logger.info("✅ OnboardingCog loaded")
