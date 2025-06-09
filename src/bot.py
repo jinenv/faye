@@ -29,7 +29,6 @@ class NyxaBot(commands.Bot):
             "src.cogs.esprit_cog",
             "src.cogs.admin_cog",
             "src.cogs.help_cog",
-            "src.cogs.help_v2_cog"
         ]:
             try:
                 await self.load_extension(cog)
@@ -42,6 +41,7 @@ class NyxaBot(commands.Bot):
         logger.info("Slash commands synced.")
     
     async def on_ready(self):
+        self.start_time = discord.utils.utcnow()  # Track when bot started
         logger.info(f"NyxaBot is online as {self.user} (ID: {self.user.id}).")
 
 async def main():

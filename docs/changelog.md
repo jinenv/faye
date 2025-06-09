@@ -12,7 +12,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.2.0] - 2025-06-07
+## [0.3.0] - 2025-06-09
+
+This release marks a fundamental architectural overhaul, establishing a persistent, version-controlled database and a completely redesigned economy, setting the stage for all future content.
+
+### Added
+- **Database Migration System**: Implemented `Alembic` to manage all database schema changes and static data seeding, ensuring a robust, production-ready workflow.
+- **New Currencies**: Introduced **Essence** (crafting material) and **Loot Chests** to the database model.
+- **Complete Admin Command Suite**: Built a full suite of owner-only commands under `/admin`, including:
+    - `/admin give` for all currencies (Nyxies, Moonglow, Azurite Shards, Essence) and XP.
+    - `/admin give esprit` to grant specific Esprits to users.
+    - `/admin reset` for user data and daily cooldowns.
+    - `/admin set` for player and Esprit levels.
+    - `/admin remove` to safely delete Esprit instances.
+    - `/admin inspect` and `/admin help` for utility.
+- **Cog Reloading**: Added an `/admin reload` command to allow for hot-reloading of cogs during development, significantly speeding up the iteration cycle.
+
+### Changed
+- **Economy System Refactor**: The entire in-game economy has been restructured to align with the project directive.
+    - `gold` has been renamed to **Nyxies** (universal soft currency).
+    - `dust` has been renamed to **Moonglow** (Esprit enhancement currency).
+    - `fragments` has been renamed to **Azurite Shards**, which form **Azurites** (the sole summoning currency).
+- **Backend Stability**: Refactored all database models to resolve `InvalidRequestError` by explicitly defining foreign key relationships, stabilizing all commands.
+- **Cog Logic**: Updated `economy_cog`, `summon_cog`, `onboarding_cog`, and `admin_cog` to use the new currency names and database structure.
+
+### Fixed
+- **Daily Command Logic**: Corrected a bug where `/reset daily` did not properly reset the cooldown for the `/daily` command by reverting to a database-driven timestamp check.
+- **Database Integrity**: Resolved all `AttributeError` and `InvalidRequestError` issues stemming from the database refactor.
+
+---
+
+## [0.2.0] - 2025-06-07
 
 This release represents a complete redesign of the core summoning experience and a major refactor of the underlying architecture to improve stability, performance, and data integrity.
 
@@ -37,8 +67,8 @@ This release represents a complete redesign of the core summoning experience and
 
 ---
 
-## [1.1.0] - 2025-06-06
+## [0.1.0] - 2025-06-06
 
 ### Changed
-- **Centralized Game Settings**: Refactored all cogs to pull economic values (e.g., starting nyxies, daily rewards, summon costs) from a single configuration file at `data/config/game_settings.json`.
+- **Centralized Game Settings**: Refactored all cogs to pull economic values (e.g., starting Nyxies, daily rewards, summon costs) from a single configuration file at `data/config/game_settings.json`.
 - **Removed Hardcoded Values**: Eliminated "magic numbers" for economic parameters from the Python codebase, separating configuration from logic and improving maintainability.

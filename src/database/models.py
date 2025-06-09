@@ -4,6 +4,7 @@ from datetime import datetime
 import sqlalchemy as sa
 from sqlmodel import Field, SQLModel, Relationship
 
+# This model is unchanged
 class EspritData(SQLModel, table=True):
     """Stores the static, base data for every type of Esprit."""
     esprit_id: str = Field(primary_key=True, index=True)
@@ -30,14 +31,10 @@ class User(SQLModel, table=True):
     username: str
     level: int = Field(default=1)
     xp: int = Field(default=0)
-    
-    # --- CURRENCY RESTRUCTURE (per directive) ---
-    nyxies: int = Field(default=0, nullable=False)        # Replaces 'nyxies'
-    moonglow: int = Field(default=0, nullable=False)      # Replaces 'moonglow'
-    azurite_shards: int = Field(default=0, nullable=False) # Replaces 'azurite_shards'
-    essence: int = Field(default=0, nullable=False)       # New crafting material
-    
-    # --- OTHER INVENTORY & METADATA ---
+    nyxies: int = Field(default=0, nullable=False)
+    moonglow: int = Field(default=0, nullable=False)
+    azurite_shards: int = Field(default=0, nullable=False)
+    essence: int = Field(default=0, nullable=False)
     loot_chests: int = Field(default=0, nullable=False)
     last_daily_claim: Optional[datetime] = Field(default=None, nullable=True)
     created_at: datetime = Field(
@@ -48,17 +45,19 @@ class User(SQLModel, table=True):
             server_default=sa.func.current_timestamp()
         )
     )
-    
-    # --- TEAM MANAGEMENT (per directive) ---
-    # Foreign Keys to the UserEsprit table's 'id' field.
     active_esprit_id: Optional[str] = Field(default=None, foreign_key="useresprit.id", nullable=True)
     support1_esprit_id: Optional[str] = Field(default=None, foreign_key="useresprit.id", nullable=True)
     support2_esprit_id: Optional[str] = Field(default=None, foreign_key="useresprit.id", nullable=True)
     
-    # --- RELATIONSHIPS ---
+    # --- RELATIONSHIP FIX IS HERE ---
+    # We now explicitly tell this relationship which foreign key to use
+    # on the UserEsprit table to find its children.
     owned_esprits: List["UserEsprit"] = Relationship(
         back_populates="owner",
-        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+        sa_relationship_kwargs={
+            "cascade": "all, delete-orphan",
+            "foreign_keys": "[UserEsprit.owner_id]" 
+        }
     )
 
 class UserEsprit(SQLModel, table=True):
@@ -69,7 +68,15 @@ class UserEsprit(SQLModel, table=True):
     current_hp: int
     current_level: int
     current_xp: int
-    owner: Optional[User] = Relationship(back_populates="owned_esprits")
+    
+    # --- RELATIONSHIP FIX IS HERE ---
+    # We also tell this side of the relationship how to find its parent.
+    owner: Optional[User] = Relationship(
+        back_populates="owned_esprits",
+        sa_relationship_kwargs={
+            "foreign_keys": "[UserEsprit.owner_id]"
+        }
+    )
     esprit_data: Optional[EspritData] = Relationship(back_populates="owners")
 
 

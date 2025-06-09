@@ -10,7 +10,7 @@
   "base_adventure_nyxie": 20,
   "summon_types": {
     "standard": {
-      "cost_nyxie": 100,
+      "cost_azurite_shards": 100,
       "free_daily_rolls": 1,
       "rarity_distribution": {
         "Deity": 0.001,
