@@ -343,38 +343,42 @@ class AdminCog(commands.Cog):
             await interaction.followup.send(f"✅ Set Esprit ID `{esprit_id}` to **Level {level}**.")
     
     # --- Reset Commands ---
-    @reset_group.command(name="daily", description="Reset a user's daily claim cooldown")
-    async def reset_daily(self, interaction: discord.Interaction, user: discord.User):
-        async with self._get_user_context(interaction, user) as (session, user_obj):
-            if not session: return
-            user_obj.last_daily_claim = None; session.add(user_obj)
-            await interaction.followup.send(f"✅ Reset daily cooldown for {user.mention}.")
-
     @reset_group.command(name="user_data", description="[DANGEROUS] Wipes all data for a specific user")
     async def reset_user_data(self, interaction: discord.Interaction, user: discord.User, confirmation: str):
-        if not await self.bot.is_owner(interaction.user): return await interaction.response.send_message("❌ Owner only.", ephemeral=True)
-        if confirmation != user.name: return await interaction.response.send_message(f"❌ Confirmation failed. Provide username `{user.name}` to confirm.", ephemeral=True)
+        # --- Pre-computation ---
+        # Load the list of test user IDs from your config
+        game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
+        allowed_test_ids = [str(uid) for uid in game_settings.get("test_user_ids", [])]
+
+        # --- Step 1: Authorization & Safety Checks ---
+        # Enforce owner-only access
+        if not await self.bot.is_owner(interaction.user):
+            return await interaction.response.send_message("❌ Owner only.", ephemeral=True)
+
+        # NEW: Check if the target user is on the allowlist
+        if str(user.id) not in allowed_test_ids:
+            return await interaction.response.send_message(
+                f"❌ **SAFETY:** User {user.mention} is not on the `test_user_ids` allowlist in your configuration. This command is disabled for non-test users.",
+                ephemeral=True
+            )
+
+        # Enforce exact confirmation
+        if confirmation != user.name:
+            return await interaction.response.send_message(
+                f"❌ Confirmation failed. Provide username `{user.name}` to confirm.",
+                ephemeral=True
+            )
+
+        # --- Step 2: Execution ---
         await interaction.response.defer(ephemeral=True)
         async with get_session() as session:
             user_obj = await session.get(User, str(user.id))
-            if not user_obj: return await interaction.followup.send(f"❌ {user.mention} has no data to reset.")
-            await session.delete(user_obj); await session.commit()
-            logger.warning(f"DESTRUCTIVE: Wiped all data for user {user} ({user.id}) on behalf of {interaction.user}.")
-            await interaction.followup.send(f"✅ Wiped all data for {user.mention}.")
+            if not user_obj:
+                return await interaction.followup.send(f"❌ {user.mention} has no data to reset.")
 
-    @reset_group.command(name="database", description="[DANGEROUS] Wipes all user and esprit data.")
-    async def reset_database(self, interaction: discord.Interaction, confirmation: str):
-        if not await self.bot.is_owner(interaction.user): return await interaction.response.send_message("❌ Owner only.", ephemeral=True)
-        if confirmation.lower() != "confirm": return await interaction.response.send_message("❌ Confirmation not provided. Use `confirmation:confirm`.", ephemeral=True)
-        await interaction.response.defer(ephemeral=True)
-        try:
-            logger.warning(f"DATABASE WIPE initiated by owner {interaction.user}.")
-            async with get_session() as session:
-                await session.execute(delete(UserEsprit)); await session.execute(delete(User)); await session.commit()
-            await interaction.followup.send("✅ **DATABASE WIPED.** All user and esprit data has been deleted.")
-        except Exception as e:
-            logger.critical("DATABASE WIPE FAILED", exc_info=True)
-            await interaction.followup.send(f"❌ **DATABASE WIPE FAILED:** {e}")
+            await session.delete(user_obj)
+            await session.commit()
+            logger.warning(f"DESTRUCTIVE: Wiped all data for test user {user} ({user.id}) on behalf of {interaction.user}.")
 
     # --- List Commands ---
     @list_group.command(name="users", description="List the top 25 registered users by level")
