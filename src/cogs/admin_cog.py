@@ -143,7 +143,8 @@ class AdminCog(commands.Cog):
                     {"name": "/list users", "usage": "", "desc": "Lists the top 25 users by level."},
                     {"name": "/list esprits", "usage": "<user>", "desc": "Shows a paginated list of a user's Esprit collection."},
                     {"name": "/reload config", "usage": "", "desc": "Reloads the bot's configuration files from disk."},
-                ]
+                    {"name": "/reload esprits", "usage": "[force]", "desc": "Reloads Esprit data from JSON. Use force=True to update existing."},
+              ]
             }
         }
 
@@ -217,6 +218,55 @@ class AdminCog(commands.Cog):
         except Exception as e:
             logger.error("Error reloading configs", exc_info=True)
             await interaction.response.send_message(f"❌ Could not reload configs: {e}", ephemeral=True)
+
+    @reload_group.command(name="esprits", description="Reload Esprit data from JSON file")
+    async def reload_esprits(self, interaction: discord.Interaction, force: bool = False):
+        """Reload Esprit data from the JSON file into the database."""
+        if not await self.bot.is_owner(interaction.user): 
+            return await interaction.response.send_message("❌ Owner only.", ephemeral=True)
+        
+        await interaction.response.defer(ephemeral=True)
+        
+        try:
+            from src.database.data_loader import EspritDataLoader
+            loader = EspritDataLoader()
+            count = await loader.load_esprits(force_reload=force)
+            
+            embed = discord.Embed(
+                title="✅ Esprit Data Reloaded",
+                description=f"Successfully loaded **{count:,}** Esprits from JSON.",
+                color=discord.Color.green()
+            )
+            embed.add_field(
+                name="Mode", 
+                value="Force reload (updated existing)" if force else "Normal (new entries only)",
+                inline=False
+            )
+            
+            # Verify data integrity
+            missing = await loader.verify_data_integrity()
+            if missing:
+                embed.add_field(
+                    name="⚠️ Warning",
+                    value=f"Found {len(missing)} Esprits in JSON but not in database",
+                    inline=False
+                )
+            
+            logger.info(f"ESPRITS reloaded by owner {interaction.user}. Count: {count}, Force: {force}")
+            await interaction.followup.send(embed=embed)
+            
+        except FileNotFoundError:
+            logger.error("Esprits JSON file not found")
+            await interaction.followup.send(
+                "❌ Could not find `data/config/esprits.json` file!", 
+                ephemeral=True
+            )
+        except Exception as e:
+            logger.error("Error reloading Esprits", exc_info=True)
+            await interaction.followup.send(
+                f"❌ Could not reload Esprits: {str(e)}", 
+                ephemeral=True
+            )
 
     # --- Give Commands ---
     @give_group.command(name="gold", description="Give gold to a user")
