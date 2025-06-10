@@ -29,6 +29,7 @@ class NyxaBot(commands.Bot):
             "src.cogs.esprit_cog",
             "src.cogs.admin_cog",
             "src.cogs.help_cog",
+            "src.cogs.utility_cog",
         ]:
             try:
                 await self.load_extension(cog)

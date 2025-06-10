@@ -1,30 +1,62 @@
 {
-  "starting_level": 1,        
-  "starting_nyxie": 1000,
-  "start_command_free_summon": true,
-  "daily_summon_cost": 100,
-  "daily_free_summons": 1,
-  "xp_per_level_base": 100,
-  "xp_per_level_multiplier": 1.5,
-  "base_adventure_xp": 50,
-  "base_adventure_nyxie": 20,
-  "summon_types": {
-    "standard": {
-      "cost_azurite_shards": 100,
-      "free_daily_rolls": 1,
-      "rarity_distribution": {
-        "Deity": 0.001,
-        "Supreme": 0.004,
-        "Celestial": 0.02,
-        "Epic": 0.075,
-        "Rare": 0.15,
-        "Uncommon": 0.25,
-        "Common": 0.50
+  "starter_currencies": {
+    "nyxies": 500,
+    "moonglow": 100,
+    "azurite_shards": 90,
+    "essence": 0
+  },
+  "daily_rewards": {
+    "nyxies": 250,
+    "moonglow": 50,
+    "azurite_shards": 10
+  },
+  "progression": {
+    "player_max_level": 100,
+    "esprit_max_level": 100,
+    "esprit_upgrade_cost_per_level": 10,
+    "player_xp_curve": {
+      "base": 100,
+      "exponent": 1.5
+    },
+    "esprit_xp_curve": {
+      "base": 50,
+      "exponent": 1.3
+    }
+  },
+  "summoning": {
+    "pity_system_guarantee_after": 100,
+    "banners": {
+      "standard": {
+        "cost_single": 1,
+        "cost_multi": 10,
+        "multi_summon_count": 11,
+        "free_daily_summons": 1,
+        "rarity_distribution": {
+          "Deity": 0.001,
+          "Supreme": 0.004,
+          "Celestial": 0.02,
+          "Epic": 0.075,
+          "Rare": 0.15,
+          "Uncommon": 0.25,
+          "Common": 0.5
+        }
       }
     }
   },
-  "test_user_ids": [
-    "798476548734844969",
-    "708370789111693428"
-  ]
+  "activity_rewards": {
+    "explore": {
+      "player_xp": 25,
+      "esprit_xp": 50,
+      "currencies": {
+        "nyxies": 15,
+        "essence": 1
+      }
+    }
+  },
+  "developer": {
+    "test_user_ids": [
+      "798476548734844969",
+      "708370789111693428"
+    ]
+  }
 }

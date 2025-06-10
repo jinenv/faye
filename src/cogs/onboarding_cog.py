@@ -3,8 +3,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import random
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
+from sqlalchemy.future import select
 
 from src.database.db import get_session
 from src.database.models import User, UserEsprit, EspritData
@@ -16,8 +15,9 @@ class OnboardingCog(commands.Cog):
     """Handles the player onboarding process."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        # Load the entire starter currency dictionary
         game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
-        self.START_NYXIE = game_settings.get("starting_nyxie", 1000)
+        self.STARTER_CURRENCIES = game_settings.get("starter_currencies", {})
 
     @app_commands.command(name="start", description="Begin your adventure and get your starting bonus.")
     async def start(self, interaction: discord.Interaction):
@@ -36,7 +36,19 @@ class OnboardingCog(commands.Cog):
                 return
 
             chosen_esprit = random.choice(epic_pool)
-            new_user = User(user_id=str(interaction.user.id), username=interaction.user.display_name, level=1, xp=0, nyxies=self.START_NYXIE, moonglow=0, azurite_shards=0, loot_chests=0)
+            
+            # Create a new user with currencies from the config
+            new_user = User(
+                user_id=str(interaction.user.id),
+                username=interaction.user.display_name,
+                level=1,
+                xp=0,
+                nyxies=self.STARTER_CURRENCIES.get("nyxies", 0),
+                moonglow=self.STARTER_CURRENCIES.get("moonglow", 0),
+                azurite_shards=self.STARTER_CURRENCIES.get("azurite_shards", 0),
+                essence=self.STARTER_CURRENCIES.get("essence", 0),
+                loot_chests=0
+            )
             
             session.add(new_user)
             await session.flush()
@@ -50,7 +62,20 @@ class OnboardingCog(commands.Cog):
             await session.commit()
             
             logger.info(f"New user registered: {interaction.user.display_name} ({interaction.user.id})")
-            embed = discord.Embed(title="🚀 Adventure Awaits!", description=f"Welcome, **{interaction.user.display_name}**!\nAn account has been created for you. You received **{self.START_NYXIE} nyxies** and an Epic Esprit: **{chosen_esprit.name}**.", color=discord.Color.green())
+            
+            # Create a more detailed welcome message
+            start_nyxies = self.STARTER_CURRENCIES.get("nyxies", 0)
+            start_shards = self.STARTER_CURRENCIES.get("azurite_shards", 0)
+            
+            embed = discord.Embed(
+                title="🚀 Adventure Awaits!",
+                description=f"Welcome, **{interaction.user.display_name}**! An account has been created for you.",
+                color=discord.Color.green()
+            )
+            embed.add_field(name="🎁 Starting Bonus", value=f"• **{start_nyxies:,}** Nyxies\n• **{start_shards}** Azurite Shards", inline=False)
+            embed.add_field(name="🌟 Your First Esprit", value=f"You received an Epic Esprit: **{chosen_esprit.name}**!", inline=False)
+            embed.set_footer(text="Use /help to see all available commands.")
+            
             await interaction.followup.send(embed=embed)
 
 async def setup(bot: commands.Bot):

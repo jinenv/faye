@@ -920,37 +920,34 @@ class AdminCog(commands.Cog):
             await interaction.followup.send(f"✅ Set Esprit ID `{esprit_id}` to **Level {level}**.")
     
     # --- Reset Commands ---
-    @reset_group.command(name="user_data", description="[DANGEROUS] Wipes all data for a specific user")
+    @reset_group.command(name="user_data")
     async def reset_user_data(self, interaction: discord.Interaction, user: discord.User, confirmation: str):
-        # Load the list of test user IDs from your config
+        # FIX: Correctly access the nested test_user_ids list
         game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
-        allowed_test_ids = [str(uid) for uid in game_settings.get("test_user_ids", [])]
+        developer_settings = game_settings.get("developer", {})
+        allowed_test_ids = [str(uid) for uid in developer_settings.get("test_user_ids", [])]
 
-        # Enforce owner-only access
         if not await self.bot.is_owner(interaction.user):
             return await interaction.response.send_message("❌ Owner only.", ephemeral=True)
 
-        # Check if the target user is on the allowlist
         if str(user.id) not in allowed_test_ids:
             return await interaction.response.send_message(
-                f"❌ **SAFETY:** User {user.mention} is not on the `test_user_ids` allowlist in your configuration. This command is disabled for non-test users.",
+                f"❌ **SAFETY:** User {user.mention} is not on the `test_user_ids` allowlist.",
                 ephemeral=True
             )
 
-        # Enforce exact confirmation
         if confirmation != user.name:
             return await interaction.response.send_message(
                 f"❌ Confirmation failed. Provide username `{user.name}` to confirm.",
                 ephemeral=True
             )
 
-        # Execute
         await interaction.response.defer(ephemeral=True)
         async with get_session() as session:
             user_obj = await session.get(User, str(user.id))
             if not user_obj:
                 return await interaction.followup.send(f"❌ {user.mention} has no data to reset.")
-
+            
             await session.delete(user_obj)
             await session.commit()
             logger.warning(f"DESTRUCTIVE: Wiped all data for test user {user} ({user.id}) on behalf of {interaction.user}.")

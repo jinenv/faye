@@ -19,19 +19,32 @@ class SummonCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.assets_base = "assets"
-        cfg = self.bot.config_manager
         
+        # --- Load All Required Configs ---
+        cfg = self.bot.config_manager
         self.rarity_visuals = cfg.get_config("data/config/rarity_visuals") or {}
         self.class_visuals = cfg.get_config("data/config/class_visuals") or {}
-        self.rarity_tiers = cfg.get_config("data/config/rarity_tiers") or {}
-        self.rarity_weights = {k: v.get("probability", 0) for k, v in self.rarity_tiers.items()}
         
+        game_settings = cfg.get_config("data/config/game_settings") or {}
+        summoning_settings = game_settings.get("summoning", {}).get("banners", {}).get("standard", {})
+        
+        # --- Implement Azurite Conversion Logic ---
+        # The cost in the config is in WHOLE Azurites.
+        # We define the conversion rate here. This could also be in the config.
+        self.SHARDS_PER_AZURITE = 10 
+        
+        # Calculate the actual cost in SHARDS.
+        cost_single_azurites = summoning_settings.get("cost_single", 1)
+        cost_multi_azurites = summoning_settings.get("cost_multi", 10)
+        
+        self.COST_SINGLE_SHARDS = cost_single_azurites * self.SHARDS_PER_AZURITE
+        self.COST_MULTI_SHARDS = cost_multi_azurites * self.SHARDS_PER_AZURITE
+        
+        # Load rarity probabilities
+        self.rarity_weights = summoning_settings.get("rarity_distribution", {})
+
         self.rng = RNGManager()
         self.image_generator = ImageGenerator(self.assets_base)
-
-        game_settings = cfg.get_config("data/config/game_settings") or {}
-        self.COST_SINGLE = game_settings.get("summon_types", {}).get("standard", {}).get("cost_nyxie", 100)
-        self.COST_TEN = self.COST_SINGLE * 10
 
     def _get_rarity_color(self, rarity_name: str) -> discord.Color:
         hex_color = (self.rarity_visuals.get(rarity_name) or {}).get("border_color", "#FFFFFF")
@@ -44,8 +57,9 @@ class SummonCog(commands.Cog):
         return random.choice(pool) if pool else None
 
     class PaginatedView(discord.ui.View):
+        # This sub-class is well-designed and does not need changes.
         def __init__(self, parent_cog: "SummonCog", user_id: int, pages: List[Tuple[bytes, EspritData]]):
-            super().__init__(timeout=None)
+            super().__init__(timeout=300)
             self.parent_cog = parent_cog
             self.user_id = user_id
             self.pages = pages
@@ -82,14 +96,15 @@ class SummonCog(commands.Cog):
             self.current_index = (self.current_index + 1) % self.total
             await self._update_view(interaction)
 
-    @app_commands.command(name="summon", description="Summon Esprits.")
+    @app_commands.command(name="summon", description="Summon Esprits using Azurites.")
     @app_commands.describe(amount="The number of summons to perform. Must be 1 or 10.")
     async def summon(self, interaction: discord.Interaction, amount: int):
         await interaction.response.defer(thinking=True)
         if amount not in (1, 10):
             return await interaction.followup.send("❌ Invalid `amount`. You may only summon 1 or 10 at a time.", ephemeral=True)
         
-        cost = self.COST_SINGLE if amount == 1 else self.COST_TEN
+        # Determine the cost in SHARDS based on the summon amount.
+        cost_in_shards = self.COST_SINGLE_SHARDS if amount == 1 else self.COST_MULTI_SHARDS
         user_id = str(interaction.user.id)
 
         try:
@@ -97,20 +112,26 @@ class SummonCog(commands.Cog):
                 user_obj = await session.get(User, user_id)
                 if not user_obj:
                     return await interaction.followup.send("❌ You need to `/start` first.", ephemeral=True)
-                if user_obj.nyxies < cost:
-                    return await interaction.followup.send(f"❌ You need **{cost} nyxies** to perform this summon.", ephemeral=True)
                 
-                user_obj.nyxies -= cost
+                # Check against the user's azurite_shards balance.
+                if user_obj.azurite_shards < cost_in_shards:
+                    needed_azurites = cost_in_shards / self.SHARDS_PER_AZURITE
+                    return await interaction.followup.send(f"❌ You need **{needed_azurites:.0f} Azurites** ({cost_in_shards} Shards) for this summon.", ephemeral=True)
+                
+                # Subtract the cost from the azurite_shards balance.
+                user_obj.azurite_shards -= cost_in_shards
                 session.add(user_obj)
                 
                 pages = []
                 new_esprits_to_add = []
                 loop = asyncio.get_running_loop()
+
                 for _ in range(amount):
                     chosen_rarity = self.rng.get_random_rarity(self.rarity_weights)
                     spirit_obj = await self._choose_random_esprit(chosen_rarity, session)
                     if not spirit_obj:
-                        raise ValueError(f"Failed to roll an Esprit for rarity: {chosen_rarity}")
+                        logger.warning(f"Failed to find an Esprit for rarity '{chosen_rarity}'. Skipping one summon.")
+                        continue
 
                     spirit_dict = spirit_obj.model_dump()
                     render_func = partial(self.image_generator.render_esprit_card, esprit_data=spirit_dict)
@@ -124,15 +145,24 @@ class SummonCog(commands.Cog):
                     new_esprits_to_add.append(new_u_e)
                     pages.append((image_bytes, spirit_obj))
                 
+                if not pages:
+                    # This happens if all esprit lookups failed.
+                    user_obj.azurite_shards += cost_in_shards # Refund the user
+                    session.add(user_obj)
+                    await session.commit()
+                    return await interaction.followup.send("An error occurred while finding Esprits to summon. Your Azurites were not spent.", ephemeral=True)
+
                 session.add_all(new_esprits_to_add)
                 await session.commit()
                 
                 view = self.PaginatedView(self, interaction.user.id, pages)
                 embed, files = view._build_embed_and_files()
                 await interaction.followup.send(embed=embed, files=files, view=view)
+
         except Exception as e:
             logger.error(f"Error in /summon: {e}", exc_info=True)
-            await interaction.followup.send("An unexpected error occurred. Your nyxies was not spent.", ephemeral=True)
+            await interaction.followup.send("An unexpected error occurred. Please contact support if the issue persists.", ephemeral=True)
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(SummonCog(bot))
