@@ -1,63 +1,56 @@
-# Nyxa Combat & Progression System Design
+# Nyxa: Revised Combat & Progression Directive
+
+This document outlines the design for Nyxa's core gameplay loops, progression systems, and economy. It has been updated to reflect the current, verified currency and crafting systems.
 
 ## Team Structure
-- 3-Esprit parties: 1 Main Fighter + 2 Support
-- Main Esprit: Active in combat, visible in UI
-- Support Esprits: Provide secondary skills to main fighter
-- Class system: Guardian, Destroyer, Mystic, Support
-- Class synergies: Team bonuses for specific combinations
+- **3-Esprit Parties:** 1 Main Fighter + 2 Support.
+- **Main Esprit:** The active combatant, visible in the UI, and the primary recipient of commands.
+- **Support Esprits:** Provide passive bonuses and secondary skills to the main fighter.
+- **Class System:** Guardian, Destroyer, Mystic, Support.
+- **Class Synergies:** Future implementation of team bonuses for specific class combinations.
 
 ## Skill System
-- Each Esprit: 2 active abilities (Main + Secondary)
-- Main Skill: High MP cost, long cooldown, signature ability
-- Secondary Skill: Lower cost, short cooldown, utility focused
-- Combat options: Main fighter uses own skills + supports' secondary skills
-- 5 total abilities available per combat encounter
+- **Esprit Abilities:** Each Esprit will have 2 active abilities (Main + Secondary).
+- **Main Skill:** A high-impact, signature ability with a significant MP cost and long cooldown.
+- **Secondary Skill:** A lower-cost, shorter-cooldown ability focused on utility.
+- **Combat Options:** The main fighter will have access to its own two skills, plus the secondary skills of its two supports, for a total of 4 available abilities per combat encounter.
 
 ## Combat Flow
-- Turn-based: Player vs Boss only (no party turn management)
-- Discord dropdown: Select from available skills
-- Fast resolution: 2-4 turn battles maximum
-- Visual feedback: Damage numbers, effects, status updates
-- Mobile-friendly: Simple button interactions
+- **Turn-Based:** The initial implementation will be Player vs. Environment (PvE), focused on 1v1 encounters.
+- **Interface:** A `discord.ui.View` with buttons or a dropdown will be used to select from available skills.
+- **Pacing:** Battles are designed to be fast-paced, resolving in 2-4 turns.
+- **Feedback:** The UI will provide clear visual feedback for damage numbers, status effects, and other combat events.
 
-## Progression Commands
+## Core Progression Commands
 
-### /explore (5-minute cooldown)
-- Random monster encounters
-- Rewards: 5-15 azurite_shards, 10-50 nyxies, materials
-- Primary fragment income source
-- Quick, repeatable content loop
+### /explore
+- A repeatable, low-intensity command with a short cooldown.
+- **Function:** Serves as the primary method for players to engage with the world and earn resources.
+- **Rewards:** Guaranteed to reward `Azurite Shards` and `Nyxies`. Has a chance to reward `Essence` and other materials.
 
-### /tower [level] [floor] (1-100 floors)
-- Structured boss progression
-- Prerequisites: Must clear previous floor
-- Milestone rewards: Major fragment bonuses at key floors
-- Social comparison: "What floor are you on?"
-- Difficulty scaling: Higher floors = better rewards
+### /tower
+- A future, structured PvE challenge with progressively difficult floors.
+- **Function:** Acts as a primary progression path and a goal for players to build their teams towards.
+- **Rewards:** Grants major `Azurite` and `Moonglow` bonuses at milestone floors.
 
-## Economy & Progression
+## Economy & Progression: Verified System
 
-### Fragment System
-- Single currency for summons: 100 azurite_shards = 1 pull
-- Sources: Exploration, tower milestones, achievements
-- No energy/stamina gates: Just time-based cooldowns
-- Nyxies: Instant summons, premium purchases
+This section details the confirmed, implemented multi-currency economy.
 
-### Milestone Rewards
-- Sigil Power milestones: 1K, 5K, 10K, 25K thresholds
-- Rewards: Azurite Shards + nyxies + mystery chests
-- Total account power metric across all Esprits
-- Long-term progression goals beyond collection
+### Confirmed Currency Roles
+- **Nyxies:** The universal "soft currency." Used for general purposes, potentially in a future shop or for player-to-player trading.
+- **Moonglow:** The dedicated "enhancement currency." Its sole purpose is to level up and upgrade Esprits.
+- **Azurite Shards:** The raw "summoning material." This is the primary reward from activities like `/explore`. It is not used directly for summoning.
+- **Azurites:** The premium "summoning currency." This is the **sole currency** used in the `/summon` command. It cannot be earned directly and must be crafted.
+- **Essence:** A tiered set of crafting materials for a future item creation system.
 
-### Leaderboard
-- Global sigil power rankings
-- Social competition and status display
-- Monthly/seasonal reset potential
-- Screenshot-worthy achievements
+### The Crafting & Summoning Loop
+The core economic loop for acquiring new Esprits is now implemented and verified:
+1.  Players run the `/explore` command to earn **Azurite Shards**.
+2.  Players use the `/craft azurite` command to convert their shards into whole **Azurites**.
+3.  Players use their crafted **Azurites** in the `/summon` command to acquire new Esprits.
+4.  This creates a clear, engaging progression: **Play -> Gather -> Craft -> Summon**.
 
-## Interconnected Systems
-- Explore/Tower → Azurite Shards → Summons → Stronger teams → Higher tower progress
-- Everything feeds back into collection and progression
-- No dead-end currencies or isolated mechanics
-- Clear upgrade path: Collect → Upgrade → Progress → Repeat
+### Milestone & Long-Term Goals
+- **Sigil Power:** A future metric representing a player's total account power across all owned Esprits. This will be used for milestone rewards and leaderboards.
+- **Leaderboards:** A global ranking system based on Sigil Power or Tower Floor progression to drive social competition.

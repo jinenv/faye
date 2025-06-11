@@ -1,54 +1,63 @@
-# Nyxa Project To-Do List
+# Nyxa Project: Revised Development Roadmap
 
-A list of prioritized tasks for future development, covering both core game features and architectural improvements.
+This document outlines the current development priorities for Nyxa, reflecting completed milestones and the primary directives for future work.
 
-## 1. Core Feature Development
+## ✅ Completed Milestones
 
-These tasks focus on building out the primary gameplay loop to drive user engagement.
+This foundational work is verified, stable, and complete.
 
-### 1.1. Player & Esprit Progression System
+-   **[x] Architectural Foundation:**
+    -   **Integrated Alembic:** Successfully set up and used for all database schema changes, ensuring safe, evolutionary updates.
+    -   **Established Reliable Deployment Process:** Created `start.bat`/`start.sh` to automate migrations and prevent schema-mismatch errors in a live environment.
+    -   **Resolved All Critical Bugs:** Fixed paginator crashes, command timeouts, and database errors, leading to a stable application.
+-   **[x] Core Progression & Economy:**
+    -   **Defined XP Curves:** Player and Esprit XP progression is defined in `data/config/game_settings.json`.
+    -   **Created Progression Manager:** All level-up logic is centralized in `src/utils/progression_manager.py`.
+    -   **Implemented Profile & Level Commands:** Users can view their level and XP progress via `/profile` and `/level`.
+    -   **Implemented Crafting System:** The Azurite Shard -> Azurite crafting loop is fully functional with the `/craft` command.
+-   **[x] Admin & Backend:**
+    -   **Refactored Admin Cog:** All currency management commands (`give`/`remove`/`set`) are stable and use a central helper function, reducing code duplication and improving maintainability.
 
--   [ ] **Define XP Curve:** Finalize the XP formula in `data/config/game_settings.json`. Define `xp_per_level_base` and `xp_per_level_multiplier`.
--   [ ] **Create Progression Utility:** Develop a new utility, e.g., `src/utils/progression_manager.py`, to handle all XP and level-up logic. This utility should be responsible for calculating level based on XP and vice-versa.
--   [ ] **Implement Stat Growth:** Define a formula for how an Esprit's stats increase upon leveling up. This could be a simple linear increase or based on a growth factor defined in `data/config/esprits.json`.
--   [ ] **Create Profile Command:** Add a `/profile` command that displays a user's level, XP, nyxies, moonglow, and their active Esprit's level and XP.
+---
 
-### 1.2. PvE Combat Loop
+## 1. Immediate Priority: Complete Esprit Management
 
--   [ ] **Create Combat Cog:** Build a new `src/cogs/combat_cog.py`.
--   [ ] **Develop `/adventure` Command:** Implement the primary PvE command where a user's active Esprit fights a random wild Esprit from the `EspritData` table.
--   [ ] **Implement Turn-Based Logic:** Design the combat flow:
-    -   Determine attack order based on the `base_speed` stat.
-    -   Calculate damage (e.g., `ATK - DEF`).
-    -   Incorporate other stats like `crit_rate` and `dodge_chance`.
--   [ ] **Integrate Rewards:** On victory, grant the user nyxies and call the progression utility to award XP to the user and their Esprit.
--   [ ] **(Optional) Interactive Combat:** Create a `CombatView(discord.ui.View)` with buttons for "Attack", "Use Item", "Flee" to make battles more interactive.
+This is the next feature set to be built, completing the core user experience for managing Esprits.
 
-### 1.3. Item & Inventory System
+-   [ ] **Implement `/esprit team` command:** Create subcommands (`view`, `set`) to allow users to manage their active and support Esprits. The database model already supports this.
+-   [ ] **Implement `/esprit details` command:** Allow users to view a detailed stat card for a specific owned Esprit. This can be a simple text embed initially.
 
--   [ ] **Define Item Models:** In `src/database/models.py`, create two new tables:
-    -   `ItemData`: A static table defining all possible items (e.g., `item_id`, `name`, `description`, `effect`).
-    -   `UserItem`: A table linking `user_id` to `item_id` with a `quantity` column.
--   [ ] **Expand Inventory Command:** Update the `/inventory` command in `src/cogs/economy_cog.py` to display both Esprits and Items. Consider pagination if the list becomes long.
--   [ ] **Add Items to Loot Tables:** Incorporate item drops as potential rewards from the `/adventure` command.
+## 2. UI/UX Overhaul: Dynamic Image Generation
 
-## 2. Architectural & Operational Improvements
+This is a new, high-priority directive to enhance the bot's visual identity.
 
-These tasks focus on long-term project health, stability, and scalability.
+-   [ ] **Create `/profile` Image Card:** Refactor the `/profile` command to generate a dynamic stat card image using Pillow, replacing the text-based embed.
+-   [ ] **Create `/inventory` Image View:** (Future) Re-design the inventory as a graphical view.
+-   [ ] **Create visual `/esprit details` card:** (Future) Leverage the `ImageGenerator` to show Esprit stats visually.
 
-### 2.1. Database Migrations
+## 3. Next Major Feature: PvE Combat Loop
 
--   [ ] **Integrate Alembic:** Add `alembic` to `requirements.txt` and set it up to manage database schema changes.
--   [ ] **Generate Initial Migration:** Create the first migration script that reflects the current state of the models in `src/database/models.py`.
--   [ ] **Deprecate Destructive Resets:** Phase out the `/reset_db` command in favor of using Alembic migrations for all future database modifications. This is critical for retaining user data in a live environment.
+This is the primary gameplay loop to be developed after Esprit Management is complete.
 
-### 2.2. Automated Testing
+-   [ ] **Create Combat Cog:** Build the `src/cogs/combat_cog.py`.
+-   [ ] **Implement `/adventure` Command:** Create the primary PvE command where a user's team fights random wild Esprits.
+-   [ ] **Design Turn-Based Logic:** Implement combat flow, including attack order (speed), damage calculation (`ATK - DEF`), and other stats (`crit_rate`, `dodge_chance`).
+-   [ ] **Grant Rewards on Victory:** Integrate with the economy and progression systems to award XP and currency.
 
--   [ ] **Setup `pytest`:** Create a `tests/` directory and configure `pytest` and `pytest-asyncio`.
--   [ ] **Write Unit Tests:** Start by creating tests for your core utilities, such as `RNGManager` and the future `progression_manager.py`.
--   [ ] **Write Integration Tests:** Mock database sessions and Discord API responses to test the logic within your cogs. Ensure that commands fail gracefully with incorrect input.
+## 4. Long-Term Architectural & Feature Goals
 
-### 2.3. User Experience (UX) Enhancements
+These are crucial for the long-term health, security, and depth of the project.
 
--   [ ] **Paginated Inventory:** Refactor the `/inventory` command to use a paginated `discord.ui.View`, similar to the `/summon` command, especially as users accumulate many Esprits and items.
--   [ ] **More Visuals:** Leverage the `ImageGenerator` utility for more commands, such as generating an image for the `/profile` command or showing combat results visually.
+-   **[ ] Implement Esprit Stat Growth:** Define and implement the formula for how an Esprit's stats increase upon leveling up.
+-   **[ ] Implement Item & Inventory System:**
+    -   Define `ItemData` and `UserItem` models in the database.
+    -   Expand the `/inventory` command to show items.
+    -   Add items to loot tables from `/adventure`.
+-   **[ ] Automated Testing:**
+    -   Setup `pytest` and `pytest-asyncio`.
+    -   Write unit tests for core utilities (`RNGManager`, `ProgressionManager`).
+    -   Write integration tests for cogs to ensure command stability.
+-   **[ ] Security & Service Enhancements:**
+    -   Implement Audit Logging for all sensitive admin actions.
+    -   Implement a `/backup` command for database security.
+    -   Implement rate-limiting and emergency "lockdown" controls.

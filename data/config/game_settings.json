@@ -1,4 +1,7 @@
 {
+  "economy": {
+    "shards_per_azurite": 10
+  },
   "starter_currencies": {
     "nyxies": 500,
     "moonglow": 100,

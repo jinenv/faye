@@ -28,17 +28,8 @@ class SummonCog(commands.Cog):
         game_settings = cfg.get_config("data/config/game_settings") or {}
         summoning_settings = game_settings.get("summoning", {}).get("banners", {}).get("standard", {})
         
-        # --- Implement Azurite Conversion Logic ---
-        # The cost in the config is in WHOLE Azurites.
-        # We define the conversion rate here. This could also be in the config.
-        self.SHARDS_PER_AZURITE = 10 
-        
-        # Calculate the actual cost in SHARDS.
-        cost_single_azurites = summoning_settings.get("cost_single", 1)
-        cost_multi_azurites = summoning_settings.get("cost_multi", 10)
-        
-        self.COST_SINGLE_SHARDS = cost_single_azurites * self.SHARDS_PER_AZURITE
-        self.COST_MULTI_SHARDS = cost_multi_azurites * self.SHARDS_PER_AZURITE
+        # --- SIMPLIFIED: No more shard math needed here! ---
+        # The SummonCog no longer needs to know about shard conversion.
         
         # Load rarity probabilities
         self.rarity_weights = summoning_settings.get("rarity_distribution", {})
@@ -57,7 +48,6 @@ class SummonCog(commands.Cog):
         return random.choice(pool) if pool else None
 
     class PaginatedView(discord.ui.View):
-        # This sub-class is well-designed and does not need changes.
         def __init__(self, parent_cog: "SummonCog", user_id: int, pages: List[Tuple[bytes, EspritData]]):
             super().__init__(timeout=300)
             self.parent_cog = parent_cog
@@ -96,6 +86,7 @@ class SummonCog(commands.Cog):
             self.current_index = (self.current_index + 1) % self.total
             await self._update_view(interaction)
 
+    # --- CHANGED: This is the updated /summon command logic ---
     @app_commands.command(name="summon", description="Summon Esprits using Azurites.")
     @app_commands.describe(amount="The number of summons to perform. Must be 1 or 10.")
     async def summon(self, interaction: discord.Interaction, amount: int):
@@ -103,8 +94,11 @@ class SummonCog(commands.Cog):
         if amount not in (1, 10):
             return await interaction.followup.send("❌ Invalid `amount`. You may only summon 1 or 10 at a time.", ephemeral=True)
         
-        # Determine the cost in SHARDS based on the summon amount.
-        cost_in_shards = self.COST_SINGLE_SHARDS if amount == 1 else self.COST_MULTI_SHARDS
+        # The cost is now in WHOLE Azurites, which are loaded from config.
+        game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
+        banner_settings = game_settings.get("summoning", {}).get("banners", {}).get("standard", {})
+        cost_in_azurites = banner_settings.get("cost_single", 1) if amount == 1 else banner_settings.get("cost_multi", 10)
+
         user_id = str(interaction.user.id)
 
         try:
@@ -113,13 +107,16 @@ class SummonCog(commands.Cog):
                 if not user_obj:
                     return await interaction.followup.send("❌ You need to `/start` first.", ephemeral=True)
                 
-                # Check against the user's azurite_shards balance.
-                if user_obj.azurite_shards < cost_in_shards:
-                    needed_azurites = cost_in_shards / self.SHARDS_PER_AZURITE
-                    return await interaction.followup.send(f"❌ You need **{needed_azurites:.0f} Azurites** ({cost_in_shards} Shards) for this summon.", ephemeral=True)
+                # Check against the user's REAL azurites balance.
+                if user_obj.azurites < cost_in_azurites:
+                    return await interaction.followup.send(
+                        f"❌ You don't have enough Azurites. You need **{cost_in_azurites}** but you only have **{user_obj.azurites}**.\n"
+                        f"Use `/craft azurite` to convert your shards!", 
+                        ephemeral=True
+                    )
                 
-                # Subtract the cost from the azurite_shards balance.
-                user_obj.azurite_shards -= cost_in_shards
+                # Subtract the cost from the azurites balance.
+                user_obj.azurites -= cost_in_azurites
                 session.add(user_obj)
                 
                 pages = []
@@ -147,7 +144,7 @@ class SummonCog(commands.Cog):
                 
                 if not pages:
                     # This happens if all esprit lookups failed.
-                    user_obj.azurite_shards += cost_in_shards # Refund the user
+                    user_obj.azurites += cost_in_azurites # Refund the user
                     session.add(user_obj)
                     await session.commit()
                     return await interaction.followup.send("An error occurred while finding Esprits to summon. Your Azurites were not spent.", ephemeral=True)

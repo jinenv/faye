@@ -1,4 +1,5 @@
 # src/cogs/economy_cog.py
+from typing import Literal
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -16,7 +17,13 @@ class EconomyCog(commands.Cog):
         self.bot = bot
         game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
         self.DAILY_REWARDS = game_settings.get("daily_rewards", {})
+        
+        # Load the conversion rate from the new 'economy' section
+        economy_settings = game_settings.get("economy", {})
+        self.SHARDS_PER_AZURITE = economy_settings.get("shards_per_azurite", 10) # Default for safety
+        
         logger.info(f"Daily rewards loaded: {self.DAILY_REWARDS}")
+        logger.info(f"Azurite conversion rate loaded: {self.SHARDS_PER_AZURITE}")
 
     @app_commands.command(name="inventory", description="View your currencies and other items.")
     async def inventory(self, interaction: discord.Interaction):
@@ -33,10 +40,9 @@ class EconomyCog(commands.Cog):
         embed.add_field(name="<:moonglow_icon:YOUR_ICON_ID> Moonglow", value=f"{user.moonglow:,}", inline=True)
         embed.add_field(name="<:essence_icon:YOUR_ICON_ID> Essence", value=f"{user.essence:,}", inline=True)
 
-        SHARDS_PER_AZURITE = 10 
-        full_azurites = user.azurite_shards // SHARDS_PER_AZURITE
-        remaining_shards = user.azurite_shards % SHARDS_PER_AZURITE
-        azurite_display = f"<:azurite_icon:YOUR_ICON_ID> **{full_azurites}** Azurites\n<:shard_icon:YOUR_ICON_ID> **{remaining_shards}** Shards"
+        # No more division/modulo! Just display the raw values from the database.
+        azurite_display = (f"<:azurite_icon:YOUR_ICON_ID> **{user.azurites:,}** Azurites\n"
+                           f"<:shard_icon:YOUR_ICON_ID> **{user.azurite_shards:,}** Shards")
         
         embed.add_field(name="Summoning Energy", value=azurite_display, inline=False)
         embed.add_field(name="🎁 Loot Chests", value=f"{user.loot_chests:,}", inline=True)
@@ -82,9 +88,57 @@ class EconomyCog(commands.Cog):
             )
             await interaction.followup.send(embed=embed)
 
+    @app_commands.command(name="craft", description="Craft higher-tier items from materials.")
+    @app_commands.describe(item="The item you want to craft.", amount="How many to craft. 'all' to craft as many as possible.")
+    async def craft(self, interaction: discord.Interaction, item: Literal['azurite'], amount: str):
+        if item.lower() != 'azurite':
+            return await interaction.response.send_message("❌ You can only craft Azurites right now.", ephemeral=True)
+
+        await interaction.response.defer(ephemeral=True)
+        
+        async with get_session() as session:
+            user = await session.get(User, str(interaction.user.id))
+            if not user:
+                return await interaction.followup.send("❌ You need to `/start` first.", ephemeral=True)
+
+            shards_needed_per_azurite = self.SHARDS_PER_AZURITE
+            
+            if amount.lower() == 'all':
+                if user.azurite_shards < shards_needed_per_azurite:
+                     return await interaction.followup.send(f"❌ You need at least **{shards_needed_per_azurite}** shards to craft an Azurite.", ephemeral=True)
+                amount_to_craft = user.azurite_shards // shards_needed_per_azurite
+            else:
+                try:
+                    amount_to_craft = int(amount)
+                    if amount_to_craft <= 0:
+                        return await interaction.followup.send("❌ Please provide a positive number to craft.", ephemeral=True)
+                except ValueError:
+                    return await interaction.followup.send("❌ Invalid amount. Please specify a number or 'all'.", ephemeral=True)
+
+            total_shards_cost = amount_to_craft * shards_needed_per_azurite
+
+            if user.azurite_shards < total_shards_cost:
+                return await interaction.followup.send(
+                    f"❌ You don't have enough shards. You need **{total_shards_cost:,}** shards to craft **{amount_to_craft}** Azurite(s), but you only have **{user.azurite_shards:,}**.",
+                    ephemeral=True
+                )
+
+            # Perform the conversion
+            user.azurite_shards -= total_shards_cost
+            user.azurites += amount_to_craft
+            
+            session.add(user)
+            await session.commit()
+
+            embed = discord.Embed(
+                title="✨ Crafting Successful!",
+                description=f"You converted **{total_shards_cost:,}** Azurite Shards into **{amount_to_craft:,}** <:azurite_icon:YOUR_ICON_ID> Azurite(s).",
+                color=discord.Color.blue()
+            )
+            embed.add_field(name="New Balance", value=f"Azurites: **{user.azurites:,}**\nShards: **{user.azurite_shards:,}")
+            await interaction.followup.send(embed=embed)
+
 async def setup(bot: commands.Bot):
     await bot.add_cog(EconomyCog(bot))
     logger.info("✅ EconomyCog loaded")
-
-
 

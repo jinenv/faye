@@ -33,6 +33,7 @@ class User(SQLModel, table=True):
     xp: int = Field(default=0)
     nyxies: int = Field(default=0, nullable=False)
     moonglow: int = Field(default=0, nullable=False)
+    azurites: int = Field(default=0, nullable=False) 
     azurite_shards: int = Field(default=0, nullable=False)
     essence: int = Field(default=0, nullable=False)
     loot_chests: int = Field(default=0, nullable=False)
