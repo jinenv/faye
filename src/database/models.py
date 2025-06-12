@@ -36,6 +36,7 @@ class User(SQLModel, table=True):
     azurites: int = Field(default=0, nullable=False) 
     azurite_shards: int = Field(default=0, nullable=False)
     essence: int = Field(default=0, nullable=False)
+    aether: int = Field(default=0, nullable=False)
     loot_chests: int = Field(default=0, nullable=False)
     last_daily_claim: Optional[datetime] = Field(default=None, nullable=True)
     created_at: datetime = Field(
@@ -60,6 +61,28 @@ class User(SQLModel, table=True):
             "foreign_keys": "[UserEsprit.owner_id]" 
         }
     )
+    
+    def get_esprit_max_level(self) -> int:
+        """Get the maximum esprit level based on player level and limit break thresholds"""
+        # Define limit break thresholds
+        thresholds = [
+            {"player_level": 1, "esprit_max": 10},
+            {"player_level": 10, "esprit_max": 20},
+            {"player_level": 20, "esprit_max": 40},
+            {"player_level": 30, "esprit_max": 60},
+            {"player_level": 40, "esprit_max": 100},
+            {"player_level": 50, "esprit_max": 150},
+            {"player_level": 60, "esprit_max": 240}
+        ]
+        
+        # Find the appropriate threshold
+        max_level = self.level  # Default if no threshold found
+        for threshold in reversed(thresholds):
+            if self.level >= threshold["player_level"]:
+                max_level = threshold["esprit_max"]
+                break
+        
+        return max_level
 
 class UserEsprit(SQLModel, table=True):
     """Represents a specific instance of an Esprit owned by a user."""
@@ -80,7 +103,70 @@ class UserEsprit(SQLModel, table=True):
     )
     esprit_data: Optional[EspritData] = Relationship(back_populates="owners")
 
-
+    def calculate_power(self) -> int:
+        """Calculate total combat power of this Esprit"""
+        if not self.esprit_data:
+            return 0
+        
+        level_multiplier = 1 + (self.current_level - 1) * 0.05
+        
+        # Base stats with level scaling
+        hp = self.esprit_data.base_hp * level_multiplier
+        attack = self.esprit_data.base_attack * level_multiplier
+        defense = self.esprit_data.base_defense * level_multiplier
+        speed = self.esprit_data.base_speed * level_multiplier
+        
+        # Weight different stats
+        power = int(
+            hp * 0.3 +
+            attack * 0.35 +
+            defense * 0.25 +
+            speed * 0.1
+        )
+        
+        # Rarity multiplier
+        rarity_multipliers = {
+            "Common": 1.0,
+            "Uncommon": 1.2,
+            "Rare": 1.5,
+            "Epic": 2.0,
+            "Celestial": 2.5,
+            "Supreme": 3.0,
+            "Deity": 4.0
+        }
+        power = int(power * rarity_multipliers.get(self.esprit_data.rarity, 1.0))
+        
+        return power
+    
+    def calculate_stat(self, stat_name: str) -> int:
+        """Calculate a specific stat with level scaling"""
+        if not self.esprit_data:
+            return 0
+        
+        level_multiplier = 1 + (self.current_level - 1) * 0.05
+        base_stat = getattr(self.esprit_data, f"base_{stat_name.lower()}", 0)
+        return int(base_stat * level_multiplier)
+    
+    def can_level_up(self, player_level: int) -> bool:
+        """Check if this esprit can level up based on player's level and limit breaks"""
+        # Get the owner's limit break threshold
+        thresholds = [
+            {"player_level": 1, "esprit_max": 10},
+            {"player_level": 10, "esprit_max": 20},
+            {"player_level": 20, "esprit_max": 40},
+            {"player_level": 30, "esprit_max": 60},
+            {"player_level": 40, "esprit_max": 100},
+            {"player_level": 50, "esprit_max": 150},
+            {"player_level": 60, "esprit_max": 240}
+        ]
+        
+        max_allowed = player_level  # Default
+        for threshold in reversed(thresholds):
+            if player_level >= threshold["player_level"]:
+                max_allowed = threshold["esprit_max"]
+                break
+        
+        return self.current_level < max_allowed
 
 
 

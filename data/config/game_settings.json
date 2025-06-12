@@ -5,34 +5,74 @@
   "starter_currencies": {
     "nyxies": 500,
     "moonglow": 100,
-    "azurite_shards": 90,
-    "essence": 0
+    "azurite_shards": 40
   },
   "daily_rewards": {
     "nyxies": 250,
     "moonglow": 50,
-    "azurite_shards": 10
+    "azurite_shards": 10,
+    "aether": 1
+  },
+  "dissolve_rewards": {
+    "Common": {
+      "moonglow": 50,
+      "essence": 5
+    },
+    "Uncommon": {
+      "moonglow": 125,
+      "essence": 12
+    },
+    "Rare": {
+      "moonglow": 300,
+      "essence": 30
+    },
+    "Epic": {
+      "moonglow": 750,
+      "essence": 75
+    },
+    "Celestial": {
+      "moonglow": 2000,
+      "essence": 200
+    },
+    "Supreme": {
+      "moonglow": 5000,
+      "essence": 500
+    },
+    "Deity": {
+      "moonglow": 12500,
+      "essence": 1250
+    }
   },
   "progression": {
-    "player_max_level": 100,
-    "esprit_max_level": 100,
+    "player_max_level": 60,
+    "esprit_max_level": 240,
     "esprit_upgrade_cost_per_level": 10,
+    "limit_break_system": {
+        "enabled": true,
+        "thresholds": [
+            {"player_level": 1, "esprit_max": 10},
+            {"player_level": 10, "esprit_max": 20},
+            {"player_level": 20, "esprit_max": 40},
+            {"player_level": 30, "esprit_max": 60},
+            {"player_level": 40, "esprit_max": 100},
+            {"player_level": 50, "esprit_max": 150},
+            {"player_level": 60, "esprit_max": 240}
+        ]
+    },
     "player_xp_curve": {
-      "base": 100,
-      "exponent": 1.5
+        "base": 100,
+        "exponent": 1.5
     },
     "esprit_xp_curve": {
-      "base": 50,
-      "exponent": 1.3
+        "base": 50,
+        "exponent": 1.3
     }
   },
   "summoning": {
-    "pity_system_guarantee_after": 100,
+    "pity_system_guarantee_after": 50,
     "banners": {
       "standard": {
         "cost_single": 1,
-        "cost_multi": 10,
-        "multi_summon_count": 11,
         "free_daily_summons": 1,
         "rarity_distribution": {
           "Deity": 0.001,
@@ -42,6 +82,19 @@
           "Rare": 0.15,
           "Uncommon": 0.25,
           "Common": 0.5
+        }
+      },
+      "premium": {
+        "cost_single": 1,
+        "free_daily_summons": 0,
+        "rarity_distribution": {
+          "Deity": 0.005,
+          "Supreme": 0.015,
+          "Celestial": 0.03,
+          "Epic": 0.10,
+          "Rare": 0.25,
+          "Uncommon": 0.60,
+          "Common": 0.0
         }
       }
     }
