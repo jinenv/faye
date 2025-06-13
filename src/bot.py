@@ -1,63 +1,65 @@
-# src/bot.py
 import os
-import asyncio
 import discord
 from discord.ext import commands
-from src.database.db import create_db_and_tables
+from dotenv import load_dotenv
 from src.utils.logger import get_logger
-from src.utils.config_manager import ConfigManager
+from src.utils.config_manager import ConfigManager # <--- IMPORT IT
 
 logger = get_logger(__name__)
 
+# Load environment variables
+load_dotenv()
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_TOKEN")
+
 class NyxaBot(commands.Bot):
+    """The main bot class for Nyxa."""
+
     def __init__(self):
         intents = discord.Intents.default()
         intents.members = True
-        super().__init__(command_prefix="/unused", intents=intents)
+        intents.message_content = True
+        super().__init__(command_prefix="!", intents=intents)
+
+        # --- CREATE AND ATTACH THE CONFIG MANAGER ---
         self.config_manager = ConfigManager()
-    
-    async def setup_hook(self):
-        # prepare DB & configs
-        await create_db_and_tables()
-        logger.info("Database ready & static data seeded.")
-        
-        # load all cogs (slash-only now)
-        for cog in [
-            "src.cogs.onboarding_cog",
-            "src.cogs.economy_cog",
-            "src.cogs.summon_cog",
-            "src.cogs.esprit_cog",
+
+        self.initial_cogs = [
             "src.cogs.admin_cog",
+            "src.cogs.economy_cog",
+            "src.cogs.esprit_cog",
             "src.cogs.help_cog",
+            "src.cogs.onboarding_cog",
+            "src.cogs.summon_cog",
             "src.cogs.utility_cog",
-        ]:
+        ]
+
+    async def setup_hook(self):
+        """Load all initial cogs and sync commands globally."""
+        for cog in self.initial_cogs:
             try:
                 await self.load_extension(cog)
-                logger.info(f"✅ Loaded {cog}")
+                logger.info(f"Successfully loaded cog: {cog}")
             except Exception as e:
-                logger.error(f"❌ Failed to load {cog}: {e}", exc_info=True)
+                logger.error(f"Failed to load cog {cog}: {e}", exc_info=True)
         
-        # sync slash commands
         await self.tree.sync()
-        logger.info("Slash commands synced.")
-    
-    async def on_ready(self):
-        self.start_time = discord.utils.utcnow()  # Track when bot started
-        logger.info(f"NyxaBot is online as {self.user} (ID: {self.user.id}).")
+        logger.info("Synced slash commands globally.")
 
-async def main():
-    token = os.getenv("DISCORD_TOKEN")
-    if not token:
-        logger.critical("DISCORD_TOKEN not set.")
-        return
-    
+
+    async def on_ready(self):
+        """Called when the bot is ready and connected to Discord."""
+        logger.info(f"Logged in as {self.user.name} (ID: {self.user.id})")
+        logger.info("Nyxa is now online and ready.")
+
+def main():
+    """The main entry point for the bot."""
     bot = NyxaBot()
-    try:
-        await bot.start(token)
-    except KeyboardInterrupt:
-        await bot.close()
+    if not DISCORD_BOT_TOKEN:
+        logger.critical("DISCORD_BOT_TOKEN not found in environment variables. Bot cannot start.")
+        return
+        
+    bot.run(DISCORD_BOT_TOKEN)
 
 if __name__ == "__main__":
-    asyncio.run(main())
-
+    main()
 

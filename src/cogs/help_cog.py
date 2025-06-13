@@ -176,7 +176,7 @@ class HelpView(discord.ui.View):
             description=(
                 "**New to Nyxa? Follow these steps:**\n\n"
                 "1️⃣ **`/start`** - Create your account & get your first Epic Esprit.\n"
-                "2️⃣ **`/daily`** - Claim your daily bundle of Nyxies.\n"
+                "2️⃣ **`/daily`** - Claim your daily bundle of Nyxies, Moonglow, and Aether.\n"
                 "3️⃣ **`/summon`** - Use your starting Azurites for your first summon!\n"
                 "4️⃣ **`/inventory`** - Check all your new currencies.\n"
                 "5️⃣ **`/esprit collection`** - View your growing collection.\n\n"
@@ -230,7 +230,7 @@ class HelpCog(commands.Cog, name="Help"):
                 "color": 0x2ECC71, # Emerald Green
                 "commands": [
                     {"cmd": "/start", "desc": "Begin your adventure and claim your first Epic Esprit."},
-                    {"cmd": "/daily", "desc": "Claim your daily bundle of Nyxies."},
+                    {"cmd": "/daily", "desc": "Claim your daily bundle of Nyxies, Moonglow, and Aether."},
                     {"cmd": "/inventory", "desc": "View all your currencies and materials."},
                 ],
                 "tips": [
@@ -246,9 +246,10 @@ class HelpCog(commands.Cog, name="Help"):
                     {"cmd": "/summon", "desc": "Summon new Esprits using your Azurites."},
                 ],
                 "tips": [
-                    "**Azurites** are the sole currency for summoning.",
+                    "**Azurites** are the sole currency for standard summoning.",
+                    "**Aether** is used for premium summons, which yield higher rarity Esprits.",
+                    "Use `/inventory` to check your Azurite balance before summoning.",
                     "Earn **Azurite Shards** from gameplay to form new Azurites.",
-                    "Every card is dynamically generated with beautiful, unique art.",
                 ]
             },
             "esprit": {
@@ -277,6 +278,7 @@ class HelpCog(commands.Cog, name="Help"):
                 "tips": [
                     "**<:nyxies_icon:ID> Nyxies:** Universal currency for shops and trading.",
                     "**<:azurite_icon:ID> Azurites:** The premium currency used for summoning.",
+                    "**<:aether_icon:ID> Aether:** Used for premium summons and special features.",
                     "**<:moonglow_icon:ID> Moonglow:** Material used to level up your Esprits.",
                     "**<:essence_icon:ID> Essence:** Resources used for crafting and limit breaks.",
                 ]

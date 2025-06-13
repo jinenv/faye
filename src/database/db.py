@@ -1,33 +1,42 @@
 # src/database/db.py
-import sqlalchemy as sa
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlmodel import SQLModel
+"""
+Central DB helpers:
+• engine / session factory
+• async get_session() context-manager
+• create_db_and_tables() ─ plain async function
+"""
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
-from src.utils.logger import get_logger
-# EspritData and ConfigManager imports removed as they are no longer used here
-
-log = get_logger(__name__)
-
-DATABASE_URL = "sqlite+aiosqlite:///./nyxa.db"
-engine = create_async_engine(DATABASE_URL, echo=True)
-
-async def create_db_and_tables():
-    log.info("Attempting to create database tables...")
-    async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
-    log.info("Database tables created or already exist.")
-
-# The populate_static_data function has been removed.
-
-AsyncSessionLocal = async_sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False
+from sqlmodel import SQLModel
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
 )
 
+DATABASE_URL = "sqlite+aiosqlite:///nyxa.db"
+
+engine: AsyncEngine = create_async_engine(
+    DATABASE_URL, echo=False, future=True
+)
+
+# factory used everywhere
+SessionLocal = async_sessionmaker(
+    engine, expire_on_commit=False
+)
+
+
 @asynccontextmanager
-async def get_session():
-    async with AsyncSessionLocal() as session:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    """Yield an AsyncSession – used via `async with get_session():`."""
+    async with SessionLocal() as session:
         yield session
+
+
+async def create_db_and_tables() -> None:
+    """Create all tables once at startup (idempotent)."""
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
 
