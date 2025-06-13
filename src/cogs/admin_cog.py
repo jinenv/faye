@@ -396,7 +396,7 @@ class AdminCog(commands.Cog):
                     {
                         "name": "/give aether",
                         "usage": "<user> <amount>",
-                        "desc": "Adds premium Aether.",
+                        "desc": "Adds aether.",
                     },
                     {
                         "name": "/give azurite_shards",
@@ -448,7 +448,7 @@ class AdminCog(commands.Cog):
                     {
                         "name": "/remove aether",
                         "usage": "<user> <amount>",
-                        "desc": "Removes Aether.",
+                        "desc": "Removes aether.",
                     },
                     {
                         "name": "/remove azurite_shards",
@@ -500,7 +500,7 @@ class AdminCog(commands.Cog):
                     {
                         "name": "/set aether",
                         "usage": "<user> <amount>",
-                        "desc": "Sets Aether.",
+                        "desc": "Sets aether.",
                     },
                     {
                         "name": "/set azurite_shards",

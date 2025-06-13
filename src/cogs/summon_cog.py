@@ -138,7 +138,7 @@ class SummonCog(commands.Cog):
         embed.set_footer(text=f"{new_user_esprit.id}")
 
         # attach generated card image
-        card_pil = self.image_generator.render_esprit_card(esprit_data.model_dump())
+        card_pil = await self.image_generator.render_esprit_card(esprit_data.model_dump())
         with io.BytesIO() as buf:
             card_pil.save(buf, "PNG")
             file = discord.File(io.BytesIO(buf.getvalue()), filename="esprit_card.png")

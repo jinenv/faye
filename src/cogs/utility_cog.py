@@ -77,6 +77,7 @@ class UtilityCog(commands.Cog, name="Utility"):
                 f"**Nyxies:** {user.nyxies:,}\n"
                 f"**Moonglow:** {user.moonglow:,}\n"
                 f"**Azurites:** {azurites:,} ({shards}/10 shards)\n"
+                f"**Aether:** {user.aether:,}\n"
                 f"**Essence:** {user.essence:,}\n"
                 f"**Loot Chests:** {user.loot_chests:,}"
             )

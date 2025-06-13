@@ -9,7 +9,7 @@ class EspritData(SQLModel, table=True):
     esprit_id: str = Field(primary_key=True, index=True)
     name: str
     description: str
-    rarity: str
+    rarity: str = Field(index=True)
     class_name: str = Field(default="Unknown")
     visual_asset_path: str
     base_hp: int

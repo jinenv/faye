@@ -54,7 +54,7 @@ G8 Heavy CPU work runs in executor; event loop stays responsive
 3 • Mandatory Config Keys (game_settings.json excerpt)  
 ────────────────────────────────────────────────────────────────────────────  
 "summoning": {  
-  "pity_system_guarantee_after": 50,  
+  "pity_system_guarantee_after": 100,  
   "rarity_pity_increment": { "Common":1,"Uncommon":2,"Rare":3,"Epic":6,"Celestial":8,"Supreme":10,"Deity":12 },  
   "banners": {  
     "standard": { "cost_single": 1 },        // cost in Azurites  

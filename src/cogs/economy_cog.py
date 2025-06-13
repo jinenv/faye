@@ -40,12 +40,12 @@ class EconomyCog(commands.Cog):
                 return await interaction.followup.send("❌ You haven't started your adventure yet. Use `/start`.", ephemeral=True)
             
             embed = discord.Embed(title=f"🎒 {interaction.user.display_name}'s Inventory", color=discord.Color.dark_orange())
-            embed.add_field(name="<:nyxies:YOUR_ICON_ID> Nyxies", value=f"{user.nyxies:,}", inline=True)
-            embed.add_field(name="<:moonglow:YOUR_ICON_ID> Moonglow", value=f"{user.moonglow:,}", inline=True)
-            embed.add_field(name="<:aether:YOUR_ICON_ID> Aether", value=f"{user.aether:,}", inline=True)
-            azurite_display = (f"<:azurite:YOUR_ICON_ID> **{user.azurites:,}** Azurites\n"
-                               f"<:shard:YOUR_ICON_ID> **{user.azurite_shards:,}** Shards")
-            embed.add_field(name="<:essence:YOUR_ICON_ID> Essence", value=f"{user.essence:,}", inline=True)
+            embed.add_field(name="Nyxies", value=f"{user.nyxies:,}", inline=True)
+            embed.add_field(name="Moonglow", value=f"{user.moonglow:,}", inline=True)
+            embed.add_field(name="Aether", value=f"{user.aether:,}", inline=True)
+            azurite_display = (f"**{user.azurites:,}** Azurites\n"
+                               f"**{user.azurite_shards:,}** Shards")
+            embed.add_field(name="Essence", value=f"{user.essence:,}", inline=True)
             embed.add_field(name="Summoning Energy", value=azurite_display, inline=False)
             embed.add_field(name="🎁 Loot Chests", value=f"{user.loot_chests:,}", inline=True)
             embed.set_footer(text="Use '/esprit collection' to see your Esprits.")

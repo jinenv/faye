@@ -4,12 +4,17 @@
   },
   "starter_currencies": {
     "nyxies": 500,
-    "moonglow": 100,
-    "azurite_shards": 40
+    "moonglow": 75,
+    "azurite_shards": 90,
+    "aether": 2
+  },
+  "onboarding": {
+    "starter_esprit_rarity": "Epic",
+    "starter_esprit_level": 1
   },
   "daily_rewards": {
     "nyxies": 250,
-    "moonglow": 50,
+    "moonglow": 25,
     "azurite_shards": 10,
     "aether": 1
   },
@@ -42,7 +47,7 @@
     "esprit_xp_curve":  { "base": 50, "exponent": 1.3 }
   },
   "summoning": {
-    "pity_system_guarantee_after": 50,
+    "pity_system_guarantee_after": 100,
     "rarity_pity_increment": {
       "Common": 1,
       "Uncommon": 2,
@@ -57,7 +62,6 @@
         "cost_single": 1,
         "free_daily_summons": 1,
         "rarity_distribution": {
-          "Deity": 0.001,
           "Supreme": 0.004,
           "Celestial": 0.02,
           "Epic": 0.075,

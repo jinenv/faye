@@ -1,134 +1,166 @@
 from __future__ import annotations
-import os
-import discord
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
-from functools import lru_cache
-import io
 
-from src.utils.logger import get_logger
+import asyncio
+import io
+import os
+from functools import lru_cache
+from typing import Tuple
+
+import discord
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
+
 from src.utils.config_manager import ConfigManager
+from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+# --------------------------------------------------------------------------- #
+# Constants
+# --------------------------------------------------------------------------- #
 CARD_W, CARD_H = 450, 630
 SPRITE_H = 550
 RARITY_ICON_SIZE = (48, 48)
 
+# --------------------------------------------------------------------------- #
+# Image-generation helper
+# --------------------------------------------------------------------------- #
 class ImageGenerator:
-    def __init__(self, assets_base: str = "assets"):
+    """
+    Thread-safe, async-friendly sprite / card generator.
+    All heavy Pillow work is delegated to `asyncio.to_thread`
+    so the Discord event-loop never blocks.
+    """
+
+    def __init__(self, assets_base: str = "assets") -> None:
         self.assets_base = assets_base
-        fontfile = os.path.join(assets_base, "ui", "fonts", "PressStart2P.ttf")
+
+        # ── Fonts ─────────────────────────────────────────────────────────── #
+        font_path = os.path.join(assets_base, "ui", "fonts", "PressStart2P.ttf")
         try:
-            self.font_header = ImageFont.truetype(fontfile, 40)
+            self.font_header = ImageFont.truetype(font_path, size=40)
         except OSError:
-            logger.warning("Could not load PressStart2P font")
+            logger.warning("PressStart2P.ttf not found – falling back to default font")
             self.font_header = ImageFont.load_default()
 
+        # ── Rarity visuals ────────────────────────────────────────────────── #
         cfg = ConfigManager()
         self.rarity_visuals = cfg.get_config("data/config/rarity_visuals") or {}
 
+    # --------------------------------------------------------------------- #
+    # Static helpers
+    # --------------------------------------------------------------------- #
     @staticmethod
-    def _hex_to_rgb(h: str):
-        return tuple(int(h.lstrip("#")[i:i+2], 16) for i in (0, 2, 4))
+    def _hex_to_rgb(hex_color: str) -> Tuple[int, int, int]:
+        return tuple(int(hex_color.lstrip("#")[i : i + 2], 16) for i in (0, 2, 4))
 
+    # --------------------------------------------------------------------- #
+    # Cached loaders
+    # --------------------------------------------------------------------- #
     @lru_cache(maxsize=32)
-    def _load_rarity_icon(self, path: str) -> Image.Image | None:
+    def _load_rarity_icon(self, full_path: str) -> Image.Image | None:
         try:
-            icon = Image.open(path).convert("RGBA")
+            icon = Image.open(full_path).convert("RGBA")
             return icon.resize(RARITY_ICON_SIZE, Image.Resampling.LANCZOS)
         except FileNotFoundError:
-            logger.warning(f"Rarity icon not found at path: {path}")
+            logger.warning(f"Rarity icon not found: {full_path}")
             return None
 
-    def _create_rarity_aura(self, size: tuple, color: tuple) -> Image.Image:
+    # --------------------------------------------------------------------- #
+    # Heavy sync helpers – run inside `asyncio.to_thread`
+    # --------------------------------------------------------------------- #
+    def _create_rarity_aura(self, size: tuple[int, int], color: Tuple[int, int, int]) -> Image.Image:
         aura = Image.new("RGBA", size, (0, 0, 0, 0))
         draw = ImageDraw.Draw(aura)
-        center_x, center_y = size[0] / 2, size[1] / 2
-        max_radius = min(center_x, center_y) * 1.2
+        cx, cy = size[0] / 2, size[1] / 2
+        max_r = min(cx, cy) * 1.2
 
-        for i in range(int(max_radius), 0, -5):
-            alpha = int(200 * (1 - (i / max_radius))**2)
-            current_color = color + (alpha,)
-            draw.ellipse((center_x - i, center_y - i, center_x + i, center_y + i), fill=current_color)
-            
+        for r in range(int(max_r), 0, -5):
+            alpha = int(200 * (1 - r / max_r) ** 2)
+            draw.ellipse((cx - r, cy - r, cx + r, cy + r), fill=color + (alpha,))
         return aura.filter(ImageFilter.GaussianBlur(radius=70))
 
-    def _draw_text_with_outline(self, draw, position, text, font, fill, anchor="lt"):
-        x, y = position
-        outline = "black"
-        draw.text((x-2, y-2), text, font=font, fill=outline, anchor=anchor)
-        draw.text((x+2, y-2), text, font=font, fill=outline, anchor=anchor)
-        draw.text((x-2, y+2), text, font=font, fill=outline, anchor=anchor)
-        draw.text((x+2, y+2), text, font=font, fill=outline, anchor=anchor)
-        draw.text(position, text, font=font, fill=fill, anchor=anchor)
+    def _draw_text_outline(
+        self,
+        img_draw: ImageDraw.ImageDraw,
+        pos: Tuple[int, int],
+        text: str,
+        font: ImageFont.FreeTypeFont,
+        fill="white",
+        anchor="lt",
+    ) -> None:
+        x, y = pos
+        for ox, oy in ((-2, -2), (2, -2), (-2, 2), (2, 2)):
+            img_draw.text((x + ox, y + oy), text, font=font, fill="black", anchor=anchor)
+        img_draw.text(pos, text, font=font, fill=fill, anchor=anchor)
 
-    def render_esprit_card(self, esprit_data: dict, **kwargs) -> Image.Image:
+    # --------------------------------------------------------------------- #
+    # Public async API
+    # --------------------------------------------------------------------- #
+    async def render_esprit_card(self, esprit_data: dict) -> Image.Image:
+        """Create a full esprit card image without blocking the event-loop."""
+        return await asyncio.to_thread(self._render_sync, esprit_data)
+
+    async def to_discord_file(self, img: Image.Image, filename: str = "esprit_card.png") -> discord.File | None:
+        """Return a ready-to-send `discord.File`, saving in a worker thread."""
+        try:
+            return await asyncio.to_thread(self._save_sync, img, filename)
+        except Exception as exc:
+            logger.error(f"to_discord_file failed for {filename}: {exc}", exc_info=True)
+            return None
+
+    # --------------------------------------------------------------------- #
+    # Internal synchronous workhorses
+    # --------------------------------------------------------------------- #
+    def _render_sync(self, esprit_data: dict) -> Image.Image:
+        # --- base card ----------------------------------------------------- #
         card = Image.new("RGBA", (CARD_W, CARD_H), (20, 20, 20, 255))
         draw = ImageDraw.Draw(card)
 
-        rarity_name = esprit_data.get("rarity", "Unknown")
-        rarity_visual_info = self.rarity_visuals.get(rarity_name, {})
-        glow_color = self._hex_to_rgb(rarity_visual_info.get("color", "#808080"))
+        # --- rarity visuals ------------------------------------------------ #
+        rarity = esprit_data.get("rarity", "Unknown")
+        visual = self.rarity_visuals.get(rarity, {})
+        glow_rgb = self._hex_to_rgb(visual.get("color", "#808080"))
 
-        aura = self._create_rarity_aura((CARD_W, CARD_H), glow_color)
+        aura = self._create_rarity_aura((CARD_W, CARD_H), glow_rgb)
         card = Image.alpha_composite(card, aura)
-        draw = ImageDraw.Draw(card)
+        draw = ImageDraw.Draw(card)  # refresh after composite
 
-        raw_path = os.path.join(self.assets_base, esprit_data.get("visual_asset_path", ""))
-        sprite_img = Image.open(raw_path).convert("RGBA")
-        
-        w, h = sprite_img.size
-        scale = SPRITE_H / h
-        sprite_img = sprite_img.resize((int(w * scale), int(h * scale)), Image.Resampling.NEAREST)
-        
+        # --- sprite -------------------------------------------------------- #
+        sprite_path = os.path.join(self.assets_base, esprit_data.get("visual_asset_path", ""))
+        sprite_img = Image.open(sprite_path).convert("RGBA")
+
+        # scale sprite
+        scale = SPRITE_H / sprite_img.height
+        sprite_img = sprite_img.resize((int(sprite_img.width * scale), SPRITE_H), Image.Resampling.NEAREST)
+
         sprite_x = (CARD_W - sprite_img.width) // 2
         sprite_y = (CARD_H - sprite_img.height) // 2 + 30
         card.paste(sprite_img, (sprite_x, sprite_y), sprite_img)
-        
-        padding = 30
-        
-        name_text = esprit_data.get("name", "Unknown")
-        self._draw_text_with_outline(draw, (CARD_W / 2, padding), name_text, self.font_header, "white", anchor="mt")
 
-        icon_path = rarity_visual_info.get("icon_asset")
-        if icon_path:
-            full_icon_path = os.path.join(self.assets_base, icon_path)
-            rarity_icon = self._load_rarity_icon(full_icon_path)
-            if rarity_icon:
-                card.paste(rarity_icon, (padding, CARD_H - RARITY_ICON_SIZE[1] - padding), rarity_icon)
-        
-        border_color = self._hex_to_rgb(rarity_visual_info.get("border_color", "#FFFFFF"))
-        draw.rectangle([0, 0, CARD_W - 1, CARD_H - 1], outline=border_color, width=5)
+        # --- name text ----------------------------------------------------- #
+        self._draw_text_outline(draw, (CARD_W // 2, 30), esprit_data.get("name", "Unknown"), self.font_header, anchor="mt")
+
+        # --- rarity icon --------------------------------------------------- #
+        icon_rel = visual.get("icon_asset")
+        if icon_rel:
+            icon_full = os.path.join(self.assets_base, icon_rel)
+            if (icon := self._load_rarity_icon(icon_full)):
+                card.paste(icon, (30, CARD_H - RARITY_ICON_SIZE[1] - 30), icon)
+
+        # --- border -------------------------------------------------------- #
+        border_rgb = self._hex_to_rgb(visual.get("border_color", "#FFFFFF"))
+        draw.rectangle([0, 0, CARD_W - 1, CARD_H - 1], outline=border_rgb, width=5)
 
         return card
 
-    def to_discord_file(self, pil_image: Image.Image, filename: str = "image.png") -> discord.File | None:
-        """
-        Converts a PIL Image object into a discord.File object.
-
-        Args:
-            pil_image (Image.Image): The PIL Image to convert.
-            filename (str): The desired filename for the Discord attachment.
-                            Must end with a supported image extension (e.g., .png, .jpeg).
-
-        Returns:
-            discord.File: A discord.File object ready to be sent, or None if conversion fails.
-        """
-        try:
-            image_bytes = io.BytesIO()
-            if filename.lower().endswith(".png"):
-                pil_image.save(image_bytes, format='PNG')
-            elif filename.lower().endswith((".jpg", ".jpeg")):
-                pil_image.save(image_bytes, format='JPEG')
-            elif filename.lower().endswith(".gif"):
-                pil_image.save(image_bytes, format='GIF')
-            else:
-                logger.warning(f"Unsupported image format for filename '{filename}'. Defaulting to PNG.")
-                pil_image.save(image_bytes, format='PNG')
-                filename = os.path.splitext(filename)[0] + ".png"
-
-            image_bytes.seek(0)
-            return discord.File(image_bytes, filename=filename)
-        except Exception as e:
-            logger.error(f"Failed to convert PIL Image to discord.File for '{filename}': {e}", exc_info=True)
-            return None
+    def _save_sync(self, img: Image.Image, filename: str) -> discord.File:
+        buf = io.BytesIO()
+        fmt = "PNG"
+        ext = filename.lower().split(".")[-1]
+        if ext in ("jpg", "jpeg"):
+            fmt = "JPEG"
+        elif ext == "gif":
+            fmt = "GIF"
+        img.save(buf, format=fmt)
+        buf.seek(0)
+        return discord.File(buf, filename=filename)
