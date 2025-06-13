@@ -1,78 +1,100 @@
-# Nyxa Project: Unified Directive & State Architecture
-**Document Version:** 2.0
-**Last Updated:** 2025-06-10
+# Nyxa / Faye – Unified Directive & State Architecture  
+**Document Version:** 2.2  **Last Updated:** 2025-06-12  
 
-This document is the official source of truth for the Nyxa project. It integrates all completed milestones, architectural guarantees, and the confirmed development roadmap. It is intended for technical and strategic guidance.
+This is the authoritative spec for every AI or human contributor.  
+_If new work contradicts this file, update the file first._
 
----
+────────────────────────────────────────────────────────────────────────────  
+1 • Foundational Accomplishments   ✔ = done  
+────────────────────────────────────────────────────────────────────────────  
+• Core Architecture & DB  
+  ✔ Python 3.12 · discord.py 2.3.2 · SQLModel base  
+  ✔ Alembic migrations (manual-vetted)  
+  ✔ Data-model refactor (User, UserEsprit, EspritData)  
+  ✔ Startup script auto-installs deps + runs migrations  
 
-## 1. Foundational Accomplishments & Verified State
+• Gameplay & Economy  
+  ✔ **Five-pillar currency**: Nyxies, Moonglow, Azurite Shards, Azurites, **Aether (premium)**  
+  ✔ `/craft` converts shards → Azurites  
+  ✔ `/start`, `/daily`, `/inventory`, `/summon`, basic `/explore` live  
+  ✔ `/esprit upgrade` spends Moonglow; level gated by player level  
+  ✔ **Sigil** replaces “Combat Power” everywhere  
 
-This section codifies the current, stable state of the project. All systems listed here are implemented, tested, and considered production-ready.
+• Summoning System v2 (2025-06-12)  
+  ✔ Config-driven pity (`rarity_pity_increment`) – higher rarity adds points, bar shows %  
+  ✔ `standard` banner costs Azurites; `premium` banner costs **Aether**  
+  ✔ Guarantee at 50 points forces Epic+, then resets  
+  ✔ Embed footer shows UID; author line removed, spacing polished  
 
--   **[x] Core Architecture & Database:**
-    -   **Technology Stack:** The project is confirmed to be built on a scalable foundation of Python, `discord.py`, and `SQLModel`.
-    -   **Alembic Integration:** The project's database schema is fully managed by Alembic, ensuring all future schema changes are handled through safe, version-controlled migrations.
-    -   **Data Model Refactor:** The core data models (`User`, `UserEsprit`, `EspritData`) have been successfully refactored to support the new economy and team systems.
-    -   **Deployment Reliability:** A standardized startup procedure (`start.bat`/`.sh`) has been established to automate dependency checks and database migrations, guaranteeing application-database sync.
+• Esprit Management  
+  ✔ Collection / details / compare / bulk-&-single dissolve  
+  ✔ Team group: `/esprit team view|set|optimize` with dropdown enum `TeamSlot`  
 
--   **[x] Implemented Gameplay & Economy:**
-    -   **Core Commands:** Foundational commands for player interaction (`/start`, `/daily`, `/inventory`, `/summon`) are stable and functional.
-    -   **Currency System V2:** The in-game economy has been fully migrated to the four-pillar currency system (Nyxies, Moonglow, Azurite Shards, Azurites). The legacy currency fields have been successfully removed from the database and all code.
-    -   **Crafting Loop:** The `/craft` command is fully implemented, allowing users to convert Azurite Shards into Azurites, which is the sole currency for the summoning system.
-    -   **Progression System:** The `ProgressionManager` utility is complete and correctly calculates XP curves as defined in `game_settings.json`. The `/profile` and `/level` commands accurately reflect this data.
+• Backend & Utils  
+  ✔ RateLimiter on spam-able commands  
+  ✔ CacheManager invalidation after summons/upgrades/dissolves  
+  ✔ Pillow image generation in executor thread pool  
 
--   **[x] Administrative Backend & UI:**
-    -   **Admin Cog Stability:** The `admin_cog` has been stabilized, with all commands (`give`, `remove`, `set`, `list`, `reload`, etc.) fully functional after removing a fragile factory pattern in favor of explicit, reliable definitions.
-    -   **Dynamic Visuals:** The bot successfully utilizes the Pillow library via the `ImageGenerator` utility to generate dynamic image cards for summoned Esprits.
-    -   **Paginated Views:** The `/esprit collection` command uses a robust, paginated `discord.ui.View` for a clean user experience.
+• Schema Tweaks (migrated)  
+  ✔ `EspritData.base_speed` & `base_mana_regen` → float (warnings fixed)  
 
----
+────────────────────────────────────────────────────────────────────────────  
+2 • Architectural Guarantees  (never break)  
+────────────────────────────────────────────────────────────────────────────  
+G1 Modularity – feature Cogs, shared Utils, Views in `src/views/`  
+G2 Single-location logic – calculations live on model classes  
+G3 Config-driven – tunables in `data/config/*`; load via ConfigManager  
+G4 One AsyncSession per command; pass to helpers  
+G5 RateLimiter at start of spammable commands  
+G6 File header `logger = get_logger(__name__)`  
+G7 Alembic discipline – autogen → manual review → upgrade  
+G8 Heavy CPU work runs in executor; event loop stays responsive  
 
-## 2. Architectural Guarantees
+────────────────────────────────────────────────────────────────────────────  
+3 • Mandatory Config Keys (game_settings.json excerpt)  
+────────────────────────────────────────────────────────────────────────────  
+"summoning": {  
+  "pity_system_guarantee_after": 50,  
+  "rarity_pity_increment": { "Common":1,"Uncommon":2,"Rare":3,"Epic":6,"Celestial":8,"Supreme":10,"Deity":12 },  
+  "banners": {  
+    "standard": { "cost_single": 1 },        // cost in Azurites  
+    "premium":  { "cost_single": 1 }         // cost in Aether  
+  }  
+}  
 
-The project adheres to a set of core principles that ensure its long-term health and stability.
+────────────────────────────────────────────────────────────────────────────  
+4 • SummonCog Algorithm (spec)  
+────────────────────────────────────────────────────────────────────────────  
+1 Roll rarity by banner weights  
+2 new_pity = old + rarity_pity_increment[rarity]  
+3 If new_pity ≥ guarantee_after → force Epic+, set new_pity = 0  
+4 Deduct Azurites (standard) or **Aether** (premium)  
+5 Embed:  
+     <emoji> **<name>**  
+     **<rarity>** | Sigil: 💥 <power>  
+       
+     [█████─────] 42 %  
+   Footer: UID  
 
--   **Modularity:** Functionality is strictly segregated into Cogs, allowing for organized, independent feature development.
--   **Data Integrity:** `SQLModel` provides a typed schema, while `Alembic` guarantees safe, evolutionary database changes without data loss.
--   **Configuration-Driven Design:** Game balance and core settings are externalized to `.json` files, decoupling them from application logic for rapid tuning.
--   **Asynchronous Integrity:** All blocking, CPU-bound operations (specifically image generation) are offloaded to a thread pool executor to ensure the main bot event loop remains responsive.
+────────────────────────────────────────────────────────────────────────────  
+5 • Team Management UX (enum dropdown)  
+────────────────────────────────────────────────────────────────────────────  
+from enum import IntEnum  
+class TeamSlot(IntEnum):  
+    leader = 1  
+    support1 = 2  
+    support2 = 3  
 
----
+`team_set` uses `slot: TeamSlot`; internal logic uses `slot.value`.  
 
-## 3. Confirmed Roadmap & Primary Directive
+────────────────────────────────────────────────────────────────────────────  
+6 • Pre-Merge Checklist  
+────────────────────────────────────────────────────────────────────────────  
+☑ Guarantees G1-G8 upheld  
+☑ ruff / flake8 passes  
+☑ Tests updated  
+☑ Config keys present & documented  
+☑ Alembic revision vetted (no stray FK resurrection)  
+☑ Bot boots; slash-command sync clean  
 
-This section outlines the vetted plan for the project's evolution.
-
-### 3.1. Player & Esprit Progression Systems
-
--   **[ ] Esprit Leveling & Gating:**
-    -   A player's account level will act as a hard gate, determining the maximum level their Esprits can reach.
-    -   Implement an `/esprit upgrade` command to allow players to spend **Moonglow** to level up their Esprits up to the current cap.
-    -   Implement a stat-growth formula for when Esprits level up.
-
--   **[ ] Limit Break System:**
-    -   **Mechanic:** Once an Esprit hits its level cap, a "Limit Break" will be required to unlock the next tier of leveling. This will be a resource sink for rare materials like **Azurites** and high-tier **Essence**.
-    -   **Visual Indicator:** This progression will be displayed on the Esprit card image via a five-star system in the footer. Each increment fills a star with a grey color; completing a tier turns the stars yellow.
-
-### 3.2. Economy & Core Gameplay Loop
-
--   **[ ] Implement Core Gameplay Loop:** The `/explore` command will be created as the primary, repeatable activity for players to earn **Azurite Shards** and **Essence**.
-
-### 3.3. Command & Cog Structure Expansion
-
--   **[ ] Complete the `esprit_cog`:** This cog will be the central hub for all Esprit management.
-    -   `/esprit team`: An interface to manage the 3-Esprit combat party (1 Main, 2 Support).
-    -   `/esprit info <id>`: A detailed view of a single owned Esprit.
-    -   `/esprit dissolve <id>`: Release unwanted Esprits in exchange for resources.
-    -   `/esprit compare <id1> <id2>`: A side-by-side comparison of two owned Esprits.
-
--   **[ ] Expand the `utility_cog`:**
-    -   The `/profile` command will be expanded to display the active team.
-    -   A global `/stats` command will be created for players to view high-level game statistics (total players, total currency in circulation, etc.).
-
-### 3.4. Visual & UI Enhancements
-
--   **[ ] Redesign Esprit Card Footer:** The footer of the dynamically generated Esprit card image will be redesigned to house the new visual elements.
-    -   **Layout:** The left side will contain the five **Limit Break stars**. The right side will display the **CLASS NAME** and its associated emoji, separated by a vertical bar (`|`).
--   **[ ] Convert Views
+_Follow “the Nyxa way.” If new work conflicts, update this file first._
