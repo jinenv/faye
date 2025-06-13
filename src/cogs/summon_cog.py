@@ -204,7 +204,6 @@ class SummonCog(commands.Cog):
         if (esprit_cog := self.bot.get_cog("EspritCog")):
             await esprit_cog.group._invalidate(str(interaction.user.id))
 
-
 async def setup(bot: commands.Bot):
     await bot.add_cog(SummonCog(bot))
     logger.info("✅ SummonCog loaded")
