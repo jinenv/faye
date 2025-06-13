@@ -28712,3 +28712,77 @@ discord.ext.commands.errors.ExtensionFailed: Extension 'src.cogs.esprit_cog' rai
 2025-06-12 21:38:15,099 - src.bot - INFO - Synced slash commands globally.
 2025-06-12 21:38:17,488 - src.bot - INFO - Logged in as Nyxa (ID: 1376313409427210320)
 2025-06-12 21:38:17,488 - src.bot - INFO - Nyxa is now online and ready.
+2025-06-12 21:46:42,765 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-12 21:46:43,384 - src.cogs.admin_cog - INFO - ✅ AdminCog loaded
+2025-06-12 21:46:43,384 - src.bot - INFO - Successfully loaded cog: src.cogs.admin_cog
+2025-06-12 21:46:43,386 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/game_settings'
+2025-06-12 21:46:43,386 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-12 21:46:43,386 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-12 21:46:43,387 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\game_settings.yaml'
+2025-06-12 21:46:43,387 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-12 21:46:43,387 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\game_settings.json'
+2025-06-12 21:46:43,387 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-12 21:46:43,387 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\game_settings.json'
+2025-06-12 21:46:43,387 - src.cogs.economy_cog - INFO - ✅ EconomyCog loaded. Daily rewards: 4 items.
+2025-06-12 21:46:43,388 - src.cogs.economy_cog - INFO - ✅ EconomyCog loaded
+2025-06-12 21:46:43,388 - src.bot - INFO - Successfully loaded cog: src.cogs.economy_cog
+2025-06-12 21:46:43,390 - src.cogs.esprit_cog - INFO - EspritCog loaded.
+2025-06-12 21:46:43,390 - src.cogs.esprit_cog - INFO - ✅ EspritCog loaded.
+2025-06-12 21:46:43,390 - src.bot - INFO - Successfully loaded cog: src.cogs.esprit_cog
+2025-06-12 21:46:43,391 - src.cogs.help_cog - INFO - ✅ HelpCog loaded
+2025-06-12 21:46:43,392 - src.bot - INFO - Successfully loaded cog: src.cogs.help_cog
+2025-06-12 21:46:43,392 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/game_settings'
+2025-06-12 21:46:43,393 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-12 21:46:43,393 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-12 21:46:43,393 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\game_settings.yaml'
+2025-06-12 21:46:43,393 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-12 21:46:43,393 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\game_settings.json'
+2025-06-12 21:46:43,394 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-12 21:46:43,394 - src.cogs.onboarding_cog - INFO - ✅ OnboardingCog loaded
+2025-06-12 21:46:43,394 - src.bot - INFO - Successfully loaded cog: src.cogs.onboarding_cog
+2025-06-12 21:46:43,410 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/class_visuals'
+2025-06-12 21:46:43,411 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-12 21:46:43,411 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-12 21:46:43,411 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\class_visuals.yaml'
+2025-06-12 21:46:43,411 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-12 21:46:43,411 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\class_visuals.json'
+2025-06-12 21:46:43,412 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-12 21:46:43,412 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\class_visuals.json'
+2025-06-12 21:46:43,412 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-12 21:46:43,412 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-12 21:46:43,412 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-12 21:46:43,413 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-12 21:46:43,413 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-12 21:46:43,413 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-12 21:46:43,413 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-12 21:46:43,414 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-12 21:46:43,414 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/game_settings'
+2025-06-12 21:46:43,414 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-12 21:46:43,414 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-12 21:46:43,414 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\game_settings.yaml'
+2025-06-12 21:46:43,415 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-12 21:46:43,415 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\game_settings.json'
+2025-06-12 21:46:43,415 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-12 21:46:43,415 - src.utils.config_manager - INFO - ConfigManager initialized. Absolute base_path: 'C:\nyxa'
+2025-06-12 21:46:43,415 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/rarity_visuals'
+2025-06-12 21:46:43,415 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-12 21:46:43,415 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-12 21:46:43,417 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\rarity_visuals.yaml'
+2025-06-12 21:46:43,417 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-12 21:46:43,417 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-12 21:46:43,417 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-12 21:46:43,417 - src.utils.config_manager - INFO - ConfigManager.get_config: Successfully loaded JSON config: 'C:\nyxa\data\config\rarity_visuals.json'
+2025-06-12 21:46:43,418 - src.cogs.summon_cog - INFO - ✅ SummonCog loaded
+2025-06-12 21:46:43,418 - src.bot - INFO - Successfully loaded cog: src.cogs.summon_cog
+2025-06-12 21:46:43,419 - src.utils.config_manager - INFO - ConfigManager.get_config: CALLED with relative_path: 'data/config/game_settings'
+2025-06-12 21:46:43,419 - src.utils.config_manager - INFO - ConfigManager.get_config: Current Working Directory (CWD): 'C:\nyxa'
+2025-06-12 21:46:43,419 - src.utils.config_manager - INFO - ConfigManager.get_config: Instance base_path: 'C:\nyxa'
+2025-06-12 21:46:43,420 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for YAML at absolute path: 'C:\nyxa\data\config\game_settings.yaml'
+2025-06-12 21:46:43,420 - src.utils.config_manager - INFO - ConfigManager.get_config: YAML path exists: False
+2025-06-12 21:46:43,420 - src.utils.config_manager - INFO - ConfigManager.get_config: Checking for JSON at absolute path: 'C:\nyxa\data\config\game_settings.json'
+2025-06-12 21:46:43,420 - src.utils.config_manager - INFO - ConfigManager.get_config: JSON path exists: True
+2025-06-12 21:46:43,420 - src.cogs.utility_cog - INFO - ✅ UtilityCog loaded
+2025-06-12 21:46:43,420 - src.bot - INFO - Successfully loaded cog: src.cogs.utility_cog
+2025-06-12 21:46:43,847 - src.bot - INFO - Synced slash commands globally.
+2025-06-12 21:46:46,105 - src.bot - INFO - Logged in as Nyxa (ID: 1376313409427210320)
+2025-06-12 21:46:46,105 - src.bot - INFO - Nyxa is now online and ready.

@@ -15,12 +15,12 @@ class EspritData(SQLModel, table=True):
     base_hp: int
     base_attack: int
     base_defense: int
-    base_speed: int
+    base_speed: float
     base_magic_resist: int = 0
     base_crit_rate: float = 0.0
     base_block_rate: float = 0.0
     base_dodge_chance: float = 0.0
-    base_mana_regen: int = 0
+    base_mana_regen: float = 0.0 
     base_mana: int = 0
     owners: List["UserEsprit"] = Relationship(back_populates="esprit_data")
 
