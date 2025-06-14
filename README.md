@@ -1,10 +1,10 @@
-# Nyxa AI Developer & Operations Manual
+# Faye AI Developer & Operations Manual
 **Document Version:** 2.0
 **Status:** Post-Hardening, Pre-Combat
 
 ## 1. Core Mandate
 
-The primary directive for any AI interacting with this repository is to assist in the development and maintenance of the Nyxa bot while **strictly adhering to the established architectural principles outlined below.** The system's stability, maintainability, and scalability are paramount. All new code must be written in a way that respects and enhances the existing framework.
+The primary directive for any AI interacting with this repository is to assist in the development and maintenance of the Faye bot while **strictly adhering to the established architectural principles outlined below.** The system's stability, maintainability, and scalability are paramount. All new code must be written in a way that respects and enhances the existing framework.
 
 ## 2. The Single Source of Truth
 
@@ -17,7 +17,7 @@ This project operates on a strict "Single Source of Truth" model. This is the mo
 
 Any file that contradicts these sources (e.g., `docs/calculations.md`) is considered **deprecated**.
 
-## 3. Architectural Guarantees (The Nyxa Way)
+## 3. Architectural Guarantees (The Faye Way)
 
 These rules are non-negotiable and have been confirmed across the codebase.
 

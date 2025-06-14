@@ -104,7 +104,7 @@ class StatsView(discord.ui.View):
     # ── overview ──────────────────────────────────────────────────────────────
     def _overview_embed(self) -> discord.Embed:
         embed = discord.Embed(
-            title="📊 Nyxa Global Statistics – Overview",
+            title="📊 Faye Global Statistics – Overview",
             description="Quick overview of key metrics",
             color=discord.Color.gold(),
             timestamp=discord.utils.utcnow(),
@@ -115,8 +115,8 @@ class StatsView(discord.ui.View):
                 f"**Total Users:** {self.stats_data['total_users']:,}\n"
                 f"**Active Today:** {self.stats_data['users_claimed_today']:,}\n"
                 f"**Total Esprits Owned:** {self.stats_data['total_esprits_owned']:,}\n"
-                f"**Total Nyxies:** {self.stats_data['total_nyxies']:,}\n"
-                f"**Total Aether:** {self.stats_data['total_aether']:,}"
+                f"**Total Faylen:** {self.stats_data['total_faylen']:,}\n"
+                f"**Total Ethryl:** {self.stats_data['total_ethryl']:,}"
             ),
             inline=True,
         )
@@ -152,12 +152,12 @@ class StatsView(discord.ui.View):
         embed.add_field(
             name="💎 Currency in Circulation",
             value=(
-                f"**Nyxies:** {self.stats_data['total_nyxies']:,}\n"
-                f"**Moonglow:** {self.stats_data['total_moonglow']:,}\n"
-                f"**Azurites:** {self.stats_data['total_azurites']:,}\n"
-                f"**Aether:** {self.stats_data['total_aether']:,}\n"
-                f"**Azurite Shards:** {self.stats_data['total_azurite_shards']:,}\n"
-                f"**Essence:** {self.stats_data['total_essence']:,}\n"
+                f"**Faylen:** {self.stats_data['total_faylen']:,}\n"
+                f"**Virelite:** {self.stats_data['total_virelite']:,}\n"
+                f"**Fayrites:** {self.stats_data['total_fayrites']:,}\n"
+                f"**Ethryl:** {self.stats_data['total_ethryl']:,}\n"
+                f"**Fayrite Shards:** {self.stats_data['total_fayrite_shards']:,}\n"
+                f"**Remna:** {self.stats_data['total_remna']:,}\n"
                 f"**Loot Chests:** {self.stats_data['total_loot_chests']:,}"
             ),
             inline=True,
@@ -168,11 +168,11 @@ class StatsView(discord.ui.View):
             embed.add_field(
                 name="📊 Per-User Averages",
                 value=(
-                    f"**Avg Nyxies:** {self.stats_data['total_nyxies'] // u:,}\n"
-                    f"**Avg Moonglow:** {self.stats_data['total_moonglow'] // u:,}\n"
-                    f"**Avg Azurites:** {self.stats_data['total_azurites'] / u:.1f}\n"
-                    f"**Avg Aether:** {self.stats_data['total_aether'] / u:.1f}\n"
-                    f"**Avg Shards:** {self.stats_data['total_azurite_shards'] / u:.1f}\n"
+                    f"**Avg Faylen:** {self.stats_data['total_faylen'] // u:,}\n"
+                    f"**Avg Virelite:** {self.stats_data['total_virelite'] // u:,}\n"
+                    f"**Avg Fayrites:** {self.stats_data['total_fayrites'] / u:.1f}\n"
+                    f"**Avg Ethryl:** {self.stats_data['total_ethryl'] / u:.1f}\n"
+                    f"**Avg Shards:** {self.stats_data['total_fayrite_shards'] / u:.1f}\n"
                     f"**Avg Loot Chests:** {self.stats_data['total_loot_chests'] / u:.1f}"
                 ),
                 inline=True,
@@ -361,17 +361,17 @@ class EspritPaginatorView(discord.ui.View):
 @app_commands.guild_only()
 class AdminCog(commands.Cog):
     MODIFIABLE_ATTRIBUTES = (
-        "nyxies",
-        "moonglow",
-        "azurites",
-        "azurite_shards",
-        "aether",
-        "essence",
+        "faylen",
+        "virelite",
+        "fayrites",
+        "fayrite_shards",
+        "ethryl",
+        "remna",
         "xp",
         "loot_chests",
     )
 
-    # help-dict (Aether entries included)
+    # help-dict (Ethryl entries included)
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.admin_commands_data: Dict = {
@@ -381,34 +381,34 @@ class AdminCog(commands.Cog):
                 "description": "Commands for adding currency or items to a user.",
                 "commands": [
                     {
-                        "name": "/give nyxies",
+                        "name": "/give faylen",
                         "usage": "<user> <amount>",
-                        "desc": "Adds nyxies.",
+                        "desc": "Adds faylen.",
                     },
                     {
-                        "name": "/give moonglow",
+                        "name": "/give virelite",
                         "usage": "<user> <amount>",
-                        "desc": "Adds moonglow.",
+                        "desc": "Adds virelite.",
                     },
                     {
-                        "name": "/give azurites",
+                        "name": "/give fayrites",
                         "usage": "<user> <amount>",
-                        "desc": "Adds azurites.",
+                        "desc": "Adds fayrites.",
                     },
                     {
-                        "name": "/give aether",
+                        "name": "/give ethryl",
                         "usage": "<user> <amount>",
-                        "desc": "Adds aether.",
+                        "desc": "Adds ethryl.",
                     },
                     {
-                        "name": "/give azurite_shards",
+                        "name": "/give fayrite_shards",
                         "usage": "<user> <amount>",
-                        "desc": "Adds azurite shards.",
+                        "desc": "Adds fayrite shards.",
                     },
                     {
-                        "name": "/give essence",
+                        "name": "/give remna",
                         "usage": "<user> <amount>",
-                        "desc": "Adds essence.",
+                        "desc": "Adds remna.",
                     },
                     {
                         "name": "/give xp",
@@ -433,34 +433,34 @@ class AdminCog(commands.Cog):
                 "description": "Commands for subtracting currency or items.",
                 "commands": [
                     {
-                        "name": "/remove nyxies",
+                        "name": "/remove faylen",
                         "usage": "<user> <amount>",
-                        "desc": "Removes nyxies.",
+                        "desc": "Removes faylen.",
                     },
                     {
-                        "name": "/remove moonglow",
+                        "name": "/remove virelite",
                         "usage": "<user> <amount>",
-                        "desc": "Removes moonglow.",
+                        "desc": "Removes virelite.",
                     },
                     {
-                        "name": "/remove azurites",
+                        "name": "/remove fayrites",
                         "usage": "<user> <amount>",
-                        "desc": "Removes azurites.",
+                        "desc": "Removes fayrites.",
                     },
                     {
-                        "name": "/remove aether",
+                        "name": "/remove ethryl",
                         "usage": "<user> <amount>",
-                        "desc": "Removes aether.",
+                        "desc": "Removes ethryl.",
                     },
                     {
-                        "name": "/remove azurite_shards",
+                        "name": "/remove fayrite_shards",
                         "usage": "<user> <amount>",
-                        "desc": "Removes azurite shards.",
+                        "desc": "Removes fayrite shards.",
                     },
                     {
-                        "name": "/remove essence",
+                        "name": "/remove remna",
                         "usage": "<user> <amount>",
-                        "desc": "Removes essence.",
+                        "desc": "Removes remna.",
                     },
                     {
                         "name": "/remove xp",
@@ -485,34 +485,34 @@ class AdminCog(commands.Cog):
                 "description": "Commands for setting an exact value.",
                 "commands": [
                     {
-                        "name": "/set nyxies",
+                        "name": "/set faylen",
                         "usage": "<user> <amount>",
-                        "desc": "Sets nyxies.",
+                        "desc": "Sets faylen.",
                     },
                     {
-                        "name": "/set moonglow",
+                        "name": "/set virelite",
                         "usage": "<user> <amount>",
-                        "desc": "Sets moonglow.",
+                        "desc": "Sets virelite.",
                     },
                     {
-                        "name": "/set azurites",
+                        "name": "/set fayrites",
                         "usage": "<user> <amount>",
-                        "desc": "Sets azurites.",
+                        "desc": "Sets fayrites.",
                     },
                     {
-                        "name": "/set aether",
+                        "name": "/set ethryl",
                         "usage": "<user> <amount>",
-                        "desc": "Sets aether.",
+                        "desc": "Sets ethryl.",
                     },
                     {
-                        "name": "/set azurite_shards",
+                        "name": "/set fayrite_shards",
                         "usage": "<user> <amount>",
-                        "desc": "Sets azurite shards.",
+                        "desc": "Sets fayrite shards.",
                     },
                     {
-                        "name": "/set essence",
+                        "name": "/set remna",
                         "usage": "<user> <amount>",
-                        "desc": "Sets essence.",
+                        "desc": "Sets remna.",
                     },
                     {
                         "name": "/set loot_chests",
@@ -693,7 +693,7 @@ class AdminCog(commands.Cog):
                 "❌ You are not the bot owner.", ephemeral=True
             )
         embed = discord.Embed(
-            title="🛠️ Nyxa Admin Command Center",
+            title="🛠️ Faye Admin Command Center",
             description="Select a category from the dropdown to view commands & usage.",
             color=discord.Color.orange(),
         )
@@ -738,23 +738,23 @@ class AdminCog(commands.Cog):
                 else:
                     stats["max_level"], stats["top_player_mention"] = 0, "None"
                 # currency sums
-                stats["total_nyxies"] = (
-                    await session.execute(select(func.sum(User.nyxies)))
+                stats["total_faylen"] = (
+                    await session.execute(select(func.sum(User.faylen)))
                 ).scalar_one() or 0
-                stats["total_moonglow"] = (
-                    await session.execute(select(func.sum(User.moonglow)))
+                stats["total_virelite"] = (
+                    await session.execute(select(func.sum(User.virelite)))
                 ).scalar_one() or 0
-                stats["total_azurites"] = (
-                    await session.execute(select(func.sum(User.azurites)))
+                stats["total_fayrites"] = (
+                    await session.execute(select(func.sum(User.fayrites)))
                 ).scalar_one() or 0
-                stats["total_aether"] = (
-                    await session.execute(select(func.sum(User.aether)))
+                stats["total_ethryl"] = (
+                    await session.execute(select(func.sum(User.ethryl)))
                 ).scalar_one() or 0
-                stats["total_azurite_shards"] = (
-                    await session.execute(select(func.sum(User.azurite_shards)))
+                stats["total_fayrite_shards"] = (
+                    await session.execute(select(func.sum(User.fayrite_shards)))
                 ).scalar_one() or 0
-                stats["total_essence"] = (
-                    await session.execute(select(func.sum(User.essence)))
+                stats["total_remna"] = (
+                    await session.execute(select(func.sum(User.remna)))
                 ).scalar_one() or 0
                 stats["total_loot_chests"] = (
                     await session.execute(select(func.sum(User.loot_chests)))
@@ -877,16 +877,16 @@ class AdminCog(commands.Cog):
         embed.add_field(name="Esprits", value=f"{esprit_count:,}", inline=True)
 
         embed.add_field(
-            name="Nyxies | Moonglow",
-            value=f"{user_obj.nyxies:,} | {user_obj.moonglow:,}",
+            name="Faylen | Virelite",
+            value=f"{user_obj.faylen:,} | {user_obj.virelite:,}",
             inline=True,
         )
-        embed.add_field(name="Azurites", value=f"{user_obj.azurites:,}", inline=True)
+        embed.add_field(name="Fayrites", value=f"{user_obj.fayrites:,}", inline=True)
         embed.add_field(
-            name="Azurite Shards", value=f"{user_obj.azurite_shards:,}", inline=True
+            name="Fayrite Shards", value=f"{user_obj.fayrite_shards:,}", inline=True
         )
-        embed.add_field(name="Aether", value=f"{user_obj.aether:,}", inline=True)
-        embed.add_field(name="Essence", value=f"{user_obj.essence:,}", inline=True)
+        embed.add_field(name="Ethryl", value=f"{user_obj.ethryl:,}", inline=True)
+        embed.add_field(name="Remna", value=f"{user_obj.remna:,}", inline=True)
         embed.add_field(name="Loot Chests", value=f"{user_obj.loot_chests:,}", inline=True)
 
         embed.add_field(
@@ -906,31 +906,31 @@ class AdminCog(commands.Cog):
 
     # ───────────────────────────── Currency-manip commands ─────────────────────────────
     # (Give)
-    @give_group.command(name="nyxies", description="Give nyxies")
-    async def give_nyxies(
+    @give_group.command(name="faylen", description="Give faylen")
+    async def give_faylen(
         self, i: discord.Interaction, u: discord.User, a: int
     ):  # noqa: D401
-        await self._adjust_user_attribute(i, u, "nyxies", "give", a)
+        await self._adjust_user_attribute(i, u, "faylen", "give", a)
 
-    @give_group.command(name="moonglow", description="Give moonglow")
-    async def give_moonglow(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "moonglow", "give", a)
+    @give_group.command(name="virelite", description="Give virelite")
+    async def give_virelite(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "virelite", "give", a)
 
-    @give_group.command(name="azurites", description="Give azurites")
-    async def give_azurites(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "azurites", "give", a)
+    @give_group.command(name="fayrites", description="Give fayrites")
+    async def give_fayrites(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "fayrites", "give", a)
 
-    @give_group.command(name="aether", description="Give aether")
-    async def give_aether(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "aether", "give", a)
+    @give_group.command(name="ethryl", description="Give ethryl")
+    async def give_ethryl(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "ethryl", "give", a)
 
-    @give_group.command(name="azurite_shards", description="Give azurite_shards")
-    async def give_azurite_shards(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "azurite_shards", "give", a)
+    @give_group.command(name="fayrite_shards", description="Give fayrite_shards")
+    async def give_fayrite_shards(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "fayrite_shards", "give", a)
 
-    @give_group.command(name="essence", description="Give essence")
-    async def give_essence(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "essence", "give", a)
+    @give_group.command(name="remna", description="Give remna")
+    async def give_remna(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "remna", "give", a)
 
     @give_group.command(name="xp", description="Give xp")
     async def give_xp(self, interaction: discord.Interaction, user: discord.User, amount: int):
@@ -1015,31 +1015,31 @@ class AdminCog(commands.Cog):
             )
 
     # (Remove)
-    @remove_group.command(name="nyxies", description="Remove nyxies")
-    async def remove_nyxies(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "nyxies", "remove", a)
+    @remove_group.command(name="faylen", description="Remove faylen")
+    async def remove_faylen(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "faylen", "remove", a)
 
-    @remove_group.command(name="moonglow", description="Remove moonglow")
-    async def remove_moonglow(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "moonglow", "remove", a)
+    @remove_group.command(name="virelite", description="Remove virelite")
+    async def remove_virelite(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "virelite", "remove", a)
 
-    @remove_group.command(name="azurites", description="Remove azurites")
-    async def remove_azurites(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "azurites", "remove", a)
+    @remove_group.command(name="fayrites", description="Remove fayrites")
+    async def remove_fayrites(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "fayrites", "remove", a)
 
-    @remove_group.command(name="aether", description="Remove aether")
-    async def remove_aether(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "aether", "remove", a)
+    @remove_group.command(name="ethryl", description="Remove ethryl")
+    async def remove_ethryl(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "ethryl", "remove", a)
 
-    @remove_group.command(name="azurite_shards", description="Remove azurite_shards")
-    async def remove_azurite_shards(
+    @remove_group.command(name="fayrite_shards", description="Remove fayrite_shards")
+    async def remove_fayrite_shards(
         self, i: discord.Interaction, u: discord.User, a: int
     ):
-        await self._adjust_user_attribute(i, u, "azurite_shards", "remove", a)
+        await self._adjust_user_attribute(i, u, "fayrite_shards", "remove", a)
 
-    @remove_group.command(name="essence", description="Remove essence")
-    async def remove_essence(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "essence", "remove", a)
+    @remove_group.command(name="remna", description="Remove remna")
+    async def remove_remna(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "remna", "remove", a)
 
     @remove_group.command(name="xp", description="Remove xp")
     async def remove_xp(self, i: discord.Interaction, u: discord.User, a: int):
@@ -1077,29 +1077,29 @@ class AdminCog(commands.Cog):
             )
 
     # (Set)
-    @set_group.command(name="nyxies", description="Set nyxies")
-    async def set_nyxies(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "nyxies", "set", a)
+    @set_group.command(name="faylen", description="Set faylen")
+    async def set_faylen(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "faylen", "set", a)
 
-    @set_group.command(name="moonglow", description="Set moonglow")
-    async def set_moonglow(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "moonglow", "set", a)
+    @set_group.command(name="virelite", description="Set virelite")
+    async def set_virelite(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "virelite", "set", a)
 
-    @set_group.command(name="azurites", description="Set azurites")
-    async def set_azurites(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "azurites", "set", a)
+    @set_group.command(name="fayrites", description="Set fayrites")
+    async def set_fayrites(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "fayrites", "set", a)
 
-    @set_group.command(name="aether", description="Set aether")
-    async def set_aether(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "aether", "set", a)
+    @set_group.command(name="ethryl", description="Set ethryl")
+    async def set_ethryl(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "ethryl", "set", a)
 
-    @set_group.command(name="azurite_shards", description="Set azurite_shards")
-    async def set_azurite_shards(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "azurite_shards", "set", a)
+    @set_group.command(name="fayrite_shards", description="Set fayrite_shards")
+    async def set_fayrite_shards(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "fayrite_shards", "set", a)
 
-    @set_group.command(name="essence", description="Set essence")
-    async def set_essence(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "essence", "set", a)
+    @set_group.command(name="remna", description="Set remna")
+    async def set_remna(self, i: discord.Interaction, u: discord.User, a: int):
+        await self._adjust_user_attribute(i, u, "remna", "set", a)
 
     @set_group.command(name="xp", description="Set xp")
     async def set_xp(self, i: discord.Interaction, u: discord.User, a: int):

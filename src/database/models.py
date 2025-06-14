@@ -42,12 +42,12 @@ class User(SQLModel, table=True):
     username: str = Field(index=True)
     level: int = Field(default=1, index=True)
     xp: int = Field(default=0)
-    nyxies: int = Field(default=0, nullable=False)
-    moonglow: int = Field(default=0, nullable=False)
-    azurites: int = Field(default=0, nullable=False)
-    azurite_shards: int = Field(default=0, nullable=False)
-    essence: int = Field(default=0, nullable=False)
-    aether: int = Field(default=0, nullable=False)
+    faylen: int = Field(default=0, nullable=False)
+    virelite: int = Field(default=0, nullable=False)
+    fayrites: int = Field(default=0, nullable=False)
+    fayrite_shards: int = Field(default=0, nullable=False)
+    remna: int = Field(default=0, nullable=False)
+    ethryl: int = Field(default=0, nullable=False)
     loot_chests: int = Field(default=0, nullable=False)
     last_daily_claim: Optional[datetime] = Field(default=None, nullable=True)
     last_daily_summon: Optional[datetime] = Field(default=None, nullable=True)
@@ -159,11 +159,11 @@ class UserEsprit(SQLModel, table=True):
         return {"can_break": True}
 
     def get_limit_break_cost(self, lb_config: Dict) -> dict:
-        if not self.esprit_data: return {"essence": 0, "moonglow": 0}
+        if not self.esprit_data: return {"remna": 0, "virelite": 0}
         
         base_costs = lb_config.get("base_costs", {})
-        base_essence = base_costs.get("essence", 200)
-        base_moonglow = base_costs.get("moonglow", 500)
+        base_remna = base_costs.get("remna", 200)
+        base_virelite = base_costs.get("virelite", 500)
         
         rarity_multipliers = lb_config.get("rarity_cost_multipliers", {})
         level_scaling_factor = lb_config.get("level_scaling_factor", 50) # Matching formula: esprit_level / 50
@@ -176,8 +176,8 @@ class UserEsprit(SQLModel, table=True):
         total_multiplier = rarity_mult * level_multiplier * limit_break_multiplier
         
         return {
-            "essence": int(base_essence * total_multiplier),
-            "moonglow": int(base_moonglow * total_multiplier),
+            "remna": int(base_remna * total_multiplier),
+            "virelite": int(base_virelite * total_multiplier),
         }
 
 

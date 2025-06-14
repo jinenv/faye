@@ -552,10 +552,10 @@ class EspritGroup(app_commands.Group, name="esprit"):
                     # Add upgrade cost info if not at cap
                     cost_formula = upgrade_config.get("cost_formula", "15 + (current_level * 8)")
                     cost = eval(cost_formula, {"current_level": ue.current_level})
-                    embed.add_field(name="⚡ Next Upgrade", value=f"Cost: **{cost:,}** Moonglow", inline=True)
+                    embed.add_field(name="⚡ Next Upgrade", value=f"Cost: **{cost:,}** Virelite", inline=True)
                 elif can_break["can_break"]:
                     cost = ue.get_limit_break_cost(lb_config)
-                    lb_text = f"🔓 **Ready to Limit Break!**\nCost: {cost['essence']:,} Essence\n{cost['moonglow']:,} Moonglow"
+                    lb_text = f"🔓 **Ready to Limit Break!**\nCost: {cost['remna']:,} Remna\n{cost['virelite']:,} Virelite"
                     embed.add_field(name="⚡ Limit Break", value=lb_text, inline=True)
                 else: # At cap, but cannot limit break
                      embed.add_field(name="⚡ Limit Break", value=f"Player level too low to break further.", inline=True)
@@ -620,17 +620,17 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 cost = esprit.get_limit_break_cost(lb_config)
 
                 # Check resources
-                if user.essence < cost["essence"]:
-                    return await inter.followup.send(f"❌ Need **{cost['essence']:,}** Essence (You have {user.essence:,})")
-                if user.moonglow < cost["moonglow"]:
-                    return await inter.followup.send(f"❌ Need **{cost['moonglow']:,}** Moonglow (You have {user.moonglow:,})")
+                if user.remna < cost["remna"]:
+                    return await inter.followup.send(f"❌ Need **{cost['remna']:,}** Remna (You have {user.remna:,})")
+                if user.virelite < cost["virelite"]:
+                    return await inter.followup.send(f"❌ Need **{cost['virelite']:,}** Virelite (You have {user.virelite:,})")
 
                 # --- Perform limit break ---
                 old_power = esprit.calculate_power(power_config, stat_config)
                 
                 # Deduct costs from the user
-                user.essence -= cost["essence"]
-                user.moonglow -= cost["moonglow"]
+                user.remna -= cost["remna"]
+                user.virelite -= cost["virelite"]
 
                 # Apply limit break using the multiplier from config
                 compound_rate = lb_config.get("compound_rate", 1.1)
@@ -652,7 +652,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 )
                 embed.add_field(name="💪 Power Increase", value=f"{old_power:,} → **{new_power:,}** Sigil", inline=True)
                 embed.add_field(name="📈 New Level Cap", value=f"Can now reach level **{new_cap}**", inline=True)
-                embed.add_field(name="💰 Cost Paid", value=f"{cost['essence']:,} Essence\n{cost['moonglow']:,} Moonglow", inline=True)
+                embed.add_field(name="💰 Cost Paid", value=f"{cost['remna']:,} Remna\n{cost['virelite']:,} Virelite", inline=True)
                 embed.add_field(
                     name="🔥 Total Limit Breaks",
                     value=f"**{esprit.limit_breaks_performed}** performed\nStat Multiplier: **{esprit.stat_boost_multiplier:.2f}x**",
@@ -670,7 +670,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
     # ────────────────────────────────────────────────────────────────────
     # upgrade (REVISED AND FIXED)
     # ────────────────────────────────────────────────────────────────────
-    @app_commands.command(name="upgrade", description="Spend Moonglow to level up an Esprit.")
+    @app_commands.command(name="upgrade", description="Spend Virelite to level up an Esprit.")
     @app_commands.describe(
         esprit_id="The ID of the Esprit you want to upgrade.",
         levels="The number of levels to add (1-10, or 'max').",
@@ -735,11 +735,11 @@ class EspritGroup(app_commands.Group, name="esprit"):
 
                 # --- NEW: Use the cost formula from the config file ---
                 cost_formula = upgrade_config.get("cost_formula", "15 + (current_level * 8)")
-                total_moonglow_cost = sum(eval(cost_formula, {"current_level": lvl}) for lvl in range(ue.current_level, ue.current_level + levels_to_add))
+                total_virelite_cost = sum(eval(cost_formula, {"current_level": lvl}) for lvl in range(ue.current_level, ue.current_level + levels_to_add))
 
-                if user.moonglow < total_moonglow_cost:
+                if user.virelite < total_virelite_cost:
                     return await inter.followup.send(
-                        f"❌ You need **{total_moonglow_cost:,}** Moonglow, but you only have **{user.moonglow:,}**.",
+                        f"❌ You need **{total_virelite_cost:,}** Virelite, but you only have **{user.virelite:,}**.",
                         ephemeral=True
                     )
 
@@ -748,7 +748,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 old_power = ue.calculate_power(power_config, stat_config)
                 
                 # Apply the upgrade
-                user.moonglow -= total_moonglow_cost
+                user.virelite -= total_virelite_cost
                 ue.current_level += levels_to_add
                 ue.current_hp = ue.calculate_stat('hp', stat_config) # Heal to new max HP
 
@@ -758,7 +758,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 await s.commit()
                 await self._invalidate(str(inter.user.id))
 
-                transaction_logger.log_esprit_upgrade(inter, ue, old_level, total_moonglow_cost)
+                transaction_logger.log_esprit_upgrade(inter, ue, old_level, total_virelite_cost)
 
                 # Create and send the success message
                 embed = discord.Embed(
@@ -767,7 +767,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
                     color=discord.Color.gold()
                 )
                 embed.add_field(name="Levels Gained", value=f"`+{levels_to_add}`")
-                embed.add_field(name="Moonglow Spent", value=f"`{total_moonglow_cost:,}`")
+                embed.add_field(name="Virelite Spent", value=f"`{total_virelite_cost:,}`")
                 embed.add_field(name="Power Increase", value=f"{old_power:,} → **{new_power:,}** (`+{new_power - old_power:,}`)")
                 await inter.followup.send(embed=embed, ephemeral=True)
 
@@ -874,8 +874,8 @@ class EspritGroup(app_commands.Group, name="esprit"):
 
                 # --- UPDATED: Pass config to the reward calculator ---
                 rewards = self._calc_rewards([ue], dissolve_rewards_config)
-                user.moonglow += rewards["moonglow"]
-                user.essence += rewards["essence"]
+                user.virelite += rewards["virelite"]
+                user.remna += rewards["remna"]
 
                 await s.delete(ue)
                 s.add(user)
@@ -913,8 +913,8 @@ class EspritGroup(app_commands.Group, name="esprit"):
 
                 # --- UPDATED: Pass config to the reward calculator ---
                 rewards = self._calc_rewards(esprits_to_dissolve, rewards_config)
-                user.moonglow += rewards["moonglow"]
-                user.essence += rewards["essence"]
+                user.virelite += rewards["virelite"]
+                user.remna += rewards["remna"]
 
                 for e in esprits_to_dissolve:
                     await s.delete(e)
@@ -942,12 +942,12 @@ class EspritGroup(app_commands.Group, name="esprit"):
 
     # --- UPDATED: Reward calculator now requires the config ---
     def _calc_rewards(self, esprits: List[UserEsprit], rewards_config: Dict) -> Dict[str, int]:
-        totals = {"moonglow": 0, "essence": 0}
+        totals = {"virelite": 0, "remna": 0}
         for e in esprits:
             # Use the passed-in config dictionary
-            rarity_rewards = rewards_config.get(e.esprit_data.rarity, {"moonglow": 0, "essence": 0})
-            totals["moonglow"] += rarity_rewards.get("moonglow", 0)
-            totals["essence"] += rarity_rewards.get("essence", 0)
+            rarity_rewards = rewards_config.get(e.esprit_data.rarity, {"virelite": 0, "remna": 0})
+            totals["virelite"] += rarity_rewards.get("virelite", 0)
+            totals["remna"] += rarity_rewards.get("remna", 0)
         return totals
 
     @app_commands.command(name="search", description="Find your owned Esprits by name.")

@@ -23,7 +23,7 @@ class EconomyCog(commands.Cog):
         self.cooldowns = game_settings.get("cooldowns", {}) # Load cooldowns
         
         economy_settings = game_settings.get("economy", {})
-        self.SHARDS_PER_AZURITE = economy_settings.get("shards_per_azurite", 10)
+        self.SHARDS_PER_FAYRITE = economy_settings.get("shards_per_fayrite", 10)
         
         self.general_limiter = RateLimiter(3, 20)
         self.daily_limiter = RateLimiter(3, 600)
@@ -43,13 +43,13 @@ class EconomyCog(commands.Cog):
                 return await interaction.followup.send("❌ You haven't started your adventure yet. Use `/start`.", ephemeral=True)
             
             embed = discord.Embed(title=f"🎒 {interaction.user.display_name}'s Inventory", color=discord.Color.dark_orange())
-            embed.add_field(name="Nyxies", value=f"{user.nyxies:,}", inline=True)
-            embed.add_field(name="Moonglow", value=f"{user.moonglow:,}", inline=True)
-            embed.add_field(name="Aether", value=f"{user.aether:,}", inline=True)
-            azurite_display = (f"**{user.azurites:,}** Azurites\n"
-                               f"**{user.azurite_shards:,}** Shards")
-            embed.add_field(name="Essence", value=f"{user.essence:,}", inline=True)
-            embed.add_field(name="Summoning Energy", value=azurite_display, inline=False)
+            embed.add_field(name="Faylen", value=f"{user.faylen:,}", inline=True)
+            embed.add_field(name="Virelite", value=f"{user.virelite:,}", inline=True)
+            embed.add_field(name="Ethryl", value=f"{user.ethryl:,}", inline=True)
+            fayrite_display = (f"**{user.fayrites:,}** Fayrites\n"
+                               f"**{user.fayrite_shards:,}** Shards")
+            embed.add_field(name="Remna", value=f"{user.remna:,}", inline=True)
+            embed.add_field(name="Summoning Energy", value=fayrite_display, inline=False)
             embed.add_field(name="🎁 Loot Chests", value=f"{user.loot_chests:,}", inline=True)
             embed.set_footer(text="Use '/esprit collection' to see your Esprits.")
             await interaction.followup.send(embed=embed)
@@ -92,9 +92,9 @@ class EconomyCog(commands.Cog):
 
     @app_commands.command(name="craft", description="Craft higher-tier items from materials.")
     @app_commands.describe(item="The item you want to craft.", amount="How many to craft. 'all' to craft as many as possible.")
-    async def craft(self, interaction: discord.Interaction, item: Literal['azurite'], amount: str):
-        if item.lower() != 'azurite':
-            return await interaction.response.send_message("❌ You can only craft Azurites right now.", ephemeral=True)
+    async def craft(self, interaction: discord.Interaction, item: Literal['fayrite'], amount: str):
+        if item.lower() != 'fayrite':
+            return await interaction.response.send_message("❌ You can only craft Fayrites right now.", ephemeral=True)
 
         await interaction.response.defer(ephemeral=True)
         if not await self.general_limiter.check(interaction.user.id):
@@ -105,12 +105,12 @@ class EconomyCog(commands.Cog):
             if not user:
                 return await interaction.followup.send("❌ You need to `/start` first.", ephemeral=True)
 
-            shards_needed_per_azurite = self.SHARDS_PER_AZURITE
+            shards_needed_per_fayrite = self.SHARDS_PER_FAYRITE
             
             if amount.lower() == 'all':
-                if user.azurite_shards < shards_needed_per_azurite:
-                    return await interaction.followup.send(f"❌ You need at least **{shards_needed_per_azurite}** shards.", ephemeral=True)
-                amount_to_craft = user.azurite_shards // shards_needed_per_azurite
+                if user.fayrite_shards < shards_needed_per_fayrite:
+                    return await interaction.followup.send(f"❌ You need at least **{shards_needed_per_fayrite}** shards.", ephemeral=True)
+                amount_to_craft = user.fayrite_shards // shards_needed_per_fayrite
             else:
                 try:
                     amount_to_craft = int(amount)
@@ -119,12 +119,12 @@ class EconomyCog(commands.Cog):
                 except ValueError:
                     return await interaction.followup.send("❌ Invalid amount. Use a number or 'all'.", ephemeral=True)
 
-            total_shards_cost = amount_to_craft * shards_needed_per_azurite
-            if user.azurite_shards < total_shards_cost:
+            total_shards_cost = amount_to_craft * shards_needed_per_fayrite
+            if user.fayrite_shards < total_shards_cost:
                 return await interaction.followup.send(f"❌ Not enough shards. You need **{total_shards_cost:,}**.", ephemeral=True)
 
-            user.azurite_shards -= total_shards_cost
-            user.azurites += amount_to_craft
+            user.fayrite_shards -= total_shards_cost
+            user.fayrites += amount_to_craft
             
             await session.commit()
             
@@ -132,17 +132,17 @@ class EconomyCog(commands.Cog):
             transaction_logger.log_craft_item(
                 logger,
                 interaction,
-                item_name="Azurite",
+                item_name="Fayrite",
                 crafted_amount=amount_to_craft,
-                cost_str=f"{total_shards_cost:,} Azurite Shards"
+                cost_str=f"{total_shards_cost:,} Fayrite Shards"
             )
 
             embed = discord.Embed(
                 title="✨ Crafting Successful!",
-                description=f"You converted **{total_shards_cost:,}** Azurite Shards into **{amount_to_craft:,}** <:azurite:YOUR_ICON_ID> Azurite(s).",
+                description=f"You converted **{total_shards_cost:,}** Fayrite Shards into **{amount_to_craft:,}** <:fayrite:YOUR_ICON_ID> Fayrite(s).",
                 color=discord.Color.blue()
             )
-            embed.add_field(name="New Balance", value=f"Azurites: **{user.azurites:,}**\nShards: **{user.azurite_shards:,}**")
+            embed.add_field(name="New Balance", value=f"Fayrites: **{user.fayrites:,}**\nShards: **{user.fayrite_shards:,}**")
             await interaction.followup.send(embed=embed)
 
 async def setup(bot: commands.Bot):

@@ -15,14 +15,14 @@ class LimitBreakService:
 
         # 2. Calculate cost & check resources
         cost = esprit.get_limit_break_cost()
-        if user.essence < cost["essence"]:
-            return {"success": False, "reason": "insufficient_essence", "required": cost["essence"], "available": user.essence}
-        if user.moonglow < cost["moonglow"]:
-            return {"success": False, "reason": "insufficient_moonglow", "required": cost["moonglow"], "available": user.moonglow}
+        if user.remna < cost["remna"]:
+            return {"success": False, "reason": "insufficient_remna", "required": cost["remna"], "available": user.remna}
+        if user.virelite < cost["virelite"]:
+            return {"success": False, "reason": "insufficient_virelite", "required": cost["virelite"], "available": user.virelite}
 
         # 3. Deduct materials
-        user.essence -= cost["essence"]
-        user.moonglow -= cost["moonglow"]
+        user.remna -= cost["remna"]
+        user.virelite -= cost["virelite"]
 
         # 4. Perform the break
         result = esprit.perform_limit_break()
@@ -95,5 +95,5 @@ class LimitBreakService:
             "estimated_new_power": estimated,
             "power_increase": estimated - current_power,
             "cost": cost,
-            "can_afford": user.essence >= cost["essence"] and user.moonglow >= cost["moonglow"]
+            "can_afford": user.remna >= cost["remna"] and user.virelite >= cost["virelite"]
         }

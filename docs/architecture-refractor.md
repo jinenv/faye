@@ -1,4 +1,4 @@
-# Nyxa - Architectural Refactor Changelog
+# Faye - Architectural Refactor Changelog
 
 This release focuses on major architectural improvements to enhance performance, data integrity, and stability, preparing the application for future feature development.
 

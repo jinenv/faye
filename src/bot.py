@@ -13,8 +13,8 @@ logger = get_logger(__name__)
 load_dotenv()
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_TOKEN")
 
-class NyxaBot(commands.Bot):
-    """The main bot class for Nyxa."""
+class FayeBot(commands.Bot):
+    """The main bot class for Faye."""
 
     def __init__(self):
         intents = discord.Intents.default()
@@ -102,11 +102,11 @@ class NyxaBot(commands.Bot):
     async def on_ready(self):
         """Called when the bot is ready and connected to Discord."""
         logger.info(f"Logged in as {self.user.name} (ID: {self.user.id})")
-        logger.info("Nyxa is now online and ready.")
+        logger.info("Faye is now online and ready.")
 
 async def main():
     """The main entry point for the bot."""
-    bot = NyxaBot()
+    bot = FayeBot()
     
     if not DISCORD_BOT_TOKEN:
         logger.critical("DISCORD_BOT_TOKEN not found in environment variables. Bot cannot start.")

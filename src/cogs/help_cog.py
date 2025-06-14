@@ -88,7 +88,7 @@ class HelpView(discord.ui.View):
         self.add_item(HomeButton(self))
         self.add_item(discord.ui.Button(
             label="Website", emoji="🌐", style=discord.ButtonStyle.link,
-            url="https://nyxa.bot", row=2
+            url="https://faye.bot", row=2
         ))
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
@@ -112,13 +112,13 @@ class HelpView(discord.ui.View):
     def create_main_embed(self) -> discord.Embed:
         """Creates the initial, main help embed."""
         embed = discord.Embed(
-            title="🌟 Nyxa Help Center",
+            title="🌟 Faye Help Center",
             description=(
-                "Welcome to **Nyxa** - *The Next Evolution of Discord Engagement!*\n\n"
+                "Welcome to **Faye** - *The Next Evolution of Discord Engagement!*\n\n"
                 "An advanced Discord RPG featuring stunning Esprit collection, "
                 "strategic combat, and a thriving cross-server economy."
             ),
-            color=0xffd60a # Nyxa Gold
+            color=0xffd60a # Faye Gold
         )
         embed.add_field(
             name="🔥 Key Features",
@@ -174,10 +174,10 @@ class HelpView(discord.ui.View):
         embed = discord.Embed(
             title="🚀 Quick Start Guide",
             description=(
-                "**New to Nyxa? Follow these steps:**\n\n"
+                "**New to Faye? Follow these steps:**\n\n"
                 "1️⃣ **`/start`** - Create your account & get your first Epic Esprit.\n"
-                "2️⃣ **`/daily`** - Claim your daily bundle of Nyxies, Moonglow, and Aether.\n"
-                "3️⃣ **`/summon`** - Use your starting Azurites for your first summon!\n"
+                "2️⃣ **`/daily`** - Claim your daily bundle of Faylen, Virelite, and Ethryl.\n"
+                "3️⃣ **`/summon`** - Use your starting Fayrites for your first summon!\n"
                 "4️⃣ **`/inventory`** - Check all your new currencies.\n"
                 "5️⃣ **`/esprit collection`** - View your growing collection.\n\n"
                 "🎯 **Your Goal:** Collect rare Esprits, build your power, and explore the world!"
@@ -192,9 +192,9 @@ class HelpView(discord.ui.View):
             title="🆘 Get Support & Links",
             description=(
                 "**Need help? We've got you covered:**\n\n"
-                "🌐 **Website:** https://nyxa.bot\n"
+                "🌐 **Website:** https://faye.bot\n"
                 "💬 **Discord:** Join our support server for help & updates.\n"
-                "📧 **Contact:** support@nyxa.bot\n\n"
+                "📧 **Contact:** support@faye.bot\n\n"
                 "Found a bug? Have a suggestion? Let us know in the support server!"
             ),
             color=0x3498DB # Peter River Blue
@@ -204,7 +204,7 @@ class HelpView(discord.ui.View):
     async def show_bot_stats(self, interaction: discord.Interaction):
         """Displays live bot statistics."""
         embed = discord.Embed(
-            title="📊 Live Nyxa Statistics",
+            title="📊 Live Faye Statistics",
             description="Real-time bot performance and game stats:",
             color=0x9B59B6 # Amethyst
         )
@@ -230,12 +230,12 @@ class HelpCog(commands.Cog, name="Help"):
                 "color": 0x2ECC71, # Emerald Green
                 "commands": [
                     {"cmd": "/start", "desc": "Begin your adventure and claim your first Epic Esprit."},
-                    {"cmd": "/daily", "desc": "Claim your daily bundle of Nyxies, Moonglow, and Aether."},
+                    {"cmd": "/daily", "desc": "Claim your daily bundle of Faylen, Virelite, and Ethryl."},
                     {"cmd": "/inventory", "desc": "View all your currencies and materials."},
                 ],
                 "tips": [
                     "Your first Esprit is always **Epic** rarity!",
-                    "Use `/inventory` to see your Azurites, Nyxies, and more.",
+                    "Use `/inventory` to see your Fayrites, Faylen, and more.",
                 ]
             },
             "summoning": {
@@ -243,13 +243,13 @@ class HelpCog(commands.Cog, name="Help"):
                 "description": "Collect stunning Esprits via the summoning portal.",
                 "color": 0xE91E63, # Pink
                 "commands": [
-                    {"cmd": "/summon", "desc": "Summon new Esprits using your Azurites."},
+                    {"cmd": "/summon", "desc": "Summon new Esprits using your Fayrites."},
                 ],
                 "tips": [
-                    "**Azurites** are the sole currency for standard summoning.",
-                    "**Aether** is used for premium summons, which yield higher rarity Esprits.",
-                    "Use `/inventory` to check your Azurite balance before summoning.",
-                    "Earn **Azurite Shards** from gameplay to form new Azurites.",
+                    "**Fayrites** are the sole currency for standard summoning.",
+                    "**Ethryl** is used for premium summons, which yield higher rarity Esprits.",
+                    "Use `/inventory` to check your Fayrite balance before summoning.",
+                    "Earn **Fayrite Shards** from gameplay to form new Fayrites.",
                 ]
             },
             "esprit": {
@@ -259,7 +259,7 @@ class HelpCog(commands.Cog, name="Help"):
                 "commands": [
                     {"cmd": "/esprit collection", "desc": "Browse all the Esprits you've collected."},
                     {"cmd": "🔜 /esprit equip <id>", "desc": "Set your active Esprit for your profile."},
-                    {"cmd": "� /esprit upgrade <id>", "desc": "Spend Moonglow to level up an Esprit."},
+                    {"cmd": "� /esprit upgrade <id>", "desc": "Spend Virelite to level up an Esprit."},
                     {"cmd": "🔜 /esprit team", "desc": "Arrange your 3-Esprit combat team."},
                 ],
                 "tips": [
@@ -269,18 +269,18 @@ class HelpCog(commands.Cog, name="Help"):
             },
             "economy": {
                 "name": "💰 Economy", "emoji": "💰",
-                "description": "Understand Nyxa's multi-currency economic system.",
+                "description": "Understand Faye's multi-currency economic system.",
                 "color": 0xFFC107, # Amber
                 "commands": [
                     {"cmd": "/inventory", "desc": "The central hub for all your assets."},
                     {"cmd": "🔜 /marketplace", "desc": "Trade Esprits and items with other players."},
                 ],
                 "tips": [
-                    "**<:nyxies_icon:ID> Nyxies:** Universal currency for shops and trading.",
-                    "**<:azurite_icon:ID> Azurites:** The premium currency used for summoning.",
-                    "**<:aether_icon:ID> Aether:** Used for premium summons and special features.",
-                    "**<:moonglow_icon:ID> Moonglow:** Material used to level up your Esprits.",
-                    "**<:essence_icon:ID> Essence:** Resources used for crafting and limit breaks.",
+                    "**<:faylen_icon:ID> Faylen:** Universal currency for shops and trading.",
+                    "**<:fayrite_icon:ID> Fayrites:** The premium currency used for summoning.",
+                    "**<:ethryl_icon:ID> Ethryl:** Used for premium summons and special features.",
+                    "**<:virelite_icon:ID> Virelite:** Material used to level up your Esprits.",
+                    "**<:remna_icon:ID> Remna:** Resources used for crafting and limit breaks.",
                 ]
             },
              "progression": {
@@ -294,13 +294,13 @@ class HelpCog(commands.Cog, name="Help"):
                     {"cmd": "🔜 /level", "desc": "Check your current level and XP progress."},
                 ],
                 "tips": [
-                    "**/explore** is the main way to earn **Azurite Shards** and **Essence**.",
+                    "**/explore** is the main way to earn **Fayrite Shards** and **Remna**.",
                     "Your Esprits can only be leveled as high as your player level allows.",
                 ]
             },
         }
 
-    @app_commands.command(name="help", description="Open the main Nyxa help center.")
+    @app_commands.command(name="help", description="Open the main Faye help center.")
     async def help(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         view = HelpView(self.modules, interaction.user.id, self.bot)

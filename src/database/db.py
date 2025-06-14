@@ -16,7 +16,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-DATABASE_URL = "sqlite+aiosqlite:///nyxa.db"
+DATABASE_URL = "sqlite+aiosqlite:///faye.db"
 
 engine: AsyncEngine = create_async_engine(
     DATABASE_URL, echo=False, future=True

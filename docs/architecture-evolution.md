@@ -1,6 +1,6 @@
-# Nyxa Bot Overview & Breakdown
+# Faye Bot Overview & Breakdown
 
-A concise reference for how the Nyxa Discord bot is structured, what was changed during the “SQL Manager” refactor, and how to extend it going forward.
+A concise reference for how the Faye Discord bot is structured, what was changed during the “SQL Manager” refactor, and how to extend it going forward.
 
 ---
 
@@ -18,7 +18,7 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
   - **`models.py`**:  
     - Defines three core tables:  
       1. `EspritData` (master list of all Esprits & their base stats)  
-      2. `User` (registered players, their nyxies, moonglow, level, XP, timestamps)  
+      2. `User` (registered players, their faylen, virelite, level, XP, timestamps)  
       3. `UserEsprit` (which Esprits each user owns, current HP/level/XP)  
 
 - **Configuration Files** (`data/config/*.json`):  
@@ -32,10 +32,10 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
        - Checks if user exists; if not, picks a random starter Esprit, creates `User` & `UserEsprit`, sets `active_esprit_id`, generates an image, and sends welcome + tips.  
        - Enforces “policy acceptance” via a button view before creating the user record (still included in the same cog).  
   2. **`economy_cog.py`**  
-     - `/balance` (shows nyxies, moonglow, gems, etc.).  
+     - `/balance` (shows faylen, virelite, gems, etc.).  
      - `/daily` (24-hour reward, scales with level, updates `last_daily_claim`).  
      - `/inventory` (lists all `UserEsprit` rows for the user, shows names/rarities).  
-     - `/leaderboard` (top users by level/nyxies/XP).  
+     - `/leaderboard` (top users by level/faylen/XP).  
      - All operations use `async with get_session()` + ORM queries/commits.  
   3. **`summon_cog.py`**  
      - `/summon [amount]` (10-pull or single summons).  
@@ -59,7 +59,7 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
 
 - **Onboarding**:  
   - `/start` logic existed but did not integrate with a relational database.  
-  - Starter Esprits and nyxies were tracked only in JSON (or not persisted properly).
+  - Starter Esprits and faylen were tracked only in JSON (or not persisted properly).
 
 - **Summon**:  
   - Used JSON as well (e.g. “add summoned Esprist to `inventory.json`”).  
@@ -68,7 +68,7 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
 ### After (SQLModel / SQLAlchemy + AsyncSession)
 1. **Single Source of Truth**  
    - **ORM models** now define every column/relationship (no JSON fallback for player data).  
-   - Nyxies, moonglow, XP, level, `created_at`, `last_daily_claim`, etc. live in the `user` table.  
+   - Faylen, virelite, XP, level, `created_at`, `last_daily_claim`, etc. live in the `user` table.  
    - Each owned Esprit is a row in `useresprit`.
 
 2. **Atomic, Async Transactions**  
@@ -111,7 +111,7 @@ A concise reference for how the Nyxa Discord bot is structured, what was changed
 | `user_id`          | `VARCHAR`    | Primary key: Discord user ID (string).                                                |
 | `username`         | `VARCHAR`    | Stored Discord username (not necessarily unique if a user changes their tag).         |
 | `level`, `xp`      | `INTEGER`    | Level & experience points.                                                             |
-| `nyxies`, `moonglow`     | `INTEGER`    | Main & secondary currencies.                                                           |
+| `faylen`, `virelite`     | `INTEGER`    | Main & secondary currencies.                                                           |
 | `last_daily_claim` | `DATETIME`   | Timestamp of last `/daily` usage (UTC ISO format).                                     |
 | `active_esprit_id` | `VARCHAR`    | FK → `useresprit.id`; which `UserEsprit` is currently “active.”                         |
 | `created_at`       | `DATETIME`   | Defaults to `CURRENT_TIMESTAMP`.                                                       |
@@ -200,8 +200,8 @@ class User(SQLModel, table=True):
     username: str
     level: int = Field(default=1)
     xp: int = Field(default=0)
-    nyxies: int = Field(default=0)
-    moonglow: int = Field(default=0)
+    faylen: int = Field(default=0)
+    virelite: int = Field(default=0)
 
     # ← New column
     gems: int = Field(default=0, nullable=False)
@@ -214,7 +214,7 @@ class User(SQLModel, table=True):
 
 Recreate the database (if in dev):
 
-Delete nyxa.db and restart bot → tables are rebuilt.
+Delete faye.db and restart bot → tables are rebuilt.
 
 Existing players will lose data; for a production environment, use an Alembic migration instead:
 
@@ -238,8 +238,8 @@ new_user = User(
     username=interaction.user.name,
     level=self.game_settings["starting_level"],
     xp=0,
-    nyxies=self.game_settings["starting_gold"],
-    moonglow=0,
+    faylen=self.game_settings["starting_gold"],
+    virelite=0,
     gems=self.game_settings.get("starting_gems", 0),
     active_esprit_id=None
 )
@@ -251,8 +251,8 @@ Expose in EconomyCog (balance, daily, etc.):
 embed = discord.Embed(
     title="💰 Wallet",
     description=(
-        f"Nyxies: **{user.nyxies:,}**\n"
-        f"Moonglow: **{user.moonglow:,}**\n"
+        f"Faylen: **{user.faylen:,}**\n"
+        f"Virelite: **{user.virelite:,}**\n"
         f"Gems: **{user.gems:,}**"
     )
 )
@@ -296,7 +296,7 @@ class AuctionCog(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="list", description="List your Esprit for sale")
-    @app_commands.describe(esprit="Which Esprit to sell", price="Price in nyxies")
+    @app_commands.describe(esprit="Which Esprit to sell", price="Price in faylen")
     async def list(self, interaction: discord.Interaction, esprit: str, price: int):
         user_id = str(interaction.user.id)
         async with get_session() as session:
@@ -322,7 +322,7 @@ class AuctionCog(commands.Cog):
             await session.commit()
 
         await interaction.response.send_message(
-            f"Your Esprit has been listed for **{price:,} nyxies**!"
+            f"Your Esprit has been listed for **{price:,} faylen**!"
         )
 
 async def setup(bot):
@@ -384,7 +384,7 @@ New devs immediately see “models.py” as the full data schema, “db.py” as
 | User Data                 | Tracked in economy.json / inventory.json   | Tracked in User & UserEsprit tables (ORM models)                    |
 | Static Data (Esprits)     | JSON loaded on each summon or ad-hoc load  | Seeded once at startup via populate_static_data()                   |
 | Command Logic             | Mixed file I/O and raw SQL/JSON parsing    | All commands use `async with get_session()` + ORM                   |
-| Onboarding (`/start`)     | Partial, not linked to database schema     | Full—creates user row, starter Esprit, initial nyxies, commits to DB  |
+| Onboarding (`/start`)     | Partial, not linked to database schema     | Full—creates user row, starter Esprit, initial faylen, commits to DB  |
 | Economy (`/balance`, etc) | File-based, risk of out-of-sync data       | DB-based, consistent, atomic updates                                |
 | Summons                   | JSON/in-memory; inconsistent pagination    | DB-based; interactive multi-pull pagination view                    |
 | Admin Tools               | Manual JSON deletes / raw SQL              | `/reset_db` resets ORM tables and reseeds EspritData                |
@@ -393,7 +393,7 @@ New devs immediately see “models.py” as the full data schema, “db.py” as
 
 ## 8. Folder & File Structure (After Refactor)
 
-nyxa/
+faye/
 ├─ data/
 │   └─ config/
 │       ├─ esprits.json
@@ -419,7 +419,7 @@ nyxa/
 │   │   └─ render_helpers.py
 │   └─ views/
 │       └─ summon_result.py
-├─ nyxa.db  ← SQLite file (auto-created)
+├─ faye.db  ← SQLite file (auto-created)
 ├─ run.py
 ├─ .env
 └─ requirements.txt
@@ -434,8 +434,8 @@ nyxa/
 
 ### Separate features into Cogs: onboarding, economy, summons, admin. Each Cog reads/writes via ORM.
 
-### Extending the system is as simple as adding a field to a model, running a migration (or deleting and recreating nyxa.db in dev), and adjusting relevant cogs to reference that new field.
+### Extending the system is as simple as adding a field to a model, running a migration (or deleting and recreating faye.db in dev), and adjusting relevant cogs to reference that new field.
 
-### By following this pattern, any future feature—new currencies, new tables, new commands—will slot in without rewriting existing code or risking data inconsistency. This “SQL Manager” design lays a stable foundation for all upcoming Nyxa expansions.
+### By following this pattern, any future feature—new currencies, new tables, new commands—will slot in without rewriting existing code or risking data inconsistency. This “SQL Manager” design lays a stable foundation for all upcoming Faye expansions.
 
 `6-5-2025`

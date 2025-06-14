@@ -5,8 +5,8 @@ Revises:
 Create Date: 2025-06-13 10:09:12.897520
 
 """
-import sqlmodel
 from typing import Sequence, Union
+import sqlmodel
 
 from alembic import op
 import sqlalchemy as sa
@@ -49,12 +49,12 @@ def upgrade() -> None:
     sa.Column('username', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('level', sa.Integer(), nullable=False),
     sa.Column('xp', sa.Integer(), nullable=False),
-    sa.Column('nyxies', sa.Integer(), nullable=False),
-    sa.Column('moonglow', sa.Integer(), nullable=False),
-    sa.Column('azurites', sa.Integer(), nullable=False),
-    sa.Column('azurite_shards', sa.Integer(), nullable=False),
-    sa.Column('essence', sa.Integer(), nullable=False),
-    sa.Column('aether', sa.Integer(), nullable=False),
+    sa.Column('faylen', sa.Integer(), nullable=False),
+    sa.Column('virelite', sa.Integer(), nullable=False),
+    sa.Column('fayrites', sa.Integer(), nullable=False),
+    sa.Column('fayrite_shards', sa.Integer(), nullable=False),
+    sa.Column('remna', sa.Integer(), nullable=False),
+    sa.Column('ethryl', sa.Integer(), nullable=False),
     sa.Column('loot_chests', sa.Integer(), nullable=False),
     sa.Column('last_daily_claim', sa.DateTime(), nullable=True),
     sa.Column('last_daily_summon', sa.DateTime(), nullable=True),

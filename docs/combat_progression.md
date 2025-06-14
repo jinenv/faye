@@ -1,6 +1,6 @@
-# Nyxa: Revised Combat & Progression Directive
+# Faye: Revised Combat & Progression Directive
 
-This document outlines the design for Nyxa's core gameplay loops, progression systems, and economy. It has been updated to reflect the current, verified currency and crafting systems.
+This document outlines the design for Faye's core gameplay loops, progression systems, and economy. It has been updated to reflect the current, verified currency and crafting systems.
 
 ## Team Structure
 - **3-Esprit Parties:** 1 Main Fighter + 2 Support.
@@ -26,29 +26,29 @@ This document outlines the design for Nyxa's core gameplay loops, progression sy
 ### /explore
 - A repeatable, low-intensity command with a short cooldown.
 - **Function:** Serves as the primary method for players to engage with the world and earn resources.
-- **Rewards:** Guaranteed to reward `Azurite Shards` and `Nyxies`. Has a chance to reward `Essence` and other materials.
+- **Rewards:** Guaranteed to reward `Fayrite Shards` and `Faylen`. Has a chance to reward `Remna` and other materials.
 
 ### /tower
 - A future, structured PvE challenge with progressively difficult floors.
 - **Function:** Acts as a primary progression path and a goal for players to build their teams towards.
-- **Rewards:** Grants major `Azurite` and `Moonglow` bonuses at milestone floors.
+- **Rewards:** Grants major `Fayrite` and `Virelite` bonuses at milestone floors.
 
 ## Economy & Progression: Verified System
 
 This section details the confirmed, implemented multi-currency economy.
 
 ### Confirmed Currency Roles
-- **Nyxies:** The universal "soft currency." Used for general purposes, potentially in a future shop or for player-to-player trading.
-- **Moonglow:** The dedicated "enhancement currency." Its sole purpose is to level up and upgrade Esprits.
-- **Azurite Shards:** The raw "summoning material." This is the primary reward from activities like `/explore`. It is not used directly for summoning.
-- **Azurites:** The premium "summoning currency." This is the **sole currency** used in the `/summon` command. It cannot be earned directly and must be crafted.
-- **Essence:** A tiered set of crafting materials for a future item creation system.
+- **Faylen:** The universal "soft currency." Used for general purposes, potentially in a future shop or for player-to-player trading.
+- **Virelite:** The dedicated "enhancement currency." Its sole purpose is to level up and upgrade Esprits.
+- **Fayrite Shards:** The raw "summoning material." This is the primary reward from activities like `/explore`. It is not used directly for summoning.
+- **Fayrites:** The premium "summoning currency." This is the **sole currency** used in the `/summon` command. It cannot be earned directly and must be crafted.
+- **Remna:** A tiered set of crafting materials for a future item creation system.
 
 ### The Crafting & Summoning Loop
 The core economic loop for acquiring new Esprits is now implemented and verified:
-1.  Players run the `/explore` command to earn **Azurite Shards**.
-2.  Players use the `/craft azurite` command to convert their shards into whole **Azurites**.
-3.  Players use their crafted **Azurites** in the `/summon` command to acquire new Esprits.
+1.  Players run the `/explore` command to earn **Fayrite Shards**.
+2.  Players use the `/craft fayrite` command to convert their shards into whole **Fayrites**.
+3.  Players use their crafted **Fayrites** in the `/summon` command to acquire new Esprits.
 4.  This creates a clear, engaging progression: **Play -> Gather -> Craft -> Summon**.
 
 ### Milestone & Long-Term Goals

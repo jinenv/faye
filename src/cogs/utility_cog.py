@@ -53,7 +53,7 @@ class UtilityCog(commands.Cog, name="Utility"):
             # This logic is also solid.
             pass
 
-    @app_commands.command(name="botinfo", description="View information and statistics about the Nyxa bot.")
+    @app_commands.command(name="botinfo", description="View information and statistics about the Faye bot.")
     async def botinfo(self, interaction: discord.Interaction):
         """Displays general bot statistics, version, and useful links."""
         await interaction.response.defer(ephemeral=True)
@@ -62,10 +62,10 @@ class UtilityCog(commands.Cog, name="Utility"):
         bot_info_config = self.bot.config_manager.get_config("data/config/game_settings").get("bot_info", {})
         version = bot_info_config.get("version", "N/A")
         developer = bot_info_config.get("developer_name", "Unknown")
-        website = bot_info_config.get("website_url", "https://nyxa.bot") # Fallback just in case
+        website = bot_info_config.get("website_url", "https://faye.bot") # Fallback just in case
 
         embed = discord.Embed(
-            title="Nyxa Bot Information",
+            title="Faye Bot Information",
             description="The Next Evolution of Discord Engagement.",
             color=discord.Color.gold()
         )

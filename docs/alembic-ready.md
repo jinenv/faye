@@ -1,10 +1,10 @@
-# Nyxa Project Directive
+# Faye Project Directive
 
 ---
 
 ## Part 1: Accomplishments (Current State)
 
-This section codifies the current, stable state of the Nyxa project following the successful integration of the database migration system.
+This section codifies the current, stable state of the Faye project following the successful integration of the database migration system.
 
 ### Core Architecture
 The project is a scalable Discord RPG Bot built on Python and the `discord.py` library. It successfully follows key architectural principles including clean separation of concerns via Cogs, data-driven design using external JSON configs, and asynchronous integrity.
@@ -39,7 +39,7 @@ A primary gameplay loop will be introduced through new combat commands.
 
 ### Expanded Economy and Item System
 The economy will be deepened to support the new combat loop.
-- A new `azurite_shards` currency will be introduced as the primary reward from combat and the main cost for summoning.
+- A new `fayrite_shards` currency will be introduced as the primary reward from combat and the main cost for summoning.
 - A full item system will be implemented, requiring new `ItemData` and `UserItem` tables in the database.
 
 ### Endgame and Social Systems

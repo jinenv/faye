@@ -183,18 +183,18 @@ class SummonCog(commands.Cog):
 
             if banner == "standard":
                 cost = self.game_settings["summoning"]["banners"]["standard"]["cost_single"]
-                if user.azurites < cost:
-                    return await interaction.followup.send(f"❌ Not enough Azurites. Need {cost}.", ephemeral=True)
-                user.azurites -= cost
-                cost_str = f"{cost} Azurites"
+                if user.fayrites < cost:
+                    return await interaction.followup.send(f"❌ Not enough Fayrites. Need {cost}.", ephemeral=True)
+                user.fayrites -= cost
+                cost_str = f"{cost} Fayrites"
                 summon_result = await self.perform_summon(interaction, user, "standard", session)
 
             elif banner == "premium":
                 cost = self.game_settings["summoning"]["banners"]["premium"]["cost_single"]
-                if user.aether < cost:
-                    return await interaction.followup.send(f"❌ Not enough Aether. Need {cost}.", ephemeral=True)
-                user.aether -= cost
-                cost_str = f"{cost} Aether"
+                if user.ethryl < cost:
+                    return await interaction.followup.send(f"❌ Not enough Ethryl. Need {cost}.", ephemeral=True)
+                user.ethryl -= cost
+                cost_str = f"{cost} Ethryl"
                 summon_result = await self.perform_summon(interaction, user, "premium", session)
 
             else:  # daily

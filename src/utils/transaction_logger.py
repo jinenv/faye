@@ -137,7 +137,7 @@ def log_esprit_upgrade(
             "old_level": old_level,
             "new_level": esprit.current_level,
             "cost_amount": cost,
-            "cost_currency": "moonglow",
+            "cost_currency": "virelite",
         },
     }
     tx_logger.info(json.dumps(log_data))

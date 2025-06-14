@@ -1,11 +1,11 @@
-# Nyxa / Faye – Unified Directive & State Architecture
+# Faye / Faye – Unified Directive & State Architecture
 **Document Version:** 4.0 (Post-Hardening)
 **Last Updated:** 2025-06-14
 
 This is the authoritative specification for every AI or human contributor. If new work contradicts this file, this file must be updated first.
 
 ---
-### 1 • Architectural Guarantees (The Nyxa Way)
+### 1 • Architectural Guarantees (The Faye Way)
 *These principles are the foundation of our codebase and must never be broken.*
 
 - **G1. Modularity:** Features are encapsulated in Cogs (`src/cogs/`). Shared utilities reside in `src/utils/`. UI components like Views are organized in `src/views/` or within their respective cogs.
@@ -69,7 +69,7 @@ With the core systems hardened, the development priorities are now focused on ne
     - **Action:** Execute the Alembic migration process (`revision` -> `edit` -> `upgrade head`) to drop this column from the database schema.
 2.  **UI Consistency Pass:**
     - **Task:** Perform a final pass on all bot embeds and messages.
-    - **Action:** Ensure consistent terminology ("Sigil," "Moonglow"), clear formatting, and helpful error messages across the entire bot.
+    - **Action:** Ensure consistent terminology ("Sigil," "Virelite"), clear formatting, and helpful error messages across the entire bot.
 
 ---
 ### 5 • Pre-Merge & Deployment Checklist
