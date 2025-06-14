@@ -1,1 +1,49 @@
+# Environment & Secrets (CRITICAL)
 .env
+.gitignore
+
+# Database Files
+nyxa.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Virtual Environment
+.venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.py[cod]
+
+# IDE Files
+.vscode/
+VSCodeCounter/
+
+
+assets/
+
+# Logs
+logs/
+*.log
+
+# Data Files (may contain user data)
+data/
+assets/backups/
+assets/temp/
+
+# Documentation builds
+docs/_build/
+docs/build/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Alembic (optional - only if you want to exclude migration files)
+# alembic/versions/
+
+# Runtime files
+*.pid
+*.sock
