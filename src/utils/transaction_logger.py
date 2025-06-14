@@ -1,25 +1,56 @@
 # src/utils/transaction_logger.py
 import logging
-from typing import Dict
+import json
+from datetime import datetime
+from typing import Dict, List
+
 import discord
 
-# --- 1. IMPORT THE NEW LOGGER FUNCTION ---
-from src.utils.logger import get_transaction_logger
 from src.database.models import User, UserEsprit, EspritData
+from src.utils.logger import get_transaction_logger
 
-# --- 2. GET THE DEDICATED LOGGER INSTANCE ONCE ---
+# Get the dedicated logger instance once when the module is imported
 tx_logger = get_transaction_logger()
 
-def log_daily_claim(interaction: discord.Interaction, rewards: Dict[str, int]):
-    """
-    Logs a successful daily claim transaction.
-    """
+
+def log_new_user_registration(
+    interaction: discord.Interaction,
+    new_user: User,
+    starter_esprit_data: EspritData,
+    starter_currencies: Dict[str, int]
+):
+    """Logs a new user registration event as a JSON object."""
     user = interaction.user
-    rewards_str = ", ".join(f"{amount:,} {currency}" for currency, amount in rewards.items() if amount > 0)
-    # --- 3. USE THE DEDICATED LOGGER ---
-    tx_logger.info(
-        f"[DAILY_CLAIM] User: {user.id} ({user.display_name}) | Received: {rewards_str}"
-    )
+    log_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "event_type": "new_user",
+        "user_id": str(user.id),
+        "username": user.display_name,
+        "details": {
+            "starter_esprit": {
+                "name": starter_esprit_data.name,
+                "rarity": starter_esprit_data.rarity,
+            },
+            "starter_currencies": starter_currencies,
+        },
+    }
+    tx_logger.info(json.dumps(log_data))
+
+
+def log_daily_claim(interaction: discord.Interaction, rewards: Dict[str, int]):
+    """Logs a successful daily claim transaction as a JSON object."""
+    user = interaction.user
+    log_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "event_type": "daily_claim",
+        "user_id": str(user.id),
+        "username": user.display_name,
+        "details": {
+            "rewards": rewards,
+        },
+    }
+    tx_logger.info(json.dumps(log_data))
+
 
 def log_craft_item(
     interaction: discord.Interaction,
@@ -27,14 +58,28 @@ def log_craft_item(
     crafted_amount: int,
     cost_str: str,
 ):
-    """
-    Logs a successful item crafting transaction.
-    """
+    """Logs a successful item crafting transaction as a JSON object."""
     user = interaction.user
-    # --- 3. USE THE DEDICATED LOGGER ---
-    tx_logger.info(
-        f"[CRAFT] User: {user.id} ({user.display_name}) | Crafted: {crafted_amount:,}x {item_name} | Cost: {cost_str}"
-    )
+    # Attempt to parse cost from string for better data structure
+    cost_amount = int("".join(filter(str.isdigit, cost_str)))
+    cost_currency = "".join(filter(str.isalpha, cost_str)).strip()
+
+    log_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "event_type": "craft_item",
+        "user_id": str(user.id),
+        "username": user.display_name,
+        "details": {
+            "item_crafted": item_name,
+            "amount_crafted": crafted_amount,
+            "cost": {
+                "amount": cost_amount,
+                "currency": cost_currency,
+            },
+        },
+    }
+    tx_logger.info(json.dumps(log_data))
+
 
 def log_summon(
     interaction: discord.Interaction,
@@ -43,36 +88,33 @@ def log_summon(
     esprit_data: EspritData,
     user_esprit: UserEsprit,
 ):
-    """
-    Logs a successful Esprit summoning transaction.
-    """
-    user = interaction.user
-    tx_logger.info(
-        f"[SUMMON] User: {user.id} ({user.display_name}) | Banner: {banner.upper()} | "
-        f"Cost: {cost_str} | Result: '{esprit_data.name}' (Rarity: {esprit_data.rarity}, ID: {user_esprit.id})"
-    )
-
-def log_new_user_registration(
-    interaction: discord.Interaction,
-    new_user: User,
-    starter_esprit_data: EspritData,
-    starter_currencies: Dict[str, int]
-):
-    """
-    Logs a new user registration event.
-    """
+    """Logs a successful Esprit summoning transaction as a JSON object."""
     user = interaction.user
     
-    # Format the starting currencies into a readable string from the config dictionary
-    starter_items_str = ", ".join(
-        f"{amount:,} {currency}" for currency, amount in starter_currencies.items() if amount > 0
-    ) or "None"
+    cost_amount_str = "".join(filter(str.isdigit, cost_str))
+    cost_amount = int(cost_amount_str) if cost_amount_str else 0
+    cost_currency = "".join(filter(str.isalpha, cost_str)).strip().lower() or "free"
 
-    tx_logger.info(
-        f"[NEW_USER] User: {user.id} ({user.display_name}) registered. | "
-        f"Starter Esprit: '{starter_esprit_data.name}' ({starter_esprit_data.rarity}) | "
-        f"Starter Items: {starter_items_str}"
-    )
+    log_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "event_type": "summon",
+        "user_id": str(user.id),
+        "username": user.display_name,
+        "details": {
+            "banner": banner,
+            "cost": {
+                "amount": cost_amount,
+                "currency": cost_currency,
+            },
+            "result": {
+                "esprit_id": user_esprit.id,
+                "name": esprit_data.name,
+                "rarity": esprit_data.rarity,
+            },
+        },
+    }
+    tx_logger.info(json.dumps(log_data))
+
 
 def log_esprit_upgrade(
     interaction: discord.Interaction,
@@ -80,54 +122,70 @@ def log_esprit_upgrade(
     old_level: int,
     cost: int,
 ):
-    """
-    Logs a successful Esprit upgrade transaction.
-    """
+    """Logs a successful Esprit upgrade transaction as a JSON object."""
     user = interaction.user
     ed = esprit.esprit_data
-    tx_logger.info(
-        f"[UPGRADE] User: {user.id} ({user.display_name}) | Esprit: '{ed.name}' ({esprit.id}) | "
-        f"Level: {old_level} -> {esprit.current_level} | Cost: {cost:,} Moonglow"
-    )
+    log_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "event_type": "esprit_upgrade",
+        "user_id": str(user.id),
+        "username": user.display_name,
+        "details": {
+            "esprit_id": esprit.id,
+            "esprit_name": ed.name,
+            "rarity": ed.rarity,
+            "old_level": old_level,
+            "new_level": esprit.current_level,
+            "cost_amount": cost,
+            "cost_currency": "moonglow",
+        },
+    }
+    tx_logger.info(json.dumps(log_data))
+
 
 def log_limit_break(
     interaction: discord.Interaction,
     esprit: UserEsprit,
     costs: Dict[str, int]
 ):
-    """
-    Logs a successful Esprit limit break transaction.
-    """
+    """Logs a successful Esprit limit break transaction as a JSON object."""
     user = interaction.user
     ed = esprit.esprit_data
-    cost_str = ", ".join(f"{v:,} {k}" for k, v in costs.items())
-    tx_logger.info(
-        f"[LIMIT_BREAK] User: {user.id} ({user.display_name}) | Esprit: '{ed.name}' ({esprit.id}) | "
-        f"New Breaks: {esprit.limit_breaks_performed} | Cost: {cost_str}"
-    )
+    log_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "event_type": "limit_break",
+        "user_id": str(user.id),
+        "username": user.display_name,
+        "details": {
+            "esprit_id": esprit.id,
+            "esprit_name": ed.name,
+            "rarity": ed.rarity,
+            "new_break_count": esprit.limit_breaks_performed,
+            "costs": costs,
+        },
+    }
+    tx_logger.info(json.dumps(log_data))
 
 
 def log_esprit_dissolve(
     interaction: discord.Interaction,
-    dissolved_esprits: list[UserEsprit],
+    dissolved_esprits: List[UserEsprit],
     rewards: Dict[str, int]
 ):
-    """
-    Logs a successful Esprit dissolve transaction.
-    """
+    """Logs a successful Esprit dissolve transaction as a JSON object."""
     user = interaction.user
-    reward_str = ", ".join(f"{v:,} {k}" for k, v in rewards.items())
-    
-    if len(dissolved_esprits) == 1:
-        esprit = dissolved_esprits[0]
-        ed = esprit.esprit_data
-        tx_logger.info(
-            f"[DISSOLVE] User: {user.id} ({user.display_name}) | Dissolved: '{ed.name}' ({esprit.id}) | "
-            f"Received: {reward_str}"
-        )
-    else:
-        ids = ", ".join([f"'{e.id}'" for e in dissolved_esprits])
-        tx_logger.info(
-            f"[BULK_DISSOLVE] User: {user.id} ({user.display_name}) | Count: {len(dissolved_esprits)} | "
-            f"IDs: [{ids}] | Received: {reward_str}"
-        )
+    log_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "event_type": "esprit_dissolve",
+        "user_id": str(user.id),
+        "username": user.display_name,
+        "details": {
+            "dissolved_count": len(dissolved_esprits),
+            "dissolved_esprits": [
+                {"id": e.id, "name": e.esprit_data.name, "level": e.current_level, "rarity": e.esprit_data.rarity}
+                for e in dissolved_esprits
+            ],
+            "rewards": rewards,
+        },
+    }
+    tx_logger.info(json.dumps(log_data))
