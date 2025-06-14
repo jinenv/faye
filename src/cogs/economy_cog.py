@@ -9,6 +9,8 @@ from src.database.db import get_session
 from src.database.models import User
 from src.utils.logger import get_logger
 from src.utils.rate_limiter import RateLimiter
+# --- 1. IMPORT THE NEW LOGGER ---
+from src.utils import transaction_logger 
 
 logger = get_logger(__name__)
 
@@ -35,7 +37,8 @@ class EconomyCog(commands.Cog):
             return await interaction.followup.send("You're using commands too quickly!", ephemeral=True)
 
         async with get_session() as session:
-            user = await session.get(User, interaction.user.id)
+            # Assuming interaction.user.id is a string, which is correct for discord IDs
+            user = await session.get(User, str(interaction.user.id))
             if not user:
                 return await interaction.followup.send("❌ You haven't started your adventure yet. Use `/start`.", ephemeral=True)
             
@@ -58,7 +61,7 @@ class EconomyCog(commands.Cog):
             return await interaction.followup.send("You are trying to claim your daily too frequently. Please wait a bit.", ephemeral=True)
             
         async with get_session() as session:
-            user = await session.get(User, interaction.user.id)
+            user = await session.get(User, str(interaction.user.id))
             if not user:
                 return await interaction.followup.send(embed=discord.Embed(description="❌ You haven't started yet. Use `/start`.", color=discord.Color.red()))
 
@@ -78,9 +81,11 @@ class EconomyCog(commands.Cog):
                     setattr(user, currency, getattr(user, currency) + amount)
             user.last_daily_claim = now
             
-            # --- FIX: SAVE THE CHANGES TO THE DATABASE ---
             await session.commit()
             
+            # --- 2. CALL THE TRANSACTION LOGGER ---
+            transaction_logger.log_daily_claim(logger, interaction, self.DAILY_REWARDS)
+
             reward_desc = "\n".join([f"• **{amount:,}** {c.replace('_', ' ').title()}" for c, amount in self.DAILY_REWARDS.items() if amount > 0])
             embed = discord.Embed(title="☀️ Daily Bundle Claimed!", description=f"You received:\n{reward_desc}", color=discord.Color.green())
             await interaction.followup.send(embed=embed)
@@ -96,7 +101,7 @@ class EconomyCog(commands.Cog):
             return await interaction.followup.send("You're using commands too quickly! Please wait a moment.", ephemeral=True)
             
         async with get_session() as session:
-            user = await session.get(User, interaction.user.id)
+            user = await session.get(User, str(interaction.user.id))
             if not user:
                 return await interaction.followup.send("❌ You need to `/start` first.", ephemeral=True)
 
@@ -121,8 +126,16 @@ class EconomyCog(commands.Cog):
             user.azurite_shards -= total_shards_cost
             user.azurites += amount_to_craft
             
-            # --- FIX: SAVE THE CHANGES TO THE DATABASE ---
             await session.commit()
+            
+            # --- 3. CALL THE TRANSACTION LOGGER ---
+            transaction_logger.log_craft_item(
+                logger,
+                interaction,
+                item_name="Azurite",
+                crafted_amount=amount_to_craft,
+                cost_str=f"{total_shards_cost:,} Azurite Shards"
+            )
 
             embed = discord.Embed(
                 title="✨ Crafting Successful!",

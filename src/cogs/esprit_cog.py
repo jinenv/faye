@@ -18,7 +18,9 @@ from src.utils.logger import get_logger
 from src.utils.cache_manager import CacheManager
 from src.utils.rate_limiter import RateLimiter
 from enum import Enum
+from src.utils import transaction_logger
 
+# ────────────────────────────────────────────────────────────────────────────
 logger = get_logger(__name__)
 
 class TeamSlot(Enum):
@@ -76,12 +78,16 @@ class EnhancedCollectionView(discord.ui.View):
         all_esprits: List[UserEsprit],
         author_id: int,
         bot: commands.Bot,
+        power_config: Dict,
+        stat_config: Dict
     ):
         super().__init__(timeout=INTERACTION_TIMEOUT)
         self.all_esprits = all_esprits
         self.filtered_esprits = all_esprits
         self.author_id = author_id
         self.bot = bot
+        self.power_config = power_config
+        self.stat_config = stat_config
         self.current_page = 0
         self.sort_by = "name"  # name | level | rarity
         self.filter_rarity: Optional[str] = None
@@ -187,31 +193,8 @@ class EnhancedCollectionView(discord.ui.View):
     def _safe_calculate_power(self, esprit: UserEsprit) -> int:
         """Safely calculate esprit power without session dependencies"""
         try:
-            ed = esprit.esprit_data
-            if not ed: return 0
-            
-            level_multiplier = 1 + (esprit.current_level - 1) * 0.05
-            lb_multiplier = getattr(esprit, 'stat_boost_multiplier', 1.0)
-            
-            hp = int(ed.base_hp * level_multiplier * lb_multiplier)
-            attack = int(ed.base_attack * level_multiplier * lb_multiplier)
-            defense = int(ed.base_defense * level_multiplier * lb_multiplier)
-            speed = int(ed.base_speed * level_multiplier * lb_multiplier)
-            magic_resist = int(getattr(ed, 'base_magic_resist', 0) * level_multiplier * lb_multiplier)
-            
-            power = (
-                (hp / 4) + (attack * 2.5) + (defense * 2.5) + (speed * 3.0) +
-                (magic_resist * 2.0) + (getattr(ed, 'base_crit_rate', 0) * 500) +
-                (getattr(ed, 'base_block_rate', 0) * 500) + (getattr(ed, 'base_dodge_chance', 0) * 600) +
-                (getattr(ed, 'base_mana', 0) * 0.5) + (getattr(ed, 'base_mana_regen', 0) * 100)
-            )
-            
-            rarity_multipliers = {
-                "Common": 1.0, "Uncommon": 1.1, "Rare": 1.25, "Epic": 1.4,
-                "Celestial": 1.6, "Supreme": 1.8, "Deity": 2.0
-            }
-            rarity_mult = rarity_multipliers.get(ed.rarity, 1.0)
-            return max(1, int(power * rarity_mult))
+            # --- 3. USE THE STORED CONFIGS ---
+            return esprit.calculate_power(self.power_config, self.stat_config)
         except Exception as e:
             logger.error(f"Error calculating power for esprit {esprit.id}: {e}")
             return 0
@@ -463,6 +446,11 @@ class EspritGroup(app_commands.Group, name="esprit"):
     async def collection(self, inter: discord.Interaction):
         try:
             await inter.response.defer(ephemeral=True)
+
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
+
             if not await self._ensure_user(str(inter.user.id)):
                 await inter.followup.send("❌ User setup failed. Please try again.", ephemeral=True)
                 return
@@ -476,9 +464,20 @@ class EspritGroup(app_commands.Group, name="esprit"):
             except Exception as e:
                 logger.error(f"Error getting user data for collection: {e}")
                 user_data = {"active_esprit_id": None, "support1_esprit_id": None, "support2_esprit_id": None}
-            view = EnhancedCollectionView(esprits, inter.user.id, self.bot)
+            
+            power_config = self.game_settings.get("power_calculation", {})
+            stat_config = self.game_settings.get("stat_calculation", {})
+            
+            view = EnhancedCollectionView(
+                esprits, 
+                inter.user.id, 
+                self.bot, 
+                power_config=power_config, 
+                stat_config=stat_config
+            )
             view.user_data = user_data
             await inter.followup.send(embed=view.pages[0], view=view)
+
         except Exception as e:
             await self._handle_command_error(inter, e)
 
@@ -487,6 +486,11 @@ class EspritGroup(app_commands.Group, name="esprit"):
     async def details(self, inter: discord.Interaction, esprit_id: str):
         try:
             await inter.response.defer(ephemeral=True)
+
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
+            
             if not await self._ensure_user(str(inter.user.id)):
                 await inter.followup.send("❌ User setup failed. Please try again.", ephemeral=True)
                 return
@@ -573,6 +577,10 @@ class EspritGroup(app_commands.Group, name="esprit"):
         try:
             await inter.response.defer(ephemeral=True)
 
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
+
             # --- NEW: Load all necessary configuration sections ---
             prog_config = self.game_settings.get("progression", {})
             lb_config = self.game_settings.get("limit_break_system", {})
@@ -610,7 +618,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
 
                 # Get costs using the config
                 cost = esprit.get_limit_break_cost(lb_config)
-            
+
                 # Check resources
                 if user.essence < cost["essence"]:
                     return await inter.followup.send(f"❌ Need **{cost['essence']:,}** Essence (You have {user.essence:,})")
@@ -650,6 +658,8 @@ class EspritGroup(app_commands.Group, name="esprit"):
                     value=f"**{esprit.limit_breaks_performed}** performed\nStat Multiplier: **{esprit.stat_boost_multiplier:.2f}x**",
                     inline=True
                 )
+
+                transaction_logger.log_limit_break(inter, esprit, cost)
 
                 await self._invalidate(str(inter.user.id))
                 await inter.followup.send(embed=embed)
@@ -748,6 +758,8 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 await s.commit()
                 await self._invalidate(str(inter.user.id))
 
+                transaction_logger.log_esprit_upgrade(inter, ue, old_level, total_moonglow_cost)
+
                 # Create and send the success message
                 embed = discord.Embed(
                     title="⭐ Upgrade Complete!",
@@ -779,6 +791,10 @@ class EspritGroup(app_commands.Group, name="esprit"):
     ):
         try:
             await inter.response.defer(ephemeral=True)
+
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
 
             # --- NEW: Load dissolve rewards config ---
             dissolve_rewards_config = self.game_settings.get("dissolve_rewards", {})
@@ -864,6 +880,9 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 await s.delete(ue)
                 s.add(user)
                 await s.commit()
+
+                transaction_logger.log_esprit_dissolve(inter, [ue], rewards)
+
                 await self._invalidate(str(inter.user.id))
 
                 await inter.followup.send(
@@ -903,6 +922,8 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 s.add(user)
                 await s.commit()
 
+            transaction_logger.log_esprit_dissolve(inter, esprits_to_dissolve, rewards)
+
             await self._invalidate(str(inter.user.id))
             await inter.followup.send(
                 embed=discord.Embed(
@@ -933,6 +954,10 @@ class EspritGroup(app_commands.Group, name="esprit"):
     async def search(self, inter: discord.Interaction, query: str):
         try:
             await inter.response.defer(ephemeral=True)
+
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
 
             # --- NEW: Load necessary configuration sections ---
             prog_config = self.game_settings.get("progression", {})
@@ -987,6 +1012,10 @@ class EspritGroup(app_commands.Group, name="esprit"):
     ):
         try:
             await inter.response.defer(ephemeral=True)
+
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
 
             if esprit_a == esprit_b:
                 return await inter.followup.send("❌ You must provide two different Esprit IDs to compare.", ephemeral=True)
@@ -1047,6 +1076,10 @@ class EspritGroup(app_commands.Group, name="esprit"):
     async def team_view(self, inter: discord.Interaction):
         try:
             await inter.response.defer(ephemeral=True)
+
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
 
             # --- NEW: Load necessary configuration sections ---
             stat_config = self.game_settings.get("stat_calculation", {})
@@ -1116,6 +1149,11 @@ class EspritGroup(app_commands.Group, name="esprit"):
         try:
             if slot not in {TeamSlot.leader, TeamSlot.support1, TeamSlot.support2}:
                 return await inter.response.send_message("Invalid slot.", ephemeral=True)
+            
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
+            
             await inter.response.defer(ephemeral=True)
             async with get_session() as s:
                 ue = await s.get(UserEsprit, esprit_id)
@@ -1133,6 +1171,10 @@ class EspritGroup(app_commands.Group, name="esprit"):
     async def team_optimize(self, inter: discord.Interaction):
         try:
             await inter.response.defer(ephemeral=True)
+
+            if not await self.rate_limiter.check(str(inter.user.id)):
+                wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
+                return await inter.followup.send(f"You're acting too fast! Please wait {wait}s.", ephemeral=True)
 
             # --- NEW: Load necessary configuration sections ---
             stat_config = self.game_settings.get("stat_calculation", {})

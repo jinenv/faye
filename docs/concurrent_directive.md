@@ -1,96 +1,84 @@
 # Nyxa / Faye – Unified Directive & State Architecture
-**Document Version:** 3.0
-**Last Updated:** 2025-06-13
+**Document Version:** 4.0 (Post-Hardening)
+**Last Updated:** 2025-06-14
 
 This is the authoritative specification for every AI or human contributor. If new work contradicts this file, this file must be updated first.
 
 ---
 ### 1 • Architectural Guarantees (The Nyxa Way)
-*These principles must never be broken.*
+*These principles are the foundation of our codebase and must never be broken.*
 
-- **G1. Modularity:** Features are encapsulated in Cogs (`src/cogs/`). Shared utilities reside in `src/utils/`. UI components like Views are organized in `src/views/`.
-- **G2. Single-Location Logic:** Core calculations and business logic **must** live on the database model classes in `src/database/models.py`. Cogs should call these methods, not reimplement logic.
-- **G3. Config-Driven:** All tunable values, formulas, and parameters that affect game balance **must** be in configuration files (`data/config/*.json`). Load these values via the central `ConfigManager` at runtime. **No hardcoded magic numbers.**
-- **G4. Session Discipline:** Use one `AsyncSession` per command context. Pass the session object to helper functions; do not create new ones mid-command.
-- **G5. Rate Limiting:** Apply the `RateLimiter` to any command that can be spammed to consume resources or clog the event loop.
-- **G6. Heavy CPU Work in Executors:** Any process that is CPU-bound (e.g., complex image generation) **must** be run in an executor thread pool to keep the bot's event loop from blocking.
-- **G7. Alembic Discipline:** Follow a strict workflow: `alembic revision --autogenerate` → **Manually review the generated script for correctness** → `alembic upgrade head`.
+- **G1. Modularity:** Features are encapsulated in Cogs (`src/cogs/`). Shared utilities reside in `src/utils/`. UI components like Views are organized in `src/views/` or within their respective cogs.
+
+- **G2. Single-Location Logic:** Core calculations and business logic (e.g., stat calculations, upgrade costs, level caps) **must** live on the database model classes in `src/database/models.py`. Cogs **must** call these model methods and not reimplement logic.
+
+- **G3. Config-Driven Values:** All tunable values, formulas, and parameters that affect game balance (e.g., rewards, costs, cooldowns, version numbers) **must** be defined in `data/config/game_settings.json`. Cogs will load these values at runtime via the central `ConfigManager`. **There must be no hardcoded magic numbers in the cogs.**
+
+- **G4. Explicit Transactional Logging:** All state-changing events (e.g., currency changes, item grants, esprit creation/destruction) **must** be logged to the dedicated `transactions.log` file. This is achieved by adding a function to `src/utils/transaction_logger.py` and calling it from the relevant cog *after* the database session is successfully committed.
+
+- **G5. Universal Rate Limiting:** All user-facing application commands **must** be protected by a `RateLimiter` instance defined in their cog. This is a non-negotiable requirement to ensure bot stability and prevent user-side spam.
+
+- **G6. Session Discipline:** Use one `AsyncSession` per command context via the `async with get_session():` context manager. The session object may be passed to helper functions but new sessions must not be created mid-command.
+
+- **G7. Heavy CPU Work in Executors:** Any process that is CPU-bound (e.g., complex image generation) **must** be run in an executor thread pool to keep the bot's event loop from blocking.
 
 ---
 ### 2 • Current System Status & Verified Accomplishments
 
-#### ✅ **Completed & Verified**
-- **Core Systems:** Python 3.12, discord.py 2.3.2, SQLModel, and Alembic are correctly configured.
-- **Data Models:** `User`, `UserEsprit`, and `EspritData` models are refactored and stable.
-- **Configuration:** The `ConfigManager` successfully loads all game-balancing values from `game_settings.json`.
-- **Esprit Progression:**
-    - The `/esprit upgrade` command is fully functional and correctly spends **Moonglow** based on the config formula.
-    - Leveling is correctly gated by player level and Esprit rarity caps.
-- **Stat & Power Calculations:** All Esprit stats and the **Sigil** rating are calculated dynamically using formulas and weights from the config file.
-- **Esprit Management:** All related commands (`/details`, `/compare`, `/dissolve`, `/search`, `/collection`) have been refactored to use the config-driven calculation methods, ensuring consistent data display.
-- **Team Management:** The `/esprit team` command group (`view`, `set`, `optimize`) is functional and uses the config-driven power calculations. The `TeamSlot` enum is correctly implemented.
-- **Summoning System (v2):**
-    - Banners correctly cost **Azurites** (standard) and **Aether** (premium).
-    - The pity system uses `rarity_pity_increment` from the config.
+The following cogs and systems have been reviewed, hardened, and confirmed to be in compliance with the architectural guarantees as of the last update:
 
-#### ⚠️ **Requires Final Testing & Review**
-- **Economic Balance:** Gameplay testing is needed to ensure the daily income of currencies feels balanced against the costs of upgrading, limit breaking, and summoning.
-- **Summoning Algorithm:** The code in `summon_cog.py` needs a final review to ensure it perfectly matches the algorithm specified in Section 3 below.
+#### ✅ **Core Infrastructure**
+- **Logging:** A dual-logging system is in place. General bot logs are written to `bot.log`, while all economic and state-changing events are recorded in `transactions.log` via the `transaction_logger.py` utility.
+- **Configuration:** `ConfigManager` correctly serves as the single point of access for all game settings.
+- **Database:** `SQLModel` is correctly implemented with a central `get_session` manager.
+
+#### ✅ **Hardened Cogs**
+- **`admin_cog`**: The gold standard. Features explicit transactional logging for admin actions and correctly sources its data.
+- **`economy_cog`**: Fully rate-limited. All daily claims and crafting events are now recorded in the transaction log.
+- **`onboarding_cog`**: The new user `/start` transaction is logged in detail. Code has been refactored to be fully dynamic based on the `starter_currencies` config.
+- **`summon_cog`**: Now fully rate-limited. All summons (free and paid) are recorded in the transaction log. Esprit rarity pools are now cached to reduce database load.
+- **`esprit_cog`**: Fully rate-limited across all commands. All key transactions (`upgrade`, `limitbreak`, `dissolve`) are logged. Power calculations in the collection view are now consistent with all other commands, sourcing their formulas directly from the game config.
+- **`utility_cog`**: Fully rate-limited. All formerly hardcoded information is now correctly sourced from `game_settings.json`.
 
 ---
 ### 3 • Key System Specifications
 
-#### Summoning Algorithm (`/summon`)
-1.  **Banner Selection:** User chooses `standard` (Azurites) or `premium` (Aether).
-2.  **Cost Deduction:** Deduct `cost_single` of the appropriate currency from the `User` model.
-3.  **Rarity Roll:** Roll for rarity based on the banner's configured weights.
-4.  **Pity Calculation:**
-    - Fetch the user's current pity score.
-    - `new_pity = old_pity + rarity_pity_increment[rolled_rarity]`
-5.  **Pity Guarantee Check:**
-    - `IF new_pity >= pity_system_guarantee_after`:
-        - If the rolled rarity was below `Epic`, force the result to be a random `Epic` Esprit.
-        - Set `new_pity = 0`.
-6.  **Esprit Creation:** Create the `UserEsprit` instance and save it to the database.
-7.  **Result Embed:** Display the result with the pity progress bar, using the format:
-    - `<emoji> **<name>**`
-    - `**<rarity>** | Sigil: 💥 <power>`
-    - `[█████─────] 42 %`
-    - Footer: `UID`
+#### **The Single Source of Truth**
+- **For Logic & Formulas:** The methods on the model classes in `src/database/models.py`.
+- **For Values & Parameters:** The configuration dictionaries within `data/config/game_settings.json`.
+- **For Documentation:** This `concurrent_directive.md` document.
+
+*Any file that contradicts these sources (e.g., `calculations.md`) is considered deprecated.*
 
 ---
-### 4 • Next Development Priorities (Action Plan)
+### 4 • Next Development Priorities
 
-#### **HIGH PRIORITY - Gameplay & Database Integrity**
+With the core systems hardened, the development priorities are now focused on new gameplay features.
+
+#### **HIGH PRIORITY - Gameplay Loop**
+1.  **Combat System Implementation:**
+    - **Task:** Design and build the `combat_cog`. This includes turn-based logic, skill/ability systems, and combat rewards.
+    - **Action:** Ensure all combat rewards (XP, currency, items) are granted via methods that include transactional logging.
+2.  **Economic Balancing & Analysis:**
+    - **Task:** Analyze the `transactions.log` to tune the game economy.
+    - **Action:** Review the rates of currency generation (dailies, dissolving, combat) versus currency sinks (upgrading, limit breaking, summoning) to ensure a balanced and engaging player experience.
+
+#### **MEDIUM PRIORITY - Database & Polish**
 1.  **Database Migration: Remove `current_xp`**
-    - **Task:** The `current_xp` column on the `user_esprits` table is now obsolete and must be removed to finalize the migration.
+    - **Task:** The `current_xp` column on the `user_esprits` table is obsolete and must be removed.
     - **Action:** Execute the Alembic migration process (`revision` -> `edit` -> `upgrade head`) to drop this column from the database schema.
-2.  **Audit Activity Rewards:**
-    - **Task:** Search all gameplay cogs (`economy_cog`, `combat_cog`, etc.) for any commands that grant rewards.
-    - **Action:** **Delete all instances of Esprit XP being awarded.** Ensure that currency rewards (Nyxies, Essence) are granted correctly and, if hardcoded, refactor them to use values from the `activity_rewards` section of `game_settings.json`.
-
-#### **MEDIUM PRIORITY - System Hardening & Cleanup**
-1.  **Verify Summoning Cog:**
-    - **Task:** Do a line-by-line review of `summon_cog.py`.
-    - **Action:** Ensure the implementation perfectly matches the algorithm detailed in **Section 3** of this directive, especially the logic for pity calculation, cost deduction (Azurites vs. Aether), and the guarantee.
-2.  **Review Admin Commands:**
-    - **Task:** Update commands in `admin_cog.py` to be compatible with the new systems.
-    - **Action:** For example, a command like `/admin-give-xp` should be renamed or repurposed to `/admin-give-moonglow`. Ensure all admin tools work as expected for testing and support.
-
-#### **LOW PRIORITY - Polish & UX**
-1.  **UI Consistency:**
-    - **Task:** Perform a final pass on all bot embeds and messages sent by the bot.
-    - **Action:** Ensure consistent terminology (e.g., "Sigil" instead of "Power"), clear formatting, and helpful error messages across the entire bot.
-2.  **Documentation:**
-    - **Task:** Add comments to any new or complex functions you create in other cogs.
-    - **Action:** Briefly explain what each function does, what its inputs are, and what it returns. This will make future maintenance much easier.
+2.  **UI Consistency Pass:**
+    - **Task:** Perform a final pass on all bot embeds and messages.
+    - **Action:** Ensure consistent terminology ("Sigil," "Moonglow"), clear formatting, and helpful error messages across the entire bot.
 
 ---
 ### 5 • Pre-Merge & Deployment Checklist
-*A final check before any new feature branch is merged.*
+*A final check before any new feature branch is merged into production.*
 
-- [ ] **Guarantees Upheld:** The changes adhere to all principles in Section 1.
-- [ ] **Linter Pass:** The code is clean and passes `ruff` / `flake8` checks.
-- [ ] **Config Keys:** Any new tunable values have been added to `game_settings.json` and documented.
-- [ ] **Alembic Vetted:** If the change required a database migration, the script has been manually reviewed.
-- [ ] **Successful Boot:** The bot starts without errors and a clean slash-command sync.
+- [ ] **Guarantees Upheld:** The new code adheres to all principles in Section 1.
+- [ ] **Config Driven:** All new tunable values have been added to `game_settings.json`.
+- [ ] **Single-Location Logic:** New calculations are implemented on the data models in `models.py`.
+- [ ] **Transactional Logging:** All new state-changing actions are logged via `transaction_logger.py`.
+- [ ] **Rate-Limited:** All new user-facing commands are rate-limited.
+- [ ] **Alembic Vetted:** If the change required a database migration, the generated script has been manually reviewed and is reversible if possible.
+- [ ] **Successful Boot:** The bot starts without errors.

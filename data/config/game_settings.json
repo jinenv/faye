@@ -211,6 +211,11 @@
       "currency_grants": true
     }
   },
+  "bot_info": {
+    "version": "0.5.1 (System Hardening)",
+    "developer_name": "Your Developer Name",
+    "website_url": "https://nyxa.bot"
+  },
   "system_status": {
     "fully_working": [
       "All stat calculations and power formulas",
