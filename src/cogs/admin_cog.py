@@ -15,6 +15,8 @@ from src.database.db import get_session
 from src.database.models import User, UserEsprit, EspritData
 from src.utils.logger import get_logger
 
+from sqlalchemy.orm import selectinload
+
 logger = get_logger(__name__)
 
 # ───────────────────────────────────────── UI COMPONENTS ────────────────────────────────────────── #
@@ -643,7 +645,19 @@ class AdminCog(commands.Cog):
 
             setattr(user_obj, attribute, new_val)
             session.add(user_obj)
-
+            
+            if attribute == "xp" and operation in ["give", "set"]:
+                level_result = user_obj.check_and_apply_level_ups()
+                if level_result["levels_gained"] > 0:
+                    session.add(user_obj)  # Save level changes
+                    # Create level up embed
+                    embed = discord.Embed(
+                        title="🎉 LEVEL UP!",
+                        description=f"Level {level_result['old_level']} → {level_result['new_level']}",
+                        color=discord.Color.gold()
+                    )
+                    await interaction.followup.send(embed=embed)
+            
             display = attribute.replace("_", " ").title()
             if operation == "set":
                 msg = f"✅ {verb} {user.mention}'s {display} to **{new_val:,}**."
@@ -919,12 +933,47 @@ class AdminCog(commands.Cog):
         await self._adjust_user_attribute(i, u, "essence", "give", a)
 
     @give_group.command(name="xp", description="Give xp")
-    async def give_xp(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "xp", "give", a)
+    async def give_xp(self, interaction: discord.Interaction, user: discord.User, amount: int):
+        await self._adjust_user_attribute(interaction, user, "xp", "give", amount)
 
     @give_group.command(name="loot_chests", description="Give loot_chests")
     async def give_loot_chests(self, i: discord.Interaction, u: discord.User, a: int):
         await self._adjust_user_attribute(i, u, "loot_chests", "give", a)
+
+    @give_group.command(name="esprit_xp", description="Give XP to specific Esprit")
+    async def give_esprit_xp(self, inter: discord.Interaction, user: discord.User, esprit_id: str, xp: int):
+        await inter.response.defer(ephemeral=True)
+        
+        try:
+            async with get_session() as s:
+                # Get the esprit
+                stmt = (
+                    select(UserEsprit)
+                    .where(UserEsprit.id == esprit_id)
+                    .options(selectinload(UserEsprit.esprit_data))
+                )
+                esprit = (await s.execute(stmt)).scalar_one_or_none()
+                
+                if not esprit:
+                    return await inter.followup.send("❌ Esprit not found!")
+                
+                if esprit.owner_id != str(user.id):
+                    return await inter.followup.send("❌ That Esprit doesn't belong to the specified user!")
+                
+                # Add XP
+                old_xp = esprit.current_xp
+                esprit.current_xp += xp
+                
+                await s.commit()
+                
+                await inter.followup.send(
+                    f"✅ Gave {xp:,} XP to {esprit.esprit_data.name}. "
+                    f"Total XP: {old_xp:,} → {esprit.current_xp:,}"
+                )
+                
+        except Exception as e:
+            logger.error(f"Error giving esprit XP: {e}")
+            await inter.followup.send("❌ Error giving esprit XP.")
 
     @give_group.command(
         name="esprit", description="Give a specific Esprit to a user by name"
@@ -1079,34 +1128,55 @@ class AdminCog(commands.Cog):
             )
 
     @set_group.command(
-        name="esprit_level", description="Set an Esprit instance's level (resets its XP)"
+    name="esprit_level", description="Set an Esprit instance's level (respects level caps)"
     )
-    async def set_esprit_level(
-        self, interaction: discord.Interaction, esprit_id: str, level: int
-    ):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        if level <= 0:
-            return await interaction.response.send_message(
-                "❌ Level must be positive.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
-        async with get_session() as session:
-            user_esprit = (
-                await session.execute(
-                    select(UserEsprit).where(UserEsprit.id == esprit_id)
+    async def set_esprit_level(self, inter: discord.Interaction, user: discord.User, esprit_id: str, level: int):
+        await inter.response.defer(ephemeral=True)
+        
+        try:
+            async with get_session() as s:
+                # Get the esprit with owner relationship
+                stmt = (
+                    select(UserEsprit)
+                    .where(UserEsprit.id == esprit_id)
+                    .options(selectinload(UserEsprit.esprit_data), selectinload(UserEsprit.owner))
                 )
-            ).scalar_one_or_none()
-            if not user_esprit:
-                return await interaction.followup.send(f"❌ No Esprit ID `{esprit_id}`.")
-            user_esprit.current_level, user_esprit.current_xp = level, 0
-            session.add(user_esprit)
-            await session.commit()
-            await interaction.followup.send(
-                f"✅ Set Esprit ID `{esprit_id}` to **Level {level}**."
-            )
+                esprit = (await s.execute(stmt)).scalar_one_or_none()
+                
+                if not esprit:
+                    return await inter.followup.send("❌ Esprit not found!")
+                
+                if esprit.owner_id != str(user.id):
+                    return await inter.followup.send("❌ That Esprit doesn't belong to the specified user!")
+                
+                # Check level cap
+                current_cap = esprit.get_current_level_cap()
+                if level > current_cap:
+                    return await inter.followup.send(
+                        f"❌ Cannot set level {level}. Current cap is {current_cap}.\n"
+                        f"Player level: {esprit.owner.level} | Limit breaks: {esprit.limit_breaks_performed}\n"
+                        f"Use limit breaks or level up the player to increase cap!"
+                    )
+                
+                if level < 1:
+                    return await inter.followup.send("❌ Level must be at least 1!")
+                
+                # Set level and reset XP
+                old_level = esprit.current_level
+                esprit.current_level = level
+                esprit.current_xp = 0  # Reset XP when setting level directly
+                esprit.current_hp = esprit.calculate_stat('hp')  # Update HP to new level
+                
+                await s.commit()
+                
+                await inter.followup.send(
+                    f"✅ Set {esprit.esprit_data.name} to level {level} (was {old_level}). "
+                    f"XP reset to 0. Current cap: {current_cap}"
+                )
+                
+        except Exception as e:
+            logger.error(f"Error setting esprit level: {e}")
+            await inter.followup.send("❌ Error setting esprit level.")
 
     # ──────────────────────────── reset commands ───────────────────────────────
     @reset_group.command(

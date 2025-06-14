@@ -28,23 +28,55 @@
     "Deity": { "moonglow": 12500, "essence": 1250 }
   },
   "progression": {
-    "player_max_level": 60,
-    "esprit_max_level": 240,
+    "player_max_level": 80,
+    "esprit_max_level": 200,
     "esprit_upgrade_cost_per_level": 10,
-    "limit_break_system": {
-      "enabled": true,
-      "thresholds": [
-        { "player_level": 1, "esprit_max": 10 },
-        { "player_level": 10, "esprit_max": 20 },
-        { "player_level": 20, "esprit_max": 40 },
-        { "player_level": 30, "esprit_max": 60 },
-        { "player_level": 40, "esprit_max": 100 },
-        { "player_level": 50, "esprit_max": 150 },
-        { "player_level": 60, "esprit_max": 240 }
-      ]
+    "player_level_thresholds": [
+      { "player_level": 1, "base_esprit_cap": 20 },
+      { "player_level": 10, "base_esprit_cap": 30 },
+      { "player_level": 15, "base_esprit_cap": 50 },
+      { "player_level": 30, "base_esprit_cap": 75 },
+      { "player_level": 40, "base_esprit_cap": 100 },
+      { "player_level": 50, "base_esprit_cap": 135 },
+      { "player_level": 65, "base_esprit_cap": 150 },
+      { "player_level": 70, "base_esprit_cap": 175 },
+      { "player_level": 75, "base_esprit_cap": 200 },
+      { "player_level": 80, "base_esprit_cap": 200 }
+    ],
+    "rarity_level_caps": {
+      "Common": 75,
+      "Uncommon": 100,
+      "Rare": 100,
+      "Epic": 100,
+      "Celestial": 150,
+      "Supreme": 175,
+      "Deity": 200
     },
     "player_xp_curve": { "base": 100, "exponent": 1.5 },
-    "esprit_xp_curve":  { "base": 50, "exponent": 1.3 }
+    "esprit_xp_curve": { "base": 50, "exponent": 1.3 }
+  },
+  "limit_break_system": {
+    "enabled": true,
+    "stat_boost_per_break": 0.1,
+    "base_costs": {
+      "essence": 200,
+      "moonglow": 500
+    },
+    "rarity_cost_multipliers": {
+      "Common": 1.0,
+      "Uncommon": 1.5,
+      "Rare": 2.0,
+      "Epic": 3.0,
+      "Celestial": 5.0,
+      "Supreme": 7.0,
+      "Deity": 10.0
+    },
+    "level_scaling_formula": "base_cost * rarity_multiplier * (1 + esprit_level / 50)",
+    "requirements": [
+      "Esprit must be at current level cap",
+      "Player level must support higher caps",
+      "Must have required materials"
+    ]
   },
   "summoning": {
     "pity_system_guarantee_after": 100,

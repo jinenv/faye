@@ -98,3 +98,4 @@ class TeamSlot(IntEnum):
 ☑ Bot boots; slash-command sync clean  
 
 _Follow “the Nyxa way.” If new work conflicts, update this file first._
+

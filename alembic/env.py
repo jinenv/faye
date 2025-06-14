@@ -8,6 +8,14 @@ from sqlalchemy import pool
 
 from alembic import context
 
+# Add these lines:
+import sqlmodel
+from sqlmodel import SQLModel
+
+# Also add this to make your models available:
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from src.database.models import *  # Import your models
+
 # Make the project's src directory visible to this script
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
