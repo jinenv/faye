@@ -29,20 +29,6 @@ class ProgressionManager:
         exponent = self.player_xp_curve.get('exponent', 1.5)
         return int(base * (current_level ** exponent))
 
-    def get_esprit_xp_for_next_level(self, current_level: int) -> int:
-        """Calculates the total XP required to reach the next Esprit level."""
-        if current_level >= self.esprit_max_level:
-            return 0
-        base = self.esprit_xp_curve.get('base', 50)
-        exponent = self.esprit_xp_curve.get('exponent', 1.3)
-        return int(base * (current_level ** exponent))
-
-    def get_esprit_upgrade_cost(self, current_level: int) -> int:
-        """Calculates the Moonglow cost to upgrade an Esprit to the next level."""
-        if current_level >= self.esprit_max_level:
-            return 0
-        return (current_level + 1) * self.esprit_upgrade_cost_per_level
-
     def add_player_xp(self, player: User, amount: int) -> tuple[User, bool]:
         """
         Adds XP to a player and checks for level-up.
