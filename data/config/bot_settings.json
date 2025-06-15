@@ -1,0 +1,15 @@
+{
+  "bot_info": {
+    "version": "0.6.0 (Economy Refactor)",
+    "developer_name": "Jinenv",
+    "website_url": "https://faye.bot"
+  },
+  "developer": {
+    "test_user_ids": [
+      "798476548734844969"
+    ]
+  },
+  "cooldowns": {
+    "daily_claim_hours": 22
+  }
+}

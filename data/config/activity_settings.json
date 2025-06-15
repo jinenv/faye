@@ -1,0 +1,13 @@
+{
+  "activity_rewards": {
+    "explore": {
+      "player_xp": 75,
+      "currencies": {
+        "faylen": [15, 30],
+        "remna": 1,
+        "fayrite_shards": [3, 8],
+        "virelite": [10, 25]
+      }
+    }
+  }
+}

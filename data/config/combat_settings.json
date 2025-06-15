@@ -1,0 +1,30 @@
+{
+  "esprit_upgrade_system": {
+    "enabled": true,
+    "cost_formula": "15 + (current_level * 8)",
+    "currency": "virelite"
+  },
+  "stat_calculation": {
+    "level_multiplier_per_level": 0.05
+  },
+  "power_calculation": {
+    "sigil_weights": {
+      "hp": 0.25, "attack": 2.5, "defense": 2.5, "speed": 3.0, "magic_resist": 2.0,
+      "crit_rate": 500, "block_rate": 500, "dodge": 600, "mana": 0.5, "mana_regen": 100
+    },
+    "rarity_multipliers": {
+      "Common": 1.0, "Uncommon": 1.1, "Rare": 1.25, "Epic": 1.4,
+      "Celestial": 1.6, "Supreme": 1.8, "Deity": 2.0
+    }
+  },
+  "limit_break_system": {
+    "enabled": true,
+    "compound_rate": 1.1,
+    "base_costs": { "remna": 200, "virelite": 500 },
+    "rarity_cost_multipliers": {
+      "Common": 1.0, "Uncommon": 1.5, "Rare": 2.0, "Epic": 3.0,
+      "Celestial": 5.0, "Supreme": 7.0, "Deity": 10.0
+    },
+    "previous_breaks_multiplier": 1.5
+  }
+}

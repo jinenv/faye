@@ -1,0 +1,26 @@
+{
+  "economy": {
+    "shards_per_fayrite": 10
+  },
+  "starter_currencies": {
+    "faylen": 500,
+    "virelite": 75,
+    "fayrite_shards": 90,
+    "ethryl": 2
+  },
+  "daily_rewards": {
+    "faylen": 500,
+    "virelite": 150,
+    "fayrite_shards": 20,
+    "ethryl": 1
+  },
+  "dissolve_rewards": {
+    "Common": { "virelite": 50, "remna": 5 },
+    "Uncommon": { "virelite": 125, "remna": 12 },
+    "Rare": { "virelite": 300, "remna": 30 },
+    "Epic": { "virelite": 750, "remna": 75 },
+    "Celestial": { "virelite": 2000, "remna": 200 },
+    "Supreme": { "virelite": 5000, "remna": 500 },
+    "Deity": { "virelite": 12500, "remna": 1250 }
+  }
+}

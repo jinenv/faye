@@ -1,0 +1,33 @@
+{
+  "summoning": {
+    "banners": {
+      "standard": {
+        "currency": "fayrites",
+        "cost_single": 1,
+        "cost_multi": 10,
+        "rarity_distribution": {
+          "Common": 0.3995, "Uncommon": 0.30, "Rare": 0.20, "Epic": 0.075,
+          "Celestial": 0.02, "Supreme": 0.005, "Deity": 0.0005
+        }
+      },
+      "premium": {
+        "currency": "ethryl",
+        "cost_single": 1,
+        "rarity_distribution": {
+          "Rare": 0.498, "Epic": 0.30, "Celestial": 0.15, "Supreme": 0.05, "Deity": 0.002
+        }
+      },
+      "daily": { "currency": "free" }
+    },
+    "pity_system_guarantee_after": 100,
+    "pity_guarantee_rarity": "Supreme",
+    "pity_reset_rarities": ["Supreme", "Deity"],
+    "rarity_pity_increment": {
+      "Common": 1, "Uncommon": 2, "Rare": 3, "Epic": 5,
+      "Celestial": 10, "Supreme": 2, "Deity": 1
+    }
+  },
+  "cooldowns": {
+    "daily_summon_hours": 22
+  }
+}

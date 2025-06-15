@@ -1,0 +1,38 @@
+{
+  "onboarding": {
+    "starter_esprit_rarity": "Epic",
+    "starter_esprit_level": 1
+  },
+  "progression": {
+    "player_max_level": 80,
+    "esprit_max_level": 200,
+    "player_level_thresholds": [
+      { "player_level": 1, "base_esprit_cap": 10 },
+      { "player_level": 10, "base_esprit_cap": 20 },
+      { "player_level": 20, "base_esprit_cap": 50 },
+      { "player_level": 30, "base_esprit_cap": 75 },
+      { "player_level": 40, "base_esprit_cap": 100 },
+      { "player_level": 50, "base_esprit_cap": 125 },
+      { "player_level": 60, "base_esprit_cap": 150 },
+      { "player_level": 70, "base_esprit_cap": 175 },
+      { "player_level": 80, "base_esprit_cap": 200 }
+    ],
+    "rarity_level_caps": {
+      "Common": 75, "Uncommon": 100, "Rare": 100, "Epic": 125,
+      "Celestial": 150, "Supreme": 175, "Deity": 200
+    },
+    "player_xp_curve": {
+      "base": 100,
+      "exponent": 1.5
+    }
+  },
+  "player_trial_tiers": [
+    { "unlocks_at_level": 10, "raises_cap_to": 20, "cost": { "faylen": 2000, "remna": 25 }},
+    { "unlocks_at_level": 20, "raises_cap_to": 30, "cost": { "faylen": 5000, "remna": 50 }},
+    { "unlocks_at_level": 30, "raises_cap_to": 40, "cost": { "faylen": 15000, "remna": 100 }},
+    { "unlocks_at_level": 40, "raises_cap_to": 50, "cost": { "faylen": 50000, "remna": 250 }},
+    { "unlocks_at_level": 50, "raises_cap_to": 60, "cost": { "faylen": 100000, "remna": 500 }},
+    { "unlocks_at_level": 60, "raises_cap_to": 70, "cost": { "faylen": 200000, "remna": 1000 }},
+    { "unlocks_at_level": 70, "raises_cap_to": 80, "cost": { "faylen": 400000, "remna": 2000 }}
+  ]
+}

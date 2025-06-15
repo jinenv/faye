@@ -1,0 +1,14 @@
+{
+  "rarities": {
+    "Deity": { "tier": 1, "emoji": "👑", "embed_color": "#FFC0CB", "visuals": { "color": "#FFFFFF", "border_color": "#FFFFFF" }},
+    "Supreme": { "tier": 2, "emoji": "🌌", "embed_color": "#800080", "visuals": { "color": "#FF0000", "border_color": "#FF0000" }},
+    "Celestial": { "tier": 3, "emoji": "🌟", "embed_color": "#FFD700", "visuals": { "color": "#FFD700", "border_color": "#FFD700" }},
+    "Epic": { "tier": 4, "emoji": "✨", "embed_color": "#A020F0", "visuals": { "color": "#800080", "border_color": "#800080" }},
+    "Rare": { "tier": 5, "emoji": "💫", "embed_color": "#1E90FF", "visuals": { "color": "#0000FF", "border_color": "#0000FF" }},
+    "Uncommon": { "tier": 6, "emoji": "🌱", "embed_color": "#32CD32", "visuals": { "color": "#00C853", "border_color": "#00C853" }},
+    "Common": { "tier": 7, "emoji": "🐾", "embed_color": "#808080", "visuals": { "color": "#A9A9A9", "border_color": "#A9A9A9" }}
+  },
+  "classes": {
+    "Guardian": "🛡️", "Destroyer": "⚔️", "Mystic": "🔮", "Support": "❤️", "Unknown": "❓"
+  }
+}
