@@ -1,46 +1,67 @@
-# src/cogs/admin_cog.py
-import logging
-from contextlib import asynccontextmanager
-from typing import List, Tuple, Dict, Literal
+# ─────────────────────────────────────────────────────────────────────────────
+#  src/cogs/admin_cog.py
+# ─────────────────────────────────────────────────────────────────────────────
+from __future__ import annotations
+
 import traceback
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
+from typing import Dict, List, Literal, Optional, Tuple
 
 import discord
 from discord import app_commands
+from discord.app_commands import Choice
 from discord.ext import commands
-from sqlalchemy import func
-from sqlmodel import select
-
-from src.database.db import get_session
-from src.database.models import User, UserEsprit, EspritData
-from src.utils.logger import get_logger
-
+from sqlalchemy import func, select, and_
 from sqlalchemy.orm import selectinload
 
+from database.data_loader import EspritDataLoader
+from src.database.db import get_session
+from src.database.models import User, UserEsprit, EspritData
+from src.utils.cache_manager import CacheManager
+from src.utils.logger import get_logger
+
+# ─────────────────────────────────────────────────────────────────────────────
 logger = get_logger(__name__)
 
-# ───────────────────────────────────────── UI COMPONENTS ────────────────────────────────────────── #
+# ─────────────────────────── utility decorator / helpers ─────────────────────
+def owner_only(*, ephemeral: bool = True):
+    """Decorator that ensures the caller is the bot owner & automatically defers."""
 
+    def decorator(fn):
+        async def wrapper(self: "AdminCog", interaction: discord.Interaction, *args, **kwargs):
+            if not await self.bot.is_owner(interaction.user):
+                return await interaction.response.send_message("❌ You are not the bot owner.", ephemeral=True)
+            # Always defer so every command can freely follow-up.
+            await interaction.response.defer(ephemeral=ephemeral)
+            return await fn(self, interaction, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+async def cog_autocomplete(interaction: discord.Interaction, current: str):
+    return [
+        Choice(name=ext, value=ext)
+        for ext in interaction.client.extensions
+        if current.lower() in ext.lower()
+    ][:25]  # Discord limit
+
+# ──────────────────────────────── help UI ────────────────────────────────────
 class AdminHelpSelect(discord.ui.Select):
-    """Dropdown for selecting an admin-command category."""
-    def __init__(self, command_data: Dict):
+    def __init__(self, command_data: Dict[str, dict]):
         self.command_data = command_data
         options = [
             discord.SelectOption(
-                label=data["name"],
-                description=data["description"],
-                emoji=data["emoji"],
-                value=category,
+                label=d["name"], value=k, emoji=d["emoji"], description=d["description"][:95]
             )
-            for category, data in command_data.items()
+            for k, d in command_data.items()
         ]
-        super().__init__(
-            placeholder="Select a command category to view commands…", options=options
-        )
+        super().__init__(placeholder="Pick a category…", options=options)
 
     async def callback(self, interaction: discord.Interaction):
-        category = self.values[0]
-        data = self.command_data[category]
+        key = self.values[0]
+        data = self.command_data[key]
         embed = discord.Embed(
             title=f"{data['emoji']} {data['name']}",
             description=data["description"],
@@ -49,1324 +70,460 @@ class AdminHelpSelect(discord.ui.Select):
         for cmd in data["commands"]:
             embed.add_field(
                 name=f"`{cmd['name']}`",
-                value=f"**Usage**:\t`{cmd['usage']}`\n{cmd['desc']}",
+                value=f"Usage: `{cmd['usage']}`\n{cmd['desc']}",
                 inline=False,
             )
-        embed.set_footer(text="All commands are owner-only.")
-        await interaction.response.edit_message(embed=embed)
+        await interaction.response.edit_message(embed=embed, view=self.view)
 
 
 class AdminHelpView(discord.ui.View):
-    """View holding the admin help dropdown."""
-
-    def __init__(self, author_id: int, command_data: Dict):
+    def __init__(self, author_id: int, command_data: Dict[str, dict]):
         super().__init__(timeout=180)
         self.author_id = author_id
+        self.command_data = command_data
         self.add_item(AdminHelpSelect(command_data))
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        if interaction.user.id != self.author_id and not await interaction.client.is_owner(
-            interaction.user
-        ):
-            await interaction.response.send_message(
-                "This is not your help menu.", ephemeral=True
-            )
+        if interaction.user.id != self.author_id and not await interaction.client.is_owner(interaction.user):
+            await interaction.response.send_message("❌ This menu isn’t for you.", ephemeral=True)
             return False
         return True
 
 
+# ─────────────────────────────── stats UI ────────────────────────────────────
 class StatsView(discord.ui.View):
-    """Interactive view for navigating global-stats pages."""
-
-    def __init__(self, stats_data: dict, author_id: int):
+    def __init__(self, stats: dict, author_id: int, refresh_cb):
         super().__init__(timeout=300)
-        self.stats_data = stats_data
+        self.stats = stats
         self.author_id = author_id
-        self.current_page = "overview"
+        self.refresh_cb = refresh_cb
+        self.page = "overview"
 
-    async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        if interaction.user.id != self.author_id:
-            await interaction.response.send_message(
-                "This is not your stats menu.", ephemeral=True
-            )
+    async def interaction_check(self, i: discord.Interaction) -> bool:
+        if i.user.id != self.author_id:
+            await i.response.send_message("❌ This menu isn’t for you.", ephemeral=True)
             return False
         return True
 
-    # page-router
-    def get_embed(self) -> discord.Embed:
-        return {
-            "overview": self._overview_embed,
-            "economy": self._economy_embed,
-            "esprits": self._esprits_embed,
-            "users": self._users_embed,
-        }[self.current_page]()
-
-    # ── overview ──────────────────────────────────────────────────────────────
-    def _overview_embed(self) -> discord.Embed:
-        embed = discord.Embed(
-            title="📊 Faye Global Statistics – Overview",
-            description="Quick overview of key metrics",
-            color=discord.Color.gold(),
-            timestamp=discord.utils.utcnow(),
-        )
-        embed.add_field(
-            name="🔑 Key Metrics",
-            value=(
-                f"**Total Users:** {self.stats_data['total_users']:,}\n"
-                f"**Active Today:** {self.stats_data['users_claimed_today']:,}\n"
-                f"**Total Esprits Owned:** {self.stats_data['total_esprits_owned']:,}\n"
-                f"**Total Faylen:** {self.stats_data['total_faylen']:,}\n"
-                f"**Total Ethryl:** {self.stats_data['total_ethryl']:,}"
-            ),
-            inline=True,
-        )
-        embed.add_field(
-            name="🤖 Bot Status",
-            value=(
-                f"**Guilds:** {self.stats_data['guild_count']:,}\n"
-                f"**Members:** {self.stats_data['member_count']:,}\n"
-                f"**Uptime:** {self.stats_data['uptime']}"
-            ),
-            inline=True,
-        )
-        embed.add_field(
-            name="📈 Quick Stats",
-            value=(
-                f"**Avg Level:** {self.stats_data['avg_level']:.1f}\n"
-                f"**Collection Rate:** {self.stats_data['collection_rate']:.1f}%\n"
-                f"**Active (7 d):** {self.stats_data['active_users']:,}"
-            ),
-            inline=True,
-        )
-        embed.set_footer(text="Click buttons below for detailed views")
-        return embed
-
-    # ── economy ───────────────────────────────────────────────────────────────
-    def _economy_embed(self) -> discord.Embed:
-        embed = discord.Embed(
-            title="💰 Global Economy Statistics",
-            description="Detailed breakdown of the in-game economy",
-            color=discord.Color.green(),
-            timestamp=discord.utils.utcnow(),
-        )
-        embed.add_field(
-            name="💎 Currency in Circulation",
-            value=(
-                f"**Faylen:** {self.stats_data['total_faylen']:,}\n"
-                f"**Virelite:** {self.stats_data['total_virelite']:,}\n"
-                f"**Fayrites:** {self.stats_data['total_fayrites']:,}\n"
-                f"**Ethryl:** {self.stats_data['total_ethryl']:,}\n"
-                f"**Fayrite Shards:** {self.stats_data['total_fayrite_shards']:,}\n"
-                f"**Remna:** {self.stats_data['total_remna']:,}\n"
-                f"**Loot Chests:** {self.stats_data['total_loot_chests']:,}"
-            ),
-            inline=True,
-        )
-
-        if self.stats_data["total_users"] > 0:
-            u = self.stats_data["total_users"]
-            embed.add_field(
-                name="📊 Per-User Averages",
-                value=(
-                    f"**Avg Faylen:** {self.stats_data['total_faylen'] // u:,}\n"
-                    f"**Avg Virelite:** {self.stats_data['total_virelite'] // u:,}\n"
-                    f"**Avg Fayrites:** {self.stats_data['total_fayrites'] / u:.1f}\n"
-                    f"**Avg Ethryl:** {self.stats_data['total_ethryl'] / u:.1f}\n"
-                    f"**Avg Shards:** {self.stats_data['total_fayrite_shards'] / u:.1f}\n"
-                    f"**Avg Loot Chests:** {self.stats_data['total_loot_chests'] / u:.1f}"
-                ),
+    # ── embeds ─────────────────────────────────────────────────────────────
+    def _build_overview(self):
+        s = self.stats
+        return (
+            discord.Embed(
+                title="📊 Global Overview",
+                color=discord.Color.gold(),
+                timestamp=discord.utils.utcnow(),
+                description="Key metrics for the whole cluster",
+            )
+            .add_field(
+                name="Users / Servers",
+                value=f"Users **{s['total_users']:,}**\nGuilds **{s['guild_count']:,}**",
                 inline=True,
             )
-        return embed
-
-    # ── esprits ───────────────────────────────────────────────────────────────
-    def _esprits_embed(self) -> discord.Embed:
-        embed = discord.Embed(
-            title="🔮 Esprit Collection Statistics",
-            description="Detailed breakdown of Esprit ownership & distribution",
-            color=discord.Color.purple(),
-            timestamp=discord.utils.utcnow(),
-        )
-        embed.add_field(
-            name="📈 Collection Overview",
-            value=(
-                f"**Total Owned:** {self.stats_data['total_esprits_owned']:,}\n"
-                f"**Unique Collected:** {self.stats_data['unique_esprits_owned']}/{self.stats_data['total_esprit_types']}\n"
-                f"**Collection Rate:** {self.stats_data['collection_rate']:.1f}%\n"
-                f"**Avg per User:** "
-                f"{self.stats_data['total_esprits_owned']/max(1,self.stats_data['total_users']):.1f}"
-            ),
-            inline=True,
-        )
-        if self.stats_data["rarity_distribution"]:
-            rarity_text = "\n".join(
-                f"**{r}:** {c:,}"
-                for r, c in sorted(self.stats_data["rarity_distribution"].items())
+            .add_field(
+                name="Esprits",
+                value=f"Owned **{s['total_esprits_owned']:,}**\nUnique **{s['unique_esprits_owned']}/{s['total_esprit_types']}**",
+                inline=True,
             )
-            embed.add_field(name="🌟 Rarity Distribution", value=rarity_text, inline=True)
-        embed.add_field(
-            name="🏆 Most Popular Esprit",
-            value=self.stats_data["popular_esprit_name"],
-            inline=True,
+            .add_field(
+                name="Economy",
+                value=f"Faylen **{s['total_faylen']:,}**\nEthryl **{s['total_ethryl']:,}**",
+                inline=True,
+            )
+            .set_footer(text=f"Uptime: {s['uptime']}")
         )
-        return embed
 
-    # ── users ─────────────────────────────────────────────────────────────────
-    def _users_embed(self) -> discord.Embed:
-        embed = discord.Embed(
-            title="👥 User Statistics",
-            description="Detailed breakdown of user activity & progression",
-            color=discord.Color.blue(),
-            timestamp=discord.utils.utcnow(),
+    def _build_economy(self):
+        s = self.stats
+        return (
+            discord.Embed(
+                title="💰 Economy Totals",
+                color=discord.Color.green(),
+                timestamp=discord.utils.utcnow(),
+            )
+            .add_field(
+                name="Currencies",
+                value=(
+                    f"Faylen **{s['total_faylen']:,}**\n"
+                    f"Virelite **{s['total_virelite']:,}**\n"
+                    f"Fayrites **{s['total_fayrites']:,}**\n"
+                    f"Shards **{s['total_fayrite_shards']:,}**"
+                ),
+                inline=False,
+            )
         )
-        embed.add_field(
-            name="📊 User Base",
-            value=(
-                f"**Total Registered:** {self.stats_data['total_users']:,}\n"
-                f"**Active (7 d):** {self.stats_data['active_users']:,}\n"
-                f"**Active (Today):** {self.stats_data['users_claimed_today']:,}\n"
-                f"**Activity Rate:** "
-                f"{(self.stats_data['active_users']/max(1,self.stats_data['total_users'])*100):.1f}%"
-            ),
-            inline=True,
-        )
-        embed.add_field(
-            name="📈 Level Distribution",
-            value=(
-                f"**Average Level:** {self.stats_data['avg_level']:.1f}\n"
-                f"**Highest Level:** {self.stats_data['max_level']}\n"
-                f"**Top Player:** {self.stats_data['top_player_mention']}"
-            ),
-            inline=True,
-        )
-        embed.add_field(
-            name="🎮 Engagement",
-            value=(
-                f"**Daily Claim Rate:** "
-                f"{(self.stats_data['users_claimed_today']/max(1,self.stats_data['total_users'])*100):.1f}%\n"
-                f"**Avg Esprits/User:** "
-                f"{self.stats_data['total_esprits_owned']/max(1,self.stats_data['total_users']):.1f}\n"
-                f"**Total XP Earned:** {self.stats_data.get('total_xp',0):,}"
-            ),
-            inline=True,
-        )
-        return embed
 
-    # navigation buttons
+    def _build_esprits(self):
+        s = self.stats
+        return (
+            discord.Embed(
+                title="🔮 Esprit Stats",
+                color=discord.Color.purple(),
+                timestamp=discord.utils.utcnow(),
+            )
+            .add_field(
+                name="Collected",
+                value=f"Total **{s['total_esprits_owned']:,}**\nUnique **{s['unique_esprits_owned']}**",
+                inline=True,
+            )
+        )
+
+    def _build_users(self):
+        s = self.stats
+        return (
+            discord.Embed(
+                title="👥 User Engagement",
+                color=discord.Color.blue(),
+                timestamp=discord.utils.utcnow(),
+            )
+            .add_field(
+                name="Active",
+                value=f"Today **{s['users_claimed_today']:,}**\n7-day **{s['active_users']:,}**",
+                inline=True,
+            )
+        )
+
+    def _embed(self):
+        return {
+            "overview": self._build_overview,
+            "economy": self._build_economy,
+            "esprits": self._build_esprits,
+            "users": self._build_users,
+        }[self.page]()
+
+    # ── buttons ────────────────────────────────────────────────────────────
     @discord.ui.button(label="Overview", style=discord.ButtonStyle.primary, emoji="📊")
-    async def overview_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ):
-        self.current_page = "overview"
-        await interaction.response.edit_message(embed=self.get_embed(), view=self)
+    async def ov_btn(self, i: discord.Interaction, _):
+        self.page = "overview"
+        await i.response.edit_message(embed=self._embed(), view=self)
 
     @discord.ui.button(label="Economy", style=discord.ButtonStyle.success, emoji="💰")
-    async def economy_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ):
-        self.current_page = "economy"
-        await interaction.response.edit_message(embed=self.get_embed(), view=self)
+    async def eco_btn(self, i: discord.Interaction, _):
+        self.page = "economy"
+        await i.response.edit_message(embed=self._embed(), view=self)
 
     @discord.ui.button(label="Esprits", style=discord.ButtonStyle.secondary, emoji="🔮")
-    async def esprits_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ):
-        self.current_page = "esprits"
-        await interaction.response.edit_message(embed=self.get_embed(), view=self)
+    async def esp_btn(self, i: discord.Interaction, _):
+        self.page = "esprits"
+        await i.response.edit_message(embed=self._embed(), view=self)
 
     @discord.ui.button(label="Users", style=discord.ButtonStyle.secondary, emoji="👥")
-    async def users_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ):
-        self.current_page = "users"
-        await interaction.response.edit_message(embed=self.get_embed(), view=self)
+    async def usr_btn(self, i: discord.Interaction, _):
+        self.page = "users"
+        await i.response.edit_message(embed=self._embed(), view=self)
 
-    @discord.ui.button(
-        label="Refresh", style=discord.ButtonStyle.secondary, emoji="🔄", row=1
-    )
-    async def refresh_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ):
-        await interaction.response.send_message(
-            "♻️ Refreshing stats… Run `/admin stats` again.", ephemeral=True
-        )
+    @discord.ui.button(label="Refresh", style=discord.ButtonStyle.secondary, emoji="🔄", row=1)
+    async def ref_btn(self, i: discord.Interaction, _):
+        self.stats = await self.refresh_cb()
+        await i.response.edit_message(embed=self._embed(), view=self)
 
 
+# ────────────────────────────── paginator UI ────────────────────────────────
 class EspritPaginatorView(discord.ui.View):
-    """Simple two-button paginator for a user's esprit list."""
-
-    def __init__(
-        self,
-        author_id: int,
-        user_display_name: str,
-        all_esprits: List[Tuple[UserEsprit, EspritData]],
-        per_page: int = 5,
-    ):
+    def __init__(self, author: int, display_name: str, data: List[Tuple[UserEsprit, EspritData]]):
         super().__init__(timeout=180)
-        self.author_id = author_id
-        self.user_display_name = user_display_name
-        self.all_esprits = all_esprits
-        self.per_page = per_page
-        self.current_page = 0
-        self.total_pages = (len(all_esprits) - 1) // per_page
-        self.update_buttons()
+        self.author = author
+        self.data = data
+        self.per_page = 5
+        self.page = 0
+        self.name = display_name
+        self.max_page = (len(data) - 1) // self.per_page
 
-    async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        if interaction.user.id != self.author_id:
-            await interaction.response.send_message("This is not your menu.", ephemeral=True)
+    async def interaction_check(self, i: discord.Interaction) -> bool:
+        if i.user.id != self.author:
+            await i.response.send_message("❌ Not your paginator.", ephemeral=True)
             return False
         return True
 
-    # page embed
-    def _page_embed(self) -> discord.Embed:
-        start = self.current_page * self.per_page
+    def _embed(self):
+        start = self.page * self.per_page
         end = start + self.per_page
         embed = discord.Embed(
-            title=f"🔮 {self.user_display_name}'s Esprit Collection",
-            color=discord.Color.purple(),
+            title=f"🔮 {self.name}'s Esprits", color=discord.Color.purple()
         )
-        embed.description = "".join(
-            f"**{ed.name}** (ID `{ue.id}`)\n"
-            f"└ Lvl **{ue.current_level}** | Rarity **{ed.rarity}**\n"
-            for ue, ed in self.all_esprits[start:end]
-        )
-        embed.set_footer(
-            text=f"Page {self.current_page+1}/{self.total_pages+1} | "
-            f"Total Esprits: {len(self.all_esprits)}"
-        )
+        for ue, ed in self.data[start:end]:
+            embed.add_field(
+                name=f"{ed.name} (ID `{ue.id}`)",
+                value=f"Lvl {ue.current_level} • {ed.rarity}",
+                inline=False,
+            )
+        embed.set_footer(text=f"Page {self.page+1}/{self.max_page+1}")
         return embed
 
-    # enable/disable nav buttons
-    def update_buttons(self):
-        self.previous_button.disabled = self.current_page == 0
-        self.next_button.disabled = self.current_page >= self.total_pages
-
-    @discord.ui.button(label="Previous", style=discord.ButtonStyle.secondary)
-    async def previous_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ):
-        self.current_page -= 1
-        self.update_buttons()
-        await interaction.response.edit_message(embed=self._page_embed(), view=self)
+    @discord.ui.button(label="Prev", style=discord.ButtonStyle.secondary)
+    async def prev(self, i: discord.Interaction, _):
+        self.page = max(0, self.page - 1)
+        await i.response.edit_message(embed=self._embed(), view=self)
 
     @discord.ui.button(label="Next", style=discord.ButtonStyle.secondary)
-    async def next_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ):
-        self.current_page += 1
-        self.update_buttons()
-        await interaction.response.edit_message(embed=self._page_embed(), view=self)
+    async def nxt(self, i: discord.Interaction, _):
+        self.page = min(self.max_page, self.page + 1)
+        await i.response.edit_message(embed=self._embed(), view=self)
 
-# ────────────────────────────────────────── MAIN ADMIN COG ───────────────────────────────────────── #
+
+# ────────────────────────────── main admin cog ──────────────────────────────
 @app_commands.guild_only()
 class AdminCog(commands.Cog):
-    MODIFIABLE_ATTRIBUTES = (
-        "faylen",
-        "virelite",
-        "fayrites",
-        "fayrite_shards",
-        "ethryl",
-        "remna",
-        "xp",
-        "loot_chests",
+    # groups are declared here for nicer slash hierarchy
+    admin_group   = app_commands.Group(name="admin",  description="Core admin commands.")
+    give_group    = app_commands.Group(name="give",   description="Give currency/items.")
+    remove_group  = app_commands.Group(name="remove", description="Remove currency/items.")
+    set_group     = app_commands.Group(name="set",    description="Set exact values.")
+    reset_group   = app_commands.Group(name="reset",  description="Reset data/cooldowns.")
+    list_group    = app_commands.Group(name="list",   description="List data.")
+    reload_group  = app_commands.Group(name="reload", description="Reload subsystems.")
+
+    MODIFIABLE = (
+        "faylen", "virelite", "fayrites", "fayrite_shards",
+        "ethryl", "remna", "xp", "loot_chests",
     )
 
-    # help-dict (Ethryl entries included)
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.admin_commands_data: Dict = {
+        self.cache = CacheManager(default_ttl=300)
+
+        # Help-menu metadata (trim / extend as needed)
+        self.help_meta: Dict[str, dict] = {
             "give": {
-                "name": "🎁 Give Commands",
+                "name": "🎁 Give",
                 "emoji": "🎁",
-                "description": "Commands for adding currency or items to a user.",
-                "commands": [
-                    {
-                        "name": "/give faylen",
-                        "usage": "<user> <amount>",
-                        "desc": "Adds faylen.",
-                    },
-                    {
-                        "name": "/give virelite",
-                        "usage": "<user> <amount>",
-                        "desc": "Adds virelite.",
-                    },
-                    {
-                        "name": "/give fayrites",
-                        "usage": "<user> <amount>",
-                        "desc": "Adds fayrites.",
-                    },
-                    {
-                        "name": "/give ethryl",
-                        "usage": "<user> <amount>",
-                        "desc": "Adds ethryl.",
-                    },
-                    {
-                        "name": "/give fayrite_shards",
-                        "usage": "<user> <amount>",
-                        "desc": "Adds fayrite shards.",
-                    },
-                    {
-                        "name": "/give remna",
-                        "usage": "<user> <amount>",
-                        "desc": "Adds remna.",
-                    },
-                    {
-                        "name": "/give xp",
-                        "usage": "<user> <amount>",
-                        "desc": "Adds XP.",
-                    },
-                    {
-                        "name": "/give loot_chests",
-                        "usage": "<user> <amount>",
-                        "desc": "Adds loot chests.",
-                    },
-                    {
-                        "name": "/give esprit",
-                        "usage": "<user> <esprit_name>",
-                        "desc": "Gives an esprit.",
-                    },
-                ],
+                "description": "Commands that add items / currency to a user.",
+                "commands": [{"name": "/give faylen", "usage": "<user> <amount>", "desc": "Add Faylen"}],
             },
             "remove": {
-                "name": "➖ Remove Commands",
+                "name": "➖ Remove",
                 "emoji": "➖",
-                "description": "Commands for subtracting currency or items.",
-                "commands": [
-                    {
-                        "name": "/remove faylen",
-                        "usage": "<user> <amount>",
-                        "desc": "Removes faylen.",
-                    },
-                    {
-                        "name": "/remove virelite",
-                        "usage": "<user> <amount>",
-                        "desc": "Removes virelite.",
-                    },
-                    {
-                        "name": "/remove fayrites",
-                        "usage": "<user> <amount>",
-                        "desc": "Removes fayrites.",
-                    },
-                    {
-                        "name": "/remove ethryl",
-                        "usage": "<user> <amount>",
-                        "desc": "Removes ethryl.",
-                    },
-                    {
-                        "name": "/remove fayrite_shards",
-                        "usage": "<user> <amount>",
-                        "desc": "Removes fayrite shards.",
-                    },
-                    {
-                        "name": "/remove remna",
-                        "usage": "<user> <amount>",
-                        "desc": "Removes remna.",
-                    },
-                    {
-                        "name": "/remove xp",
-                        "usage": "<user> <amount>",
-                        "desc": "Removes XP.",
-                    },
-                    {
-                        "name": "/remove loot_chests",
-                        "usage": "<user> <amount>",
-                        "desc": "Removes loot chests.",
-                    },
-                    {
-                        "name": "/remove esprit",
-                        "usage": "<user> <esprit_id>",
-                        "desc": "Deletes an esprit.",
-                    },
-                ],
+                "description": "Commands that subtract currency.",
+                "commands": [{"name": "/remove faylen", "usage": "<user> <amount>", "desc": "Remove Faylen"}],
             },
             "set": {
-                "name": "⚙️ Set Commands",
+                "name": "⚙️ Set",
                 "emoji": "⚙️",
-                "description": "Commands for setting an exact value.",
-                "commands": [
-                    {
-                        "name": "/set faylen",
-                        "usage": "<user> <amount>",
-                        "desc": "Sets faylen.",
-                    },
-                    {
-                        "name": "/set virelite",
-                        "usage": "<user> <amount>",
-                        "desc": "Sets virelite.",
-                    },
-                    {
-                        "name": "/set fayrites",
-                        "usage": "<user> <amount>",
-                        "desc": "Sets fayrites.",
-                    },
-                    {
-                        "name": "/set ethryl",
-                        "usage": "<user> <amount>",
-                        "desc": "Sets ethryl.",
-                    },
-                    {
-                        "name": "/set fayrite_shards",
-                        "usage": "<user> <amount>",
-                        "desc": "Sets fayrite shards.",
-                    },
-                    {
-                        "name": "/set remna",
-                        "usage": "<user> <amount>",
-                        "desc": "Sets remna.",
-                    },
-                    {
-                        "name": "/set loot_chests",
-                        "usage": "<user> <amount>",
-                        "desc": "Sets loot chests.",
-                    },
-                    {
-                        "name": "/set level",
-                        "usage": "<user> <level>",
-                        "desc": "Sets level, resets XP.",
-                    },
-                    {
-                        "name": "/set esprit_level",
-                        "usage": "<esprit_id> <level>",
-                        "desc": "Sets esprit level.",
-                    },
-                ],
-            },
-            "reset": {
-                "name": "♻️ Reset Commands",
-                "emoji": "♻️",
-                "description": "Commands for resetting data or cooldowns.",
-                "commands": [
-                    {
-                        "name": "/reset daily",
-                        "usage": "<user>",
-                        "desc": "Resets `/daily` cooldown.",
-                    },
-                    {
-                        "name": "/reset user_data",
-                        "usage": "<user> <confirmation>",
-                        "desc": "Wipes user data (test users).",
-                    },
-                ],
+                "description": "Set an exact value.",
+                "commands": [{"name": "/set faylen", "usage": "<user> <amount>", "desc": "Set Faylen"}],
             },
             "utility": {
-                "name": "🛠️ Utility Commands",
+                "name": "🛠️ Utility",
                 "emoji": "🛠️",
-                "description": "General-purpose administrative commands.",
+                "description": "Stats, inspect, reload…",
                 "commands": [
-                    {
-                        "name": "/admin stats",
-                        "usage": "",
-                        "desc": "Shows global stats.",
-                    },
-                    {"name": "/inspect", "usage": "<user>", "desc": "Inspect user."},
-                    {"name": "/list users", "usage": "", "desc": "Top 25 users."},
-                    {
-                        "name": "/list esprits",
-                        "usage": "<user>",
-                        "desc": "List user esprits.",
-                    },
-                    {
-                        "name": "/reload config",
-                        "usage": "",
-                        "desc": "Reload configuration.",
-                    },
-                    {
-                        "name": "/reload esprits",
-                        "usage": "[force]",
-                        "desc": "Reload esprit data.",
-                    },
-                    {
-                        "name": "/reload cog",
-                        "usage": "<cog_name>",
-                        "desc": "Reload specific cog.",
-                    },
+                    {"name": "/admin stats", "usage": "", "desc": "Global statistics"},
+                    {"name": "/inspect", "usage": "<user>", "desc": "Inspect user record"},
                 ],
             },
         }
 
-    # ───────────────────────── Helper context & attribute mutator ─────────────────────────
-    @asynccontextmanager
-    async def _get_user_context(
-        self, interaction: discord.Interaction, user: discord.User
-    ):
-        if not await self.bot.is_owner(interaction.user):
-            await interaction.response.send_message(
-                "❌ You are not the bot owner.", ephemeral=True
-            )
-            yield None, None
-            return
-        await interaction.response.defer(ephemeral=True)
-        try:
-            async with get_session() as session:
-                user_obj = await session.get(User, str(user.id))
-                if not user_obj:
-                    await interaction.followup.send(
-                        f"❌ User {user.mention} has not registered."
-                    )
-                    yield None, None
-                else:
-                    yield session, user_obj
-                    await session.commit()
-        except Exception as exc:
-            logger.error("User context error:", exc_info=True)
-            if interaction.response.is_done():
-                await interaction.followup.send(f"❌ Unexpected error: {exc}")
-            yield None, None
+    # ── stats gatherer (cached) ────────────────────────────────────────────
+    async def _gather_stats(self):
+        async with get_session() as s:
+            data = {
+                "total_users":            (await s.scalar(select(func.count(User.user_id)))) or 0,
+                "total_faylen":           (await s.scalar(select(func.sum(User.faylen)))) or 0,
+                "total_virelite":         (await s.scalar(select(func.sum(User.virelite)))) or 0,
+                "total_fayrites":         (await s.scalar(select(func.sum(User.fayrites)))) or 0,
+                "total_ethryl":           (await s.scalar(select(func.sum(User.ethryl)))) or 0,
+                "total_fayrite_shards":   (await s.scalar(select(func.sum(User.fayrite_shards)))) or 0,
+                "total_esprits_owned":    (await s.scalar(select(func.count(UserEsprit.id)))) or 0,
+                "unique_esprits_owned":   (await s.scalar(select(func.count(func.distinct(UserEsprit.esprit_data_id))))) or 0,
+                "total_esprit_types":     (await s.scalar(select(func.count(EspritData.esprit_id)))) or 1,
+            }
+            today = datetime.utcnow().date()
+            week  = datetime.utcnow() - timedelta(days=7)
+            data["users_claimed_today"] = await s.scalar(
+                select(func.count(User.user_id)).where(
+                    User.last_daily_claim.is_not(None),
+                    func.date(User.last_daily_claim) == today,
+                )
+            ) or 0
+            data["active_users"] = await s.scalar(
+                select(func.count(User.user_id)).where(User.last_daily_claim >= week)
+            ) or 0
 
-    async def _adjust_user_attribute(
+        data["guild_count"]  = len(self.bot.guilds)
+        data["member_count"] = sum(g.member_count or 0 for g in self.bot.guilds)
+        data["uptime"]       = discord.utils.format_dt(getattr(self.bot, "start_time", discord.utils.utcnow()), "R")
+        return data
+
+    # ─╢ shared attribute mutator ╟──────────────────────────────────────────
+    async def _adjust(
         self,
         interaction: discord.Interaction,
         user: discord.User,
-        attribute: str,
-        operation: Literal["give", "remove", "set"],
+        attr: str,
+        op: Literal["give", "remove", "set"],
         amount: int,
     ):
-        if attribute not in self.MODIFIABLE_ATTRIBUTES:
-            logger.error(f"Invalid attribute '{attribute}'")
-            return await interaction.response.send_message(
-                "Internal error.", ephemeral=True
-            )
-        if amount < 0 and operation != "set":
-            return await interaction.response.send_message(
-                "❌ Amount must be non-negative.", ephemeral=True
-            )
-        async with self._get_user_context(interaction, user) as (session, user_obj):
-            if not session:
-                return
-            current_val = getattr(user_obj, attribute)
-            verb = {"give": "Gave", "remove": "Removed", "set": "Set"}[operation]
+        if attr not in self.MODIFIABLE:
+            return await interaction.followup.send("❌ Invalid attribute.")
 
-            if operation == "give":
-                new_val = current_val + amount
-            elif operation == "remove":
-                new_val = max(0, current_val - amount)
-            else:
-                new_val = amount
+        async with get_session() as s:
+            u = await s.get(User, str(user.id))
+            if not u:
+                return await interaction.followup.send("❌ Target user has no data.")
+            old = getattr(u, attr)
+            if op == "give":
+                new = old + amount
+            elif op == "remove":
+                new = max(0, old - amount)
+            else:  # set
+                new = amount
+            setattr(u, attr, new)
+            await s.commit()
 
-            setattr(user_obj, attribute, new_val)
-            session.add(user_obj)
-            
-            if attribute == "xp" and operation in ["give", "set"]:
-                level_result = user_obj.check_and_apply_level_ups()
-                if level_result["levels_gained"] > 0:
-                    session.add(user_obj)  # Save level changes
-                    # Create level up embed
-                    embed = discord.Embed(
-                        title="🎉 LEVEL UP!",
-                        description=f"Level {level_result['old_level']} → {level_result['new_level']}",
-                        color=discord.Color.gold()
-                    )
-                    await interaction.followup.send(embed=embed)
-            
-            display = attribute.replace("_", " ").title()
-            if operation == "set":
-                msg = f"✅ {verb} {user.mention}'s {display} to **{new_val:,}**."
-            else:
-                msg = (
-                    f"✅ {verb} **{amount:,}** {display}. "
-                    f"New balance **{new_val:,}**."
-                )
-            await interaction.followup.send(msg)
-            logger.info(
-                "%s %s %s for user %s (%s)",
-                verb,
-                amount,
-                attribute,
-                user.id,
-                interaction.user,
-            )
+        verb = {"give": "Gave", "remove": "Removed", "set": "Set"}[op]
+        await interaction.followup.send(f"✅ {verb} {attr.replace('_',' ').title()}: **{old:,} → {new:,}**")
 
-    # ─────────────────────────────── Command groups ───────────────────────────────
-    admin_group = app_commands.Group(name="admin", description="Core admin commands.")
-    give_group = app_commands.Group(name="give", description="Give currency/items")
-    remove_group = app_commands.Group(name="remove", description="Remove currency/items")
-    set_group = app_commands.Group(name="set", description="Set exact values")
-    reset_group = app_commands.Group(name="reset", description="Reset data/cooldowns")
-    list_group = app_commands.Group(name="list", description="List data from DB")
-    reload_group = app_commands.Group(name="reload", description="Reload bot components")
-
-    # ────────────────────────── utility / help / stats ────────────────────────────
+    # ───────────────────────── HELP / STATS / INSPECT ──────────────────────
     @admin_group.command(name="help", description="Interactive admin manual")
-    async def help(self, interaction: discord.Interaction):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ You are not the bot owner.", ephemeral=True
-            )
-        embed = discord.Embed(
-            title="🛠️ Faye Admin Command Center",
-            description="Select a category from the dropdown to view commands & usage.",
-            color=discord.Color.orange(),
-        )
-        await interaction.response.send_message(
-            embed=embed,
-            view=AdminHelpView(interaction.user.id, self.admin_commands_data),
-            ephemeral=True,
+    @owner_only()
+    async def admin_help(self, interaction: discord.Interaction):
+        await interaction.followup.send(
+            embed=discord.Embed(
+                title="🛠️ Admin Command Center",
+                description="Select a category from the dropdown below.",
+                color=discord.Color.orange(),
+            ),
+            view=AdminHelpView(interaction.user.id, self.help_meta),
         )
 
-    @admin_group.command(name="stats", description="Display global bot statistics")
-    async def global_stats(self, interaction: discord.Interaction):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
-        stats: dict = {}
-        try:
-            async with get_session() as session:
-                # numeric aggregates
-                stats["total_users"] = (
-                    await session.execute(select(func.count(User.user_id)))
-                ).scalar_one() or 0
-                stats["avg_level"] = (
-                    await session.execute(select(func.avg(User.level)))
-                ).scalar_one() or 0
-                stats["total_xp"] = (
-                    await session.execute(select(func.sum(User.xp)))
-                ).scalar_one() or 0
-                # top user
-                max_user_result = (
-                    await session.execute(
-                        select(User).order_by(User.level.desc()).limit(1)
-                    )
-                ).scalar_one_or_none()
-                if max_user_result:
-                    stats["max_level"] = max_user_result.level
-                    top_user = self.bot.get_user(int(max_user_result.user_id))
-                    stats["top_player_mention"] = (
-                        top_user.mention if top_user else f"ID {max_user_result.user_id}"
-                    )
-                else:
-                    stats["max_level"], stats["top_player_mention"] = 0, "None"
-                # currency sums
-                stats["total_faylen"] = (
-                    await session.execute(select(func.sum(User.faylen)))
-                ).scalar_one() or 0
-                stats["total_virelite"] = (
-                    await session.execute(select(func.sum(User.virelite)))
-                ).scalar_one() or 0
-                stats["total_fayrites"] = (
-                    await session.execute(select(func.sum(User.fayrites)))
-                ).scalar_one() or 0
-                stats["total_ethryl"] = (
-                    await session.execute(select(func.sum(User.ethryl)))
-                ).scalar_one() or 0
-                stats["total_fayrite_shards"] = (
-                    await session.execute(select(func.sum(User.fayrite_shards)))
-                ).scalar_one() or 0
-                stats["total_remna"] = (
-                    await session.execute(select(func.sum(User.remna)))
-                ).scalar_one() or 0
-                stats["total_loot_chests"] = (
-                    await session.execute(select(func.sum(User.loot_chests)))
-                ).scalar_one() or 0
-                # esprit counts
-                stats["total_esprits_owned"] = (
-                    await session.execute(select(func.count(UserEsprit.id)))
-                ).scalar_one() or 0
-                stats["unique_esprits_owned"] = (
-                    await session.execute(
-                        select(func.count(func.distinct(UserEsprit.esprit_data_id)))
-                    )
-                ).scalar_one() or 0
-                stats["total_esprit_types"] = (
-                    await session.execute(select(func.count(EspritData.esprit_id)))
-                ).scalar_one() or 1
-                stats["collection_rate"] = (
-                    stats["unique_esprits_owned"]
-                    / max(1, stats["total_esprit_types"])
-                    * 100
-                )
-                # most popular esprit
-                popular_result = (
-                    await session.execute(
-                        select(
-                            UserEsprit.esprit_data_id,
-                            func.count(UserEsprit.id).label("cnt"),
-                        )
-                        .group_by(UserEsprit.esprit_data_id)
-                        .order_by(func.count(UserEsprit.id).desc())
-                        .limit(1)
-                    )
-                ).first()
-                if popular_result:
-                    esprit_data = await session.get(EspritData, popular_result[0])
-                    stats[
-                        "popular_esprit_name"
-                    ] = f"{esprit_data.name} ({popular_result[1]} owned)" if esprit_data else "Unknown"
-                else:
-                    stats["popular_esprit_name"] = "None yet"
-                # rarity dist
-                stats["rarity_distribution"] = dict(
-                    (
-                        await session.execute(
-                            select(
-                                EspritData.rarity,
-                                func.count(UserEsprit.id),
-                            )
-                            .join(
-                                UserEsprit,
-                                UserEsprit.esprit_data_id == EspritData.esprit_id,
-                            )
-                            .group_by(EspritData.rarity)
-                        )
-                    ).all()
-                )
-                # activity
-                today_cutoff = datetime.utcnow().date()
-                week_cutoff = datetime.utcnow() - timedelta(days=7)
-                stats["users_claimed_today"] = (
-                    await session.execute(
-                        select(func.count(User.user_id))
-                        .where(User.last_daily_claim.is_not(None))
-                        .where(func.date(User.last_daily_claim) == today_cutoff)
-                    )
-                ).scalar_one() or 0
-                stats["active_users"] = (
-                    await session.execute(
-                        select(func.count(User.user_id)).where(
-                            User.last_daily_claim >= week_cutoff
-                        )
-                    )
-                ).scalar_one() or 0
-            stats["guild_count"] = len(self.bot.guilds)
-            stats["member_count"] = sum(
-                g.member_count for g in self.bot.guilds if g.member_count
-            )
-            stats["uptime"] = discord.utils.format_dt(
-                getattr(self.bot, "start_time", discord.utils.utcnow()), "R"
-            )
-            view = StatsView(stats, interaction.user.id)
-            await interaction.followup.send(embed=view.get_embed(), view=view)
-        except Exception as exc:
-            logger.error("Error generating stats:", exc_info=True)
-            await interaction.followup.send(f"❌ Error: {exc}", ephemeral=True)
+    @admin_group.command(name="stats", description="Global bot statistics")
+    @owner_only(ephemeral=False)
+    async def admin_stats(self, interaction: discord.Interaction):
+        key = "admin:stats"
+        stats = await self.cache.get(key)
+        if stats is None:
+            stats = await self._gather_stats()
+            await self.cache.set(key, stats)
+        await interaction.followup.send(
+            embed=StatsView(stats, interaction.user.id, self._gather_stats)._embed(),
+            view=StatsView(stats, interaction.user.id, self._gather_stats),
+        )
 
-    # ──────────────────────────────── inspect command ────────────────────────────────
-    @app_commands.command(
-        name="inspect", description="Inspect a user's complete DB record"
-    )
+    @admin_group.command(name="inspect", description="Inspect a user’s record")
+    @owner_only()
     async def inspect(self, interaction: discord.Interaction, user: discord.User):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
-        async with get_session() as session:
-            user_obj = await session.get(User, str(user.id))
-            if not user_obj:
-                return await interaction.followup.send(f"❌ {user.mention} has no data.")
-            esprit_count = (
-                await session.execute(
-                    select(func.count(UserEsprit.id)).where(
-                        UserEsprit.owner_id == str(user.id)
-                    )
-                )
-            ).scalar_one()
-
-        embed = discord.Embed(
-            title=f"🔍 Inspect: {user.display_name}", color=discord.Color.gold()
+        async with get_session() as s:
+            u = await s.get(User, str(user.id))
+            if not u:
+                return await interaction.followup.send("❌ User not registered.")
+            esprit_count = await s.scalar(
+                select(func.count(UserEsprit.id)).where(UserEsprit.owner_id == str(user.id))
+            ) or 0
+        embed = (
+            discord.Embed(title=f"🔍 Inspect: {user.display_name}", color=discord.Color.gold())
+            .add_field(name="Level / XP", value=f"{u.level} / {u.xp:,}", inline=True)
+            .add_field(name="Esprits", value=f"{esprit_count:,}", inline=True)
+            .add_field(name="Faylen", value=f"{u.faylen:,}", inline=True)
+            .add_field(name="Virelite", value=f"{u.virelite:,}", inline=True)
+            .set_footer(text=f"User ID: {u.user_id}")
         )
-        embed.set_thumbnail(url=user.display_avatar.url)
-
-        embed.add_field(name="User ID", value=f"`{user_obj.user_id}`", inline=False)
-        embed.add_field(
-            name="Level | XP",
-            value=f"{user_obj.level} | {user_obj.xp:,}",
-            inline=True,
-        )
-        embed.add_field(name="Esprits", value=f"{esprit_count:,}", inline=True)
-
-        embed.add_field(
-            name="Faylen | Virelite",
-            value=f"{user_obj.faylen:,} | {user_obj.virelite:,}",
-            inline=True,
-        )
-        embed.add_field(name="Fayrites", value=f"{user_obj.fayrites:,}", inline=True)
-        embed.add_field(
-            name="Fayrite Shards", value=f"{user_obj.fayrite_shards:,}", inline=True
-        )
-        embed.add_field(name="Ethryl", value=f"{user_obj.ethryl:,}", inline=True)
-        embed.add_field(name="Remna", value=f"{user_obj.remna:,}", inline=True)
-        embed.add_field(name="Loot Chests", value=f"{user_obj.loot_chests:,}", inline=True)
-
-        embed.add_field(
-            name="Last Daily",
-            value=discord.utils.format_dt(user_obj.last_daily_claim, "R")
-            if user_obj.last_daily_claim
-            else "Never",
-            inline=False,
-        )
-        embed.add_field(
-            name="Created At",
-            value=discord.utils.format_dt(user_obj.created_at, "F"),
-            inline=False,
-        )
-
         await interaction.followup.send(embed=embed)
 
-    # ───────────────────────────── Currency-manip commands ─────────────────────────────
-    # (Give)
-    @give_group.command(name="faylen", description="Give faylen")
-    async def give_faylen(
-        self, i: discord.Interaction, u: discord.User, a: int
-    ):  # noqa: D401
-        await self._adjust_user_attribute(i, u, "faylen", "give", a)
+    # ───────────────────────────── GIVE commands ───────────────────────────
+    async def _currency_cmd(self, interaction: discord.Interaction, user: discord.User, amount: int, attr: str, op: str):
+        if amount < 0 and op != "set":
+            return await interaction.followup.send("❌ Amount must be positive.")
+        await self._adjust(interaction, user, attr, op, amount)
 
-    @give_group.command(name="virelite", description="Give virelite")
-    async def give_virelite(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "virelite", "give", a)
+    # Dynamically create commands for each attribute & operation
+    def _register_money_cmd(group: app_commands.Group, name: str, attr: str, op: str):
+        async def _func(self, interaction: discord.Interaction, user: discord.User, amount: int):
+            await self._currency_cmd(interaction, user, amount, attr, op)
 
-    @give_group.command(name="fayrites", description="Give fayrites")
-    async def give_fayrites(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "fayrites", "give", a)
+        _func.__name__ = f"{op}_{attr}"
+        decorator = owner_only()
+        group.command(name=name, description=f"{op.title()} {attr.replace('_',' ')}")(decorator(_func))
 
-    @give_group.command(name="ethryl", description="Give ethryl")
-    async def give_ethryl(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "ethryl", "give", a)
+    for _attr in MODIFIABLE:
+        _register_money_cmd(give_group,   _attr, _attr, "give")
+        _register_money_cmd(remove_group, _attr, _attr, "remove")
+        _register_money_cmd(set_group,    _attr, _attr, "set")
 
-    @give_group.command(name="fayrite_shards", description="Give fayrite_shards")
-    async def give_fayrite_shards(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "fayrite_shards", "give", a)
-
-    @give_group.command(name="remna", description="Give remna")
-    async def give_remna(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "remna", "give", a)
-
-    @give_group.command(name="xp", description="Give xp")
-    async def give_xp(self, interaction: discord.Interaction, user: discord.User, amount: int):
-        await self._adjust_user_attribute(interaction, user, "xp", "give", amount)
-
-    @give_group.command(name="loot_chests", description="Give loot_chests")
-    async def give_loot_chests(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "loot_chests", "give", a)
-
-    @give_group.command(name="esprit_xp", description="Give XP to specific Esprit")
-    async def give_esprit_xp(self, inter: discord.Interaction, user: discord.User, esprit_id: str, xp: int):
-        await inter.response.defer(ephemeral=True)
-        
-        try:
-            async with get_session() as s:
-                # Get the esprit
-                stmt = (
-                    select(UserEsprit)
-                    .where(UserEsprit.id == esprit_id)
-                    .options(selectinload(UserEsprit.esprit_data))
-                )
-                esprit = (await s.execute(stmt)).scalar_one_or_none()
-                
-                if not esprit:
-                    return await inter.followup.send("❌ Esprit not found!")
-                
-                if esprit.owner_id != str(user.id):
-                    return await inter.followup.send("❌ That Esprit doesn't belong to the specified user!")
-                
-                # Add XP
-                old_xp = esprit.current_xp
-                esprit.current_xp += xp
-                
-                await s.commit()
-                
-                await inter.followup.send(
-                    f"✅ Gave {xp:,} XP to {esprit.esprit_data.name}. "
-                    f"Total XP: {old_xp:,} → {esprit.current_xp:,}"
-                )
-                
-        except Exception as e:
-            logger.error(f"Error giving esprit XP: {e}")
-            await inter.followup.send("❌ Error giving esprit XP.")
-
-    @give_group.command(
-        name="esprit", description="Give a specific Esprit to a user by name"
-    )
-    async def give_esprit(
-        self, interaction: discord.Interaction, user: discord.User, esprit_name: str
-    ):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
-        async with get_session() as session:
-            if not await session.get(User, str(user.id)):
-                return await interaction.followup.send(
-                    f"❌ {user.mention} must `/start` first."
-                )
-            esprit_data = (
-                await session.execute(
-                    select(EspritData).where(
-                        func.lower(EspritData.name) == esprit_name.lower()
-                    )
-                )
-            ).scalars().first()
-            if not esprit_data:
-                return await interaction.followup.send(f"❌ No Esprit named `{esprit_name}`.")
-            user_esprit = UserEsprit(
-                owner_id=str(user.id),
-                esprit_data_id=esprit_data.esprit_id,
-                current_level=1,
-                current_xp=0,
-                current_hp=esprit_data.base_hp,
-            )
-            session.add(user_esprit)
-            await session.commit()
-            await session.refresh(user_esprit)
-            await interaction.followup.send(
-                f"✅ Gave **{esprit_data.name}** (ID `{user_esprit.id}`) to {user.mention}."
-            )
-
-    # (Remove)
-    @remove_group.command(name="faylen", description="Remove faylen")
-    async def remove_faylen(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "faylen", "remove", a)
-
-    @remove_group.command(name="virelite", description="Remove virelite")
-    async def remove_virelite(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "virelite", "remove", a)
-
-    @remove_group.command(name="fayrites", description="Remove fayrites")
-    async def remove_fayrites(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "fayrites", "remove", a)
-
-    @remove_group.command(name="ethryl", description="Remove ethryl")
-    async def remove_ethryl(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "ethryl", "remove", a)
-
-    @remove_group.command(name="fayrite_shards", description="Remove fayrite_shards")
-    async def remove_fayrite_shards(
-        self, i: discord.Interaction, u: discord.User, a: int
-    ):
-        await self._adjust_user_attribute(i, u, "fayrite_shards", "remove", a)
-
-    @remove_group.command(name="remna", description="Remove remna")
-    async def remove_remna(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "remna", "remove", a)
-
-    @remove_group.command(name="xp", description="Remove xp")
-    async def remove_xp(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "xp", "remove", a)
-
-    @remove_group.command(name="loot_chests", description="Remove loot_chests")
-    async def remove_loot_chests(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "loot_chests", "remove", a)
-
-    @remove_group.command(name="esprit", description="Remove a specific Esprit by its ID")
-    async def remove_esprit(
-        self, interaction: discord.Interaction, user: discord.User, esprit_id: str
-    ):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
-        async with get_session() as session:
-            user_esprit = (
-                await session.execute(
-                    select(UserEsprit).where(UserEsprit.id == esprit_id)
-                )
-            ).scalar_one_or_none()
-            if not user_esprit:
-                return await interaction.followup.send(f"❌ No Esprit with ID `{esprit_id}`.")
-            if user_esprit.owner_id != str(user.id):
-                return await interaction.followup.send(
-                    "❌ That Esprit does not belong to that user."
-                )
-            await session.delete(user_esprit)
-            await session.commit()
-            await interaction.followup.send(
-                f"✅ Removed Esprit ID `{esprit_id}` from {user.mention}."
-            )
-
-    # (Set)
-    @set_group.command(name="faylen", description="Set faylen")
-    async def set_faylen(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "faylen", "set", a)
-
-    @set_group.command(name="virelite", description="Set virelite")
-    async def set_virelite(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "virelite", "set", a)
-
-    @set_group.command(name="fayrites", description="Set fayrites")
-    async def set_fayrites(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "fayrites", "set", a)
-
-    @set_group.command(name="ethryl", description="Set ethryl")
-    async def set_ethryl(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "ethryl", "set", a)
-
-    @set_group.command(name="fayrite_shards", description="Set fayrite_shards")
-    async def set_fayrite_shards(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "fayrite_shards", "set", a)
-
-    @set_group.command(name="remna", description="Set remna")
-    async def set_remna(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "remna", "set", a)
-
-    @set_group.command(name="xp", description="Set xp")
-    async def set_xp(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "xp", "set", a)
-
-    @set_group.command(name="loot_chests", description="Set loot_chests")
-    async def set_loot_chests(self, i: discord.Interaction, u: discord.User, a: int):
-        await self._adjust_user_attribute(i, u, "loot_chests", "set", a)
-
-    @set_group.command(name="level", description="Set a user's level (resets XP)")
-    async def set_level(
-        self, interaction: discord.Interaction, user: discord.User, level: int
-    ):
-        async with self._get_user_context(interaction, user) as (
-            session,
-            user_obj,
-        ):
-            if not session:
-                return
-            if level <= 0:
-                return await interaction.followup.send("❌ Level must be positive.")
-            user_obj.level, user_obj.xp = level, 0
-            session.add(user_obj)
-            await interaction.followup.send(
-                f"✅ Set {user.mention}'s level to **{level}** and reset XP."
-            )
-
-    @set_group.command(
-    name="esprit_level", description="Set an Esprit instance's level (respects level caps)"
-    )
-    async def set_esprit_level(self, inter: discord.Interaction, user: discord.User, esprit_id: str, level: int):
-        await inter.response.defer(ephemeral=True)
-        
-        try:
-            async with get_session() as s:
-                # Get the esprit with owner relationship
-                stmt = (
-                    select(UserEsprit)
-                    .where(UserEsprit.id == esprit_id)
-                    .options(selectinload(UserEsprit.esprit_data), selectinload(UserEsprit.owner))
-                )
-                esprit = (await s.execute(stmt)).scalar_one_or_none()
-                
-                if not esprit:
-                    return await inter.followup.send("❌ Esprit not found!")
-                
-                if esprit.owner_id != str(user.id):
-                    return await inter.followup.send("❌ That Esprit doesn't belong to the specified user!")
-                
-                # Check level cap
-                current_cap = esprit.get_current_level_cap()
-                if level > current_cap:
-                    return await inter.followup.send(
-                        f"❌ Cannot set level {level}. Current cap is {current_cap}.\n"
-                        f"Player level: {esprit.owner.level} | Limit breaks: {esprit.limit_breaks_performed}\n"
-                        f"Use limit breaks or level up the player to increase cap!"
-                    )
-                
-                if level < 1:
-                    return await inter.followup.send("❌ Level must be at least 1!")
-                
-                # Set level and reset XP
-                old_level = esprit.current_level
-                esprit.current_level = level
-                esprit.current_xp = 0  # Reset XP when setting level directly
-                esprit.current_hp = esprit.calculate_stat('hp')  # Update HP to new level
-                
-                await s.commit()
-                
-                await inter.followup.send(
-                    f"✅ Set {esprit.esprit_data.name} to level {level} (was {old_level}). "
-                    f"XP reset to 0. Current cap: {current_cap}"
-                )
-                
-        except Exception as e:
-            logger.error(f"Error setting esprit level: {e}")
-            await inter.followup.send("❌ Error setting esprit level.")
-
-    # ──────────────────────────── reset commands ───────────────────────────────
-    @reset_group.command(
-        name="user_data", description="Wipe all data for a *test* user"
-    )
-    async def reset_user_data(
-        self, interaction: discord.Interaction, user: discord.User, confirmation: str
-    ):
-        game_settings = self.bot.config_manager.get_config(
-            "data/config/game_settings"
-        ) or {}
-        allowed = [str(uid) for uid in game_settings.get("developer", {}).get("test_user_ids", [])]
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        if str(user.id) not in allowed:
-            return await interaction.response.send_message(
-                f"❌ **SAFETY:** User {user.mention} not in `test_user_ids` allowlist.",
-                ephemeral=True,
-            )
-        if confirmation != user.name:
-            return await interaction.response.send_message(
-                f"❌ Confirmation failed. Type `{user.name}` exactly.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
-        async with get_session() as session:
-            user_obj = await session.get(User, str(user.id))
-            if not user_obj:
-                return await interaction.followup.send(f"❌ {user.mention} has no data.")
-            await session.delete(user_obj)
-            await session.commit()
-            logger.warning(
-                "All data wiped for test user %s (%s) by %s",
-                user,
-                user.id,
-                interaction.user,
-            )
-            await interaction.followup.send(
-                f"✅ Wiped all data for {user.mention}."
-            )
-
-    @reset_group.command(name="daily", description="Reset a user's /daily timer")
+    # ───────────────────────────── RESET commands ──────────────────────────
+    @reset_group.command(name="daily", description="Reset a user's /daily cooldown")
+    @owner_only()
     async def reset_daily(self, interaction: discord.Interaction, user: discord.User):
-        async with self._get_user_context(interaction, user) as (
-            session,
-            user_obj,
-        ):
-            if not session:
-                return
-            user_obj.last_daily_claim = None
-            session.add(user_obj)
-            await interaction.followup.send(f"✅ Reset `/daily` for {user.mention}.")
+        async with get_session() as s:
+            u = await s.get(User, str(user.id))
+            if not u:
+                return await interaction.followup.send("❌ User not registered.")
+            u.last_daily_claim = None
+            await s.commit()
+        await interaction.followup.send("✅ Daily timer reset.")
 
-    # ───────────────────────────── list commands ───────────────────────────────
-    @list_group.command(name="users", description="List top 25 users by level")
+    # ───────────────────────────── LIST commands ───────────────────────────
+    @list_group.command(name="users", description="Top 25 users by level")
+    @owner_only()
     async def list_users(self, interaction: discord.Interaction):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
-        async with get_session() as session:
-            users = (
-                await session.execute(
+        async with get_session() as s:
+            rows = (
+                await s.execute(
                     select(User).order_by(User.level.desc(), User.xp.desc()).limit(25)
                 )
             ).scalars().all()
-        if not users:
-            return await interaction.followup.send("❌ No users found.")
-        embed = discord.Embed(
-            title="👥 Top 25 Users by Level", color=discord.Color.green()
-        )
-        embed.description = "\n".join(
-            f"`{idx:2}.` **{self.bot.get_user(int(u.user_id)) or f'ID {u.user_id}'}** "
-            f"— Lvl **{u.level}** ({u.xp:,} XP)"
-            for idx, u in enumerate(users, 1)
-        )
+        if not rows:
+            return await interaction.followup.send("No users.")
+        embed = discord.Embed(title="🏆 Top Users", color=discord.Color.green())
+        for idx, u in enumerate(rows, 1):
+            name = self.bot.get_user(int(u.user_id)) or f"ID {u.user_id}"
+            embed.add_field(name=f"{idx}. {name}", value=f"Lvl {u.level} • XP {u.xp:,}", inline=False)
         await interaction.followup.send(embed=embed)
 
-    @list_group.command(name="esprits", description="List all Esprits owned by a user")
+    @list_group.command(name="esprits", description="List a user's esprits")
+    @owner_only()
     async def list_esprits(self, interaction: discord.Interaction, user: discord.User):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
-        try:
-            async with get_session() as session:
-                results = (
-                    await session.execute(
-                        select(UserEsprit, EspritData)
-                        .join(EspritData, UserEsprit.esprit_data_id == EspritData.esprit_id)
-                        .where(UserEsprit.owner_id == str(user.id))
-                        .order_by(EspritData.rarity.desc(), UserEsprit.current_level.desc())
-                    )
-                ).all()
-            if not results:
-                return await interaction.followup.send(
-                    f"❌ {user.mention} owns no Esprits."
+        async with get_session() as s:
+            rows = (
+                await s.execute(
+                    select(UserEsprit, EspritData)
+                    .join(EspritData, UserEsprit.esprit_data_id == EspritData.esprit_id)
+                    .where(UserEsprit.owner_id == str(user.id))
+                    .options(selectinload(UserEsprit.esprit_data))
+                    .order_by(EspritData.rarity.desc(), UserEsprit.current_level.desc())
                 )
-            view = EspritPaginatorView(interaction.user.id, user.display_name, results)
-            await interaction.followup.send(embed=view._page_embed(), view=view)
-        except Exception:
-            logger.error("List esprits failed:", exc_info=True)
-            await interaction.followup.send("❌ Failed to fetch esprits.")
+            ).all()
+        if not rows:
+            return await interaction.followup.send("No esprits.")
+        view = EspritPaginatorView(interaction.user.id, user.display_name, rows)
+        await interaction.followup.send(embed=view._embed(), view=view)
 
-    # ───────────────────────────── reload commands ─────────────────────────────
-    @reload_group.command(name="config", description="Reload all configuration files")
+    # ───────────────────────────── RELOAD commands ─────────────────────────
+    @reload_group.command(name="config", description="Reload all config files")
+    @owner_only()
     async def reload_config(self, interaction: discord.Interaction):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
         try:
             self.bot.config_manager.reload()
-            logger.info("Config reloaded by %s", interaction.user)
-            await interaction.response.send_message(
-                "✅ Configuration reloaded.", ephemeral=True
-            )
+            await interaction.followup.send("✅ Configuration reloaded.")
         except Exception as exc:
             logger.error("Config reload failed", exc_info=True)
-            await interaction.response.send_message(
-                f"❌ Reload failed: {exc}", ephemeral=True
-            )
+            await interaction.followup.send(f"❌ Failed: {exc}")
 
-    @reload_group.command(name="cog", description="Reload a specific cog")
-    @app_commands.describe(cog_name="Module path, e.g. src.cogs.economy_cog")
+    @reload_group.command(name="cog", description="Reload a single cog")
+    @app_commands.autocomplete(cog_name=cog_autocomplete)
+    @owner_only()
     async def reload_cog(self, interaction: discord.Interaction, cog_name: str):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
         try:
             await self.bot.reload_extension(cog_name)
-            logger.info("Cog '%s' reloaded by %s", cog_name, interaction.user)
             await interaction.followup.send(f"✅ Reloaded `{cog_name}`.")
         except Exception:
             await interaction.followup.send(
-                f"❌ Error reloading `{cog_name}`:\n```py\n{traceback.format_exc()[:1900]}\n```"
+                f"❌ Error reloading `{cog_name}`:\n```py\n{traceback.format_exc()[:1900]}```"
             )
 
-    @reload_group.command(name="esprits", description="Reload Esprit data from JSON")
-    async def reload_esprits(
-        self, interaction: discord.Interaction, force: bool = False
-    ):
-        if not await self.bot.is_owner(interaction.user):
-            return await interaction.response.send_message(
-                "❌ Owner only.", ephemeral=True
-            )
-        await interaction.response.defer(ephemeral=True)
+    @reload_group.command(name="esprits", description="Reload esprit data from JSON")
+    @owner_only()
+    async def reload_esprits(self, interaction: discord.Interaction, force: bool = False):
         try:
-            from src.database.data_loader import EspritDataLoader
-
             loader = EspritDataLoader()
             count = await loader.load_esprits(force_reload=force)
-            embed = discord.Embed(
-                title="✅ Esprit Data Reloaded",
-                description=f"Successfully loaded **{count:,}** Esprits from JSON.",
-                color=discord.Color.green(),
-            )
-            embed.add_field(
-                name="Mode",
-                value="Force reload (updated existing)" if force else "Normal (new entries only)",
-                inline=False,
-            )
-            missing = await loader.verify_data_integrity()
-            if missing:
-                embed.add_field(
-                    name="⚠️ Warning",
-                    value=f"{len(missing)} Esprits present in JSON but missing in DB",
-                    inline=False,
-                )
-            logger.info(
-                "Esprits reloaded by %s. Count=%d Force=%s",
-                interaction.user,
-                count,
-                force,
-            )
-            await interaction.followup.send(embed=embed)
+            await loader.verify_data_integrity()
+            await interaction.followup.send(f"✅ Loaded **{count:,}** esprit entries.")
         except FileNotFoundError:
-            await interaction.followup.send(
-                "❌ `data/config/esprits.json` not found!", ephemeral=True
-            )
+            await interaction.followup.send("❌ esprits.json not found.")
         except Exception as exc:
-            logger.error("Esprits reload error", exc_info=True)
-            await interaction.followup.send(f"❌ Reload failed: {exc}", ephemeral=True)
+            await interaction.followup.send(f"❌ Failed: {exc}")
 
-
+# ───────────────────────────── cog setup ────────────────────────────────────
 async def setup(bot: commands.Bot):
     await bot.add_cog(AdminCog(bot))
     logger.info("✅ AdminCog loaded")

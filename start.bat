@@ -10,3 +10,4 @@ alembic upgrade head
 
 echo [FAYE] Starting Bot...
 python run.py
+
