@@ -50,7 +50,7 @@ class UtilityCog(commands.Cog, name="Utility"):
                 if not user:
                     return await interaction.followup.send("❌ You need to `/start` first.")
 
-                config = self.bot.config_manager.get_config("data/config/game_settings") or {}
+                config = self.bot.config_manager.get_config("data/config/progression_settings") or {}
                 progression_cfg = config.get("progression", {})
                 player_max_level = progression_cfg.get("player_max_level", 100)
 
@@ -122,7 +122,7 @@ class UtilityCog(commands.Cog, name="Utility"):
                 if not user:
                     return await interaction.followup.send("❌ You need to `/start` first.")
 
-                config = self.bot.config_manager.get_config("data/config/game_settings") or {}
+                config = self.bot.config_manager.get_config("data/config/progression_settings") or {}
                 progression_cfg = config.get("progression", {})
                 player_max_level = progression_cfg.get("player_max_level", 100)
 
@@ -156,7 +156,7 @@ class UtilityCog(commands.Cog, name="Utility"):
     async def botinfo(self, interaction: discord.Interaction):
         await interaction.response.defer()
         try:
-            config = self.bot.config_manager.get_config("data/config/game_settings") or {}
+            config = self.bot.config_manager.get_config("data/config/bot_settings") or {}
             bot_info = config.get("bot_info", {})
             version = bot_info.get("version", "N/A")
             developer = bot_info.get("developer_name", "Unknown")

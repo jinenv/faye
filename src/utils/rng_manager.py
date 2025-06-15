@@ -1,14 +1,35 @@
 # src/utils/rng_manager.py
 
 import random
-from typing import Dict, Optional
-
+from typing import Dict, Optional, Union, List
 
 class RNGManager:
     """
-    Provides a method to pick a weighted rarity.
-    Expects something like: {"Common": 0.5, "Uncommon": 0.25, …}
+    Provides methods for handling various types of randomization,
+    including weighted choices and dice rolls.
     """
+
+    @staticmethod
+    def get_random_in_range(value: Union[int, List[int]]) -> int:
+        """
+        Calculates a random integer from a given value.
+        - If value is an integer, it returns the integer itself.
+        - If value is a list of two integers [min, max], it returns a
+          random integer within that inclusive range.
+        
+        Args:
+            value: The value from the config, either a number or a [min, max] list.
+
+        Returns:
+            A calculated integer.
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, list) and len(value) == 2:
+            return random.randint(value[0], value[1])
+        
+        # Fallback for misconfigured values, returning 0
+        return 0
 
     @staticmethod
     def _normalize(choices: Dict[str, float]) -> Dict[str, float]:
@@ -33,7 +54,7 @@ class RNGManager:
             cumulative += weight
             if r <= cumulative:
                 return name
-        # Edge‐case rounding
+        # Edge-case rounding
         return next(reversed(norm), None)
 
     def get_random_rarity(

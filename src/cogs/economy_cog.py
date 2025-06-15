@@ -32,15 +32,14 @@ CURRENCY_ICONS = {
     "loot_chests": "🎁"
 }
 
-
 class EconomyCog(commands.Cog):
     """Handles player economy commands."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
-        self.DAILY_REWARDS = game_settings.get("daily_rewards", {})
-        self.cooldowns = game_settings.get("cooldowns", {})
-        economy_settings = game_settings.get("economy", {})
+        economy_settings = self.bot.config_manager.get_config("data/config/economy_settings") or {}
+        self.DAILY_REWARDS = economy_settings.get("daily_rewards", {})
+        self.cooldowns = economy_settings.get("cooldowns", {})
+        economy_settings = economy_settings.get("economy", {})
         self.SHARDS_PER_FAYRITE = economy_settings.get("shards_per_fayrite", 10)
         self.general_limiter = RateLimiter(3, 20)
         self.daily_limiter = RateLimiter(3, 600)

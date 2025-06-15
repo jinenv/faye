@@ -33,7 +33,7 @@ class EspritSummonPaginationView(discord.ui.View):
         self.pages = pages  # Each page: (embed, image_bytes, (user_esprit, esprit_data))
         self.author_id = author_id
         self.current_page = 0
-        self.message = None
+        self.message: Optional[discord.Message] = None
 
         # Navigation buttons
         self.prev_button = discord.ui.Button(emoji="◀️", style=discord.ButtonStyle.secondary)
@@ -44,22 +44,31 @@ class EspritSummonPaginationView(discord.ui.View):
         self.add_item(self.next_button)
 
         # Action buttons
-        self.lock_unlock_button = discord.ui.Button(label="Lock/Unlock", style=discord.ButtonStyle.secondary, row=1)
+        self.lock_unlock_button = discord.ui.Button(label="Lock/Unlock", emoji="🔒", style=discord.ButtonStyle.secondary, row=1)
         self.lock_unlock_button.callback = self.lock_unlock
-        self.add_item(self.lock_unlock_button)
-
-        self.stats_button = discord.ui.Button(label="Show All Stats", style=discord.ButtonStyle.primary, row=1)
+        
+        self.stats_button = discord.ui.Button(label="Show All Stats", emoji="🔎", style=discord.ButtonStyle.primary, row=1)
         self.stats_button.callback = self.show_all_stats
+        self.add_item(self.lock_unlock_button)
         self.add_item(self.stats_button)
 
         self.update_buttons()
 
     async def on_timeout(self):
-        # Remove lockout after timeout
         ACTIVE_SUMMON_VIEWS.discard(self.author_id)
+        for item in self.children:
+            item.disabled = True
+        if self.message:
+            try:
+                if self.message.channel.permissions_for(self.message.guild.me).send_messages:
+                     await self.message.edit(view=self)
+            except (discord.NotFound, discord.Forbidden):
+                pass
 
-    async def on_error(self, error: Exception, item, interaction: discord.Interaction) -> None:
-        logger.error(f"Summon View error: {error}")
+    async def on_error(self, interaction: discord.Interaction, error: Exception, item: discord.ui.Item) -> None:
+        logger.error(f"Error in Summon View (item: {item}): {error}", exc_info=True)
+        if not interaction.response.is_done():
+            await interaction.response.send_message("An error occurred with this button.", ephemeral=True)
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.user.id != self.author_id:
@@ -81,34 +90,90 @@ class EspritSummonPaginationView(discord.ui.View):
             self.current_page += 1
             await self.update_page(interaction)
 
-    async def update_page(self, interaction: discord.Interaction):
+    async def edit_original_message(self, interaction: discord.Interaction):
+        """A single, reliable method to edit the message this view is attached to."""
         self.update_buttons()
-        embed, image_bytes, (user_esprit, esprit_data) = self.pages[self.current_page]
-        # Live update lock emoji in title
+        embed, image_bytes, (user_esprit, _) = self.pages[self.current_page]
+        
         lock_emoji = "🔒" if user_esprit.locked else ""
-        embed.title = f"{lock_emoji} {esprit_data.name}"
+        clean_title = embed.title.lstrip('🔒 ')
+        embed.title = f"{lock_emoji} {clean_title}"
+        
         new_file = discord.File(io.BytesIO(image_bytes), filename=f"card_{self.current_page}.png")
-        await interaction.response.edit_message(embed=embed, attachments=[new_file], view=self)
+        
+        # Use interaction.message.edit() which is more stable for persistent views
+        if interaction.message:
+            await interaction.message.edit(embed=embed, attachments=[new_file], view=self)
+
+    async def lock_unlock(self, interaction: discord.Interaction):
+        await interaction.response.defer() # Acknowledge the click
+        user_esprit, _ = self.pages[self.current_page][2]
+        
+        async with get_session() as session:
+            db_esprit = await session.get(UserEsprit, user_esprit.id)
+            if not db_esprit:
+                await interaction.followup.send("❌ Esprit not found.", ephemeral=True)
+                return
+            
+            db_esprit.locked = not db_esprit.locked
+            await session.commit()
+            user_esprit.locked = db_esprit.locked
+        
+        await self.edit_original_message(interaction)
+
+    async def show_all_stats(self, interaction: discord.Interaction):
+        # This method is correct. It sends a single, new ephemeral message.
+        await interaction.response.defer(ephemeral=True)
+        user_esprit, esprit_data = self.pages[self.current_page][2]
+        combat_settings = self.bot.config_manager.get_config("data/config/combat_settings") or {}
+        stat_cfg = combat_settings.get("stat_calculation", {})
+        power_cfg = combat_settings.get("power_calculation", {})
+        
+        fields = []
+        stats_to_show = ["hp", "attack", "defense", "speed", "magic_resist", "crit_rate", "block_rate", "dodge_chance", "mana", "mana_regen"]
+        
+        for stat_name in stats_to_show:
+            is_base_stat = stat_name in ["crit_rate", "block_rate", "dodge_chance", "mana", "mana_regen"]
+            value = getattr(esprit_data, f"base_{stat_name}", 0) if is_base_stat else user_esprit.calculate_stat(stat_name, stat_cfg)
+            val_str = f"{value:.1%}" if isinstance(value, float) and value <= 1.0 else f"{value:,.0f}"
+            fields.append((stat_name.replace("_", " ").title(), val_str))
+
+        power_val = user_esprit.calculate_power(power_cfg, stat_cfg)
+        
+        embed = discord.Embed(title=f"🔎 {esprit_data.name} — Full Stats", color=discord.Color.purple())
+        embed.add_field(name="Power", value=f"💥 {power_val:,}", inline=True)
+        embed.add_field(name="Level", value=str(user_esprit.current_level), inline=True)
+        embed.add_field(name="Limit Breaks", value=str(user_esprit.limit_breaks_performed), inline=True)
+
+        for name, val_str in fields:
+            embed.add_field(name=name, value=val_str, inline=True)
+            
+        embed.set_footer(text=f"UID: {user_esprit.id[:6]}")
+        await interaction.followup.send(embed=embed)
 
     @classmethod
-    async def create(cls, bot, summons, game_settings, class_visuals, rarity_visuals, image_generator, author_id):
+    async def create(cls, bot, summons, combat_settings, class_visuals, rarities_data, image_generator, author_id):
         pages = []
         for idx, (user_esprit, esprit_data) in enumerate(summons):
             power = user_esprit.calculate_power(
-                game_settings.get("power_calculation", {}),
-                game_settings.get("stat_calculation", {})
+                combat_settings.get("power_calculation", {}),
+                combat_settings.get("stat_calculation", {})
             )
-            emoji = class_visuals.get(esprit_data.class_name, "❓")
             rarity = esprit_data.rarity
-            color_hex = (rarity_visuals.get(rarity) or {}).get("border_color", "#FFFFFF")
+            rarity_data = rarities_data.get(rarity, {})
+            emoji = rarity_data.get("emoji", "❓")
+            
+            color_hex = rarity_data.get("embed_color", "#FFFFFF")
             color = discord.Color(int(color_hex.lstrip("#"), 16))
+            
             uid = str(user_esprit.id)[:6]
             lock_emoji = "🔒" if user_esprit.locked else ""
+            
             embed = discord.Embed(
                 title=f"{lock_emoji} {esprit_data.name}",
                 description=(
                     f"**Class**: {esprit_data.class_name}\n"
-                    f"**Rarity**: {rarity}\n"
+                    f"**Rarity**: {rarity} {emoji}\n"
                     f"**Sigil Power**: 💥 {power:,}"
                 ),
                 color=color
@@ -122,63 +187,16 @@ class EspritSummonPaginationView(discord.ui.View):
             pages.append((embed, image_bytes, (user_esprit, esprit_data)))
         return cls(bot, pages, author_id)
 
-    async def lock_unlock(self, interaction: discord.Interaction):
-        user_esprit, esprit_data = self.pages[self.current_page][2]
-        async with get_session() as session:
-            db_esprit = await session.get(UserEsprit, user_esprit.id)
-            if not db_esprit:
-                await interaction.response.send_message("❌ Esprit not found.", ephemeral=True)
-                return
-            db_esprit.locked = not db_esprit.locked
-            await session.commit()
-            user_esprit.locked = db_esprit.locked  # sync to page
-            emoji = "🔒" if db_esprit.locked else "🔓"
-            await interaction.response.send_message(
-                f"{emoji} {esprit_data.name} is now **{'locked' if db_esprit.locked else 'unlocked'}**.",
-                ephemeral=True
-            )
-        self.pages[self.current_page] = (self.pages[self.current_page][0], self.pages[self.current_page][1], (user_esprit, esprit_data))
-        await self.update_page(interaction)
-
-    async def show_all_stats(self, interaction: discord.Interaction):
-        user_esprit, esprit_data = self.pages[self.current_page][2]
-        stat_cfg = self.bot.config_manager.get_config("data/config/game_settings").get("stat_calculation", {})
-        fields = []
-        # Add core stats and all extra stats
-        stats = [
-            "hp", "attack", "defense", "speed", "magic_resist",
-            "crit_rate", "block_rate", "dodge_chance", "mana", "mana_regen"
-        ]
-        for stat in stats:
-            if stat in ("crit_rate", "block_rate", "dodge_chance", "mana", "mana_regen"):
-                val = getattr(esprit_data, f"base_{stat}", 0)
-            else:
-                val = user_esprit.calculate_stat(stat, stat_cfg)
-            fields.append((stat.replace("_", " ").title(), f"{val}"))
-        fields.append(("Level", str(user_esprit.current_level)))
-        fields.append(("Limit Breaks", str(user_esprit.limit_breaks_performed)))
-        power_val = user_esprit.calculate_power(
-            self.bot.config_manager.get_config("data/config/game_settings").get("power_calculation", {}),
-            stat_cfg
-        )
-        fields.append(("Power", f"{power_val:,}"))
-        embed = discord.Embed(
-            title=f"🔎 {esprit_data.name} — Full Stats",
-            color=discord.Color.purple()
-        )
-        for name, val in fields:
-            embed.add_field(name=name, value=val, inline=True)
-        embed.set_footer(text=f"UID: {user_esprit.id[:6]}")
-        await interaction.response.send_message(embed=embed, ephemeral=True)
-
 class SummonCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         cfg = self.bot.config_manager
-        self.class_visuals = cfg.get_config("data/config/class_visuals") or {}
-        self.rarity_visuals = cfg.get_config("data/config/rarity_visuals") or {}
-        self.game_settings = cfg.get_config("data/config/game_settings") or {}
-        self.rarity_pity_increment = self.game_settings.get("summoning", {}).get("rarity_pity_increment", {})
+        self.summon_settings = cfg.get_config("data/config/summoning_settings") or {}
+        visuals_config = cfg.get_config("data/config/visuals") or {}
+        self.combat_settings = cfg.get_config("data/config/combat_settings") or {}
+        self.class_visuals = visuals_config.get("classes", {})
+        self.rarities_data = visuals_config.get("rarities", {})
+        self.rarity_pity_increment = self.summon_settings.get("summoning", {}).get("rarity_pity_increment", {})
         self.rng = RNGManager()
         self.image_generator = ImageGenerator("assets")
         self.rate_limiter = RateLimiter(calls=5, period=10)
@@ -189,7 +207,8 @@ class SummonCog(commands.Cog):
         logger.info("Esprit summoning pools cache invalidated.")
 
     def _get_rarity_color(self, rarity_name: str) -> discord.Color:
-        hex_color = (self.rarity_visuals.get(rarity_name) or {}).get("border_color", "#FFFFFF")
+        rarity_data = self.rarities_data.get(rarity_name, {})
+        hex_color = rarity_data.get("embed_color", "#FFFFFF") # Use embed_color
         return discord.Color(int(hex_color.lstrip("#"), 16))
 
     async def _choose_random_esprit(self, rarity: str, session: AsyncSession) -> Optional[EspritData]:
@@ -202,7 +221,7 @@ class SummonCog(commands.Cog):
         return random.choice(pool) if pool else None
 
     async def _internal_perform_summon(self, user: User, banner_type: str, session: AsyncSession) -> Optional[Tuple[UserEsprit, EspritData]]:
-        summ_cfg = self.game_settings["summoning"]
+        summ_cfg = self.summon_settings["summoning"]
         banner_cfg = summ_cfg["banners"][banner_type]
         rarity_weights = banner_cfg["rarity_distribution"]
         max_pity = summ_cfg.get("pity_system_guarantee_after", 100)
@@ -276,7 +295,7 @@ class SummonCog(commands.Cog):
                 if banner == "daily":
                     if summon_count > 1:
                         return await interaction.followup.send("❌ Only single daily summon allowed.")
-                    hours_cd = self.game_settings["cooldowns"]["daily_summon_hours"]
+                    hours_cd = self.summon_settings["cooldowns"]["daily_summon_hours"]
                     if user.last_daily_summon and datetime.utcnow() < user.last_daily_summon + timedelta(hours=hours_cd):
                         remaining = user.last_daily_summon + timedelta(hours=hours_cd) - datetime.utcnow()
                         h, rem = divmod(int(remaining.total_seconds()), 3600)
@@ -284,7 +303,7 @@ class SummonCog(commands.Cog):
                         return await interaction.followup.send(f"⏳ Daily summon on cooldown. Try again in **{h}h {m}m**.")
                     user.last_daily_summon = datetime.utcnow()
                 else:
-                    cost_config = self.game_settings["summoning"]["banners"][banner]
+                    cost_config = self.summon_settings["summoning"]["banners"][banner]
                     currency_attr = cost_config["currency"]
                     cost_per = cost_config["cost_single"]
                     total_cost = cost_config.get("cost_multi", cost_per * 10) if summon_count == 10 else cost_per
@@ -317,8 +336,8 @@ class SummonCog(commands.Cog):
                 if summon_count == 1:
                     user_esprit, esprit_data = summon_results[0]
                     power = user_esprit.calculate_power(
-                        self.game_settings.get("power_calculation", {}),
-                        self.game_settings.get("stat_calculation", {})
+                        self.combat_settings.get("power_calculation", {}),
+                        self.combat_settings.get("stat_calculation", {})
                     )
                     emoji = self.class_visuals.get(esprit_data.class_name, "❓")
                     uid = str(user_esprit.id)[:6]
@@ -347,7 +366,6 @@ class SummonCog(commands.Cog):
                     pagination_view = await EspritSummonPaginationView.create(
                         bot=self.bot,
                         summons=summon_results,
-                        game_settings=self.game_settings,
                         class_visuals=self.class_visuals,
                         rarity_visuals=self.rarity_visuals,
                         image_generator=self.image_generator,

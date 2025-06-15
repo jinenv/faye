@@ -44,7 +44,8 @@ class ImageGenerator:
 
         # ── Rarity visuals ────────────────────────────────────────────────── #
         cfg = ConfigManager()
-        self.rarity_visuals = cfg.get_config("data/config/rarity_visuals") or {}
+        visuals_config = cfg.get_config("data/config/visuals") or {}
+        self.rarities_data = visuals_config.get("rarities", {})
 
     # --------------------------------------------------------------------- #
     # Static helpers
@@ -118,7 +119,7 @@ class ImageGenerator:
 
         # --- rarity visuals ------------------------------------------------ #
         rarity = esprit_data.get("rarity", "Unknown")
-        visual = self.rarity_visuals.get(rarity, {})
+        visual = self.rarities_data.get(rarity, {}).get("visuals", {})
         glow_rgb = self._hex_to_rgb(visual.get("color", "#808080"))
 
         aura = self._create_rarity_aura((CARD_W, CARD_H), glow_rgb)

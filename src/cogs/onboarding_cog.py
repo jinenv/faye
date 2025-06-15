@@ -19,9 +19,10 @@ class OnboardingCog(commands.Cog):
         self.bot = bot
         self.image_generator = ImageGenerator("assets")  # Or your image assets path
 
-        game_settings = self.bot.config_manager.get_config("data/config/game_settings") or {}
-        self.STARTER_CURRENCIES = game_settings.get("starter_currencies", {})
-        onboarding_settings = game_settings.get("onboarding", {})
+        economy_settings = self.bot.config_manager.get_config("data/config/economy_settings") or {}
+        progression_settings = self.bot.config_manager.get_config("data/config/progression_settings") or {}
+        self.STARTER_CURRENCIES = economy_settings.get("starter_currencies", {})
+        onboarding_settings = economy_settings.get("onboarding", {})
         self.STARTER_RARITY = onboarding_settings.get("starter_esprit_rarity", "Epic")
         self.STARTER_LEVEL = onboarding_settings.get("starter_esprit_level", 1)
 

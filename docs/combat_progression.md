@@ -33,16 +33,22 @@ This document outlines the design for Faye's core gameplay loops, progression sy
 - **Function:** Acts as a primary progression path and a goal for players to build their teams towards.
 - **Rewards:** Grants major `Fayrite` and `Virelite` bonuses at milestone floors.
 
+### /trial
+- A PVE challenge that directly tests a player's strength and bravery.
+- **Function** Acts as the player "limit break" system.
+- **Unlocks** a player level much the same way that esprits are locked by level.
+
 ## Economy & Progression: Verified System
 
 This section details the confirmed, implemented multi-currency economy.
 
 ### Confirmed Currency Roles
 - **Faylen:** The universal "soft currency." Used for general purposes, potentially in a future shop or for player-to-player trading.
-- **Virelite:** The dedicated "enhancement currency." Its sole purpose is to level up and upgrade Esprits.
+- **Virelite:** The dedicated "enhancement currency." Its sole purpose is to upgrade Esprits.
 - **Fayrite Shards:** The raw "summoning material." This is the primary reward from activities like `/explore`. It is not used directly for summoning.
-- **Fayrites:** The premium "summoning currency." This is the **sole currency** used in the `/summon` command. It cannot be earned directly and must be crafted.
-- **Remna:** A tiered set of crafting materials for a future item creation system.
+- **Fayrites:** The regular "summoning currency." It cannot be earned directly and must be crafted.
+- **Ethryl:** The premium "summon currency." It is earned through `/daily` and dedicated `combat commands`.
+- **Remna:** A tiered set of crafting materials for limit breaking an esprit.
 
 ### The Crafting & Summoning Loop
 The core economic loop for acquiring new Esprits is now implemented and verified:

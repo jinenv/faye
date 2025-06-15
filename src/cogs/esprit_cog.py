@@ -204,7 +204,7 @@ class EnhancedCollectionView(discord.ui.View):
             for ue in chunk:
                 name = ue.esprit_data.name
                 lvl = ue.current_level
-                cap = ue.get_current_level_cap(self.bot.config_manager.get_config("data/config/game_settings").get("progression", {}))
+                cap = ue.get_current_level_cap(self.bot.config_manager.get_config("data/config/progression_settings").get("progression", {}))
                 power = ue.calculate_power(self.power_cfg, self.stat_cfg)
                 rarity = ue.esprit_data.rarity
                 emoji = {"Common":"⚪","Uncommon":"🟢","Rare":"🔵","Epic":"🟣","Celestial":"🟡","Supreme":"🔴","Deity":"🌟"}.get(rarity,"❓")
@@ -279,7 +279,10 @@ class EspritGroup(app_commands.Group, name="esprit"):
         self.bot = bot
         self.cache = CacheManager(default_ttl=CACHE_TTL)
         self.rate_limiter = RateLimiter(calls=5, period=60)
-        self.cfg = bot.config_manager.get_config("data/config/game_settings")
+        self.config_manager = bot.config_manager
+        
+        self.combat_settings = self.config_manager.get_config('data/config/combat_settings') or {}
+        self.progression_settings = self.config_manager.get_config('data/config/progression_settings') or {}
 
     async def _handle_error(self, inter: discord.Interaction, error: Exception):
         err_id = id(error)
