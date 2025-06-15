@@ -191,12 +191,12 @@ class SummonCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         cfg = self.bot.config_manager
-        self.summon_settings = cfg.get_config("data/config/summoning_settings") or {}
+        self.summoning_settings = cfg.get_config("data/config/summoning_settings") or {}
         visuals_config = cfg.get_config("data/config/visuals") or {}
         self.combat_settings = cfg.get_config("data/config/combat_settings") or {}
         self.class_visuals = visuals_config.get("classes", {})
         self.rarities_data = visuals_config.get("rarities", {})
-        self.rarity_pity_increment = self.summon_settings.get("summoning", {}).get("rarity_pity_increment", {})
+        self.rarity_pity_increment = self.summoning_settings.get("summoning", {}).get("rarity_pity_increment", {})
         self.rng = RNGManager()
         self.image_generator = ImageGenerator("assets")
         self.rate_limiter = RateLimiter(calls=5, period=10)
@@ -221,7 +221,7 @@ class SummonCog(commands.Cog):
         return random.choice(pool) if pool else None
 
     async def _internal_perform_summon(self, user: User, banner_type: str, session: AsyncSession) -> Optional[Tuple[UserEsprit, EspritData]]:
-        summ_cfg = self.summon_settings["summoning"]
+        summ_cfg = self.summoning_settings["summoning"]
         banner_cfg = summ_cfg["banners"][banner_type]
         rarity_weights = banner_cfg["rarity_distribution"]
         max_pity = summ_cfg.get("pity_system_guarantee_after", 100)
@@ -295,7 +295,7 @@ class SummonCog(commands.Cog):
                 if banner == "daily":
                     if summon_count > 1:
                         return await interaction.followup.send("❌ Only single daily summon allowed.")
-                    hours_cd = self.summon_settings["cooldowns"]["daily_summon_hours"]
+                    hours_cd = self.summoning_settings["cooldowns"]["daily_summon_hours"]
                     if user.last_daily_summon and datetime.utcnow() < user.last_daily_summon + timedelta(hours=hours_cd):
                         remaining = user.last_daily_summon + timedelta(hours=hours_cd) - datetime.utcnow()
                         h, rem = divmod(int(remaining.total_seconds()), 3600)
@@ -303,7 +303,7 @@ class SummonCog(commands.Cog):
                         return await interaction.followup.send(f"⏳ Daily summon on cooldown. Try again in **{h}h {m}m**.")
                     user.last_daily_summon = datetime.utcnow()
                 else:
-                    cost_config = self.summon_settings["summoning"]["banners"][banner]
+                    cost_config = self.summoning_settings["summoning"]["banners"][banner]
                     currency_attr = cost_config["currency"]
                     cost_per = cost_config["cost_single"]
                     total_cost = cost_config.get("cost_multi", cost_per * 10) if summon_count == 10 else cost_per

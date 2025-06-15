@@ -1,6 +1,7 @@
 #  src/cogs/admin_cog.py
 from __future__ import annotations
 
+import functools
 import traceback
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
@@ -13,7 +14,7 @@ from discord.ext import commands
 from sqlalchemy import func, select, and_
 from sqlalchemy.orm import selectinload
 
-from database.data_loader import EspritDataLoader
+from src.database.data_loader import EspritDataLoader
 from src.database.db import get_session
 from src.database.models import User, UserEsprit, EspritData
 from src.utils.cache_manager import CacheManager
@@ -25,35 +26,33 @@ logger = get_logger(__name__)
 # ─────────────────────────── utility decorator / helpers ─────────────────────
 def owner_only(*, ephemeral: bool = True):
     """Decorator that ensures the caller is the bot owner & automatically defers."""
-
     def decorator(fn):
+        @functools.wraps(fn)
         async def wrapper(self: "AdminCog", interaction: discord.Interaction, *args, **kwargs):
             if not await self.bot.is_owner(interaction.user):
                 return await interaction.response.send_message("❌ You are not the bot owner.", ephemeral=True)
-            # Always defer so every command can freely follow-up.
             await interaction.response.defer(ephemeral=ephemeral)
             return await fn(self, interaction, *args, **kwargs)
-
         return wrapper
-
     return decorator
 
-async def cog_autocomplete(interaction: discord.Interaction, current: str):
+async def cog_autocomplete(interaction: discord.Interaction, current: str) -> List[Choice[str]]:
+    """Autocomplete for reloading cogs."""
     return [
         Choice(name=ext, value=ext)
         for ext in interaction.client.extensions
         if current.lower() in ext.lower()
-    ][:25]  # Discord limit
+    ][:25]
 
 # ──────────────────────────────── help UI ────────────────────────────────────
 class AdminHelpSelect(discord.ui.Select):
+    """Dropdown for selecting an admin-command category."""
     def __init__(self, command_data: Dict[str, dict]):
         self.command_data = command_data
         options = [
             discord.SelectOption(
                 label=d["name"], value=k, emoji=d["emoji"], description=d["description"][:95]
-            )
-            for k, d in command_data.items()
+            ) for k, d in command_data.items()
         ]
         super().__init__(placeholder="Pick a category…", options=options)
 
@@ -66,27 +65,20 @@ class AdminHelpSelect(discord.ui.Select):
             color=discord.Color.orange(),
         )
         for cmd in data["commands"]:
-            embed.add_field(
-                name=f"`{cmd['name']}`",
-                value=f"Usage: `{cmd['usage']}`\n{cmd['desc']}",
-                inline=False,
-            )
+            embed.add_field(name=f"`{cmd['name']}`", value=f"Usage: `{cmd['usage']}`\n{cmd['desc']}", inline=False)
         await interaction.response.edit_message(embed=embed, view=self.view)
-
 
 class AdminHelpView(discord.ui.View):
     def __init__(self, author_id: int, command_data: Dict[str, dict]):
         super().__init__(timeout=180)
         self.author_id = author_id
-        self.command_data = command_data
         self.add_item(AdminHelpSelect(command_data))
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        if interaction.user.id != self.author_id and not await interaction.client.is_owner(interaction.user):
+        if interaction.user.id != self.author_id:
             await interaction.response.send_message("❌ This menu isn’t for you.", ephemeral=True)
             return False
         return True
-
 
 # ─────────────────────────────── stats UI ────────────────────────────────────
 class StatsView(discord.ui.View):
@@ -262,16 +254,15 @@ class EspritPaginatorView(discord.ui.View):
 # ────────────────────────────── main admin cog ──────────────────────────────
 @app_commands.guild_only()
 class AdminCog(commands.Cog):
-    # groups are declared here for nicer slash hierarchy
-    admin_group   = app_commands.Group(name="admin",  description="Core admin commands.")
-    give_group    = app_commands.Group(name="give",   description="Give currency/items.")
-    remove_group  = app_commands.Group(name="remove", description="Remove currency/items.")
-    set_group     = app_commands.Group(name="set",    description="Set exact values.")
-    reset_group   = app_commands.Group(name="reset",  description="Reset data/cooldowns.")
-    list_group    = app_commands.Group(name="list",   description="List data.")
-    reload_group  = app_commands.Group(name="reload", description="Reload subsystems.")
+    admin_group  = app_commands.Group(name="admin",  description="Core admin commands.")
+    give_group   = app_commands.Group(name="give",   description="Give currency/items.")
+    remove_group = app_commands.Group(name="remove", description="Remove currency/items.")
+    set_group    = app_commands.Group(name="set",    description="Set exact values.")
+    reset_group  = app_commands.Group(name="reset",  description="Reset data/cooldowns.")
+    list_group   = app_commands.Group(name="list",   description="List data.")
+    reload_group = app_commands.Group(name="reload", description="Reload subsystems.")
 
-    MODIFIABLE = (
+    MODIFIABLE_ATTRIBUTES = (
         "faylen", "virelite", "fayrites", "fayrite_shards",
         "ethryl", "remna", "xp", "loot_chests",
     )
@@ -279,36 +270,11 @@ class AdminCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.cache = CacheManager(default_ttl=300)
-
-        # Help-menu metadata (trim / extend as needed)
         self.help_meta: Dict[str, dict] = {
-            "give": {
-                "name": "🎁 Give",
-                "emoji": "🎁",
-                "description": "Commands that add items / currency to a user.",
-                "commands": [{"name": "/give faylen", "usage": "<user> <amount>", "desc": "Add Faylen"}],
-            },
-            "remove": {
-                "name": "➖ Remove",
-                "emoji": "➖",
-                "description": "Commands that subtract currency.",
-                "commands": [{"name": "/remove faylen", "usage": "<user> <amount>", "desc": "Remove Faylen"}],
-            },
-            "set": {
-                "name": "⚙️ Set",
-                "emoji": "⚙️",
-                "description": "Set an exact value.",
-                "commands": [{"name": "/set faylen", "usage": "<user> <amount>", "desc": "Set Faylen"}],
-            },
-            "utility": {
-                "name": "🛠️ Utility",
-                "emoji": "🛠️",
-                "description": "Stats, inspect, reload…",
-                "commands": [
-                    {"name": "/admin stats", "usage": "", "desc": "Global statistics"},
-                    {"name": "/inspect", "usage": "<user>", "desc": "Inspect user record"},
-                ],
-            },
+            "give": {"name": "🎁 Give", "emoji": "🎁", "description": "Add currency/items.", "commands": []},
+            "remove": {"name": "➖ Remove", "emoji": "➖", "description": "Subtract currency/items.", "commands": []},
+            "set": {"name": "⚙️ Set", "emoji": "⚙️", "description": "Set an exact value.", "commands": []},
+            "utility": {"name": "🛠️ Utility", "emoji": "🛠️", "description": "Stats, inspect, reload…", "commands": []},
         }
 
     # ── stats gatherer (cached) ────────────────────────────────────────────
@@ -343,33 +309,30 @@ class AdminCog(commands.Cog):
         return data
 
     # ─╢ shared attribute mutator ╟──────────────────────────────────────────
-    async def _adjust(
-        self,
-        interaction: discord.Interaction,
-        user: discord.User,
-        attr: str,
-        op: Literal["give", "remove", "set"],
-        amount: int,
-    ):
-        if attr not in self.MODIFIABLE:
+    async def _adjust(self, interaction: discord.Interaction, user: discord.User, attr: str, op: str, amount: int):
+        """Shared logic for modifying a user's currency/attribute."""
+        if attr not in self.MODIFIABLE_ATTRIBUTES:
             return await interaction.followup.send("❌ Invalid attribute.")
-
+        
         async with get_session() as s:
             u = await s.get(User, str(user.id))
             if not u:
                 return await interaction.followup.send("❌ Target user has no data.")
-            old = getattr(u, attr)
-            if op == "give":
-                new = old + amount
-            elif op == "remove":
-                new = max(0, old - amount)
-            else:  # set
-                new = amount
-            setattr(u, attr, new)
+            
+            old_val = getattr(u, attr)
+            if op == "give": new_val = old_val + amount
+            elif op == "remove": new_val = max(0, old_val - amount)
+            else: new_val = amount
+            setattr(u, attr, new_val)
             await s.commit()
+            
+        verb = op.title()
+        await interaction.followup.send(f"✅ {verb} {attr.replace('_',' ').title()}: **{old_val:,} → {new_val:,}** for {user.mention}")
 
-        verb = {"give": "Gave", "remove": "Removed", "set": "Set"}[op]
-        await interaction.followup.send(f"✅ {verb} {attr.replace('_',' ').title()}: **{old:,} → {new:,}**")
+    async def _currency_cmd(self, interaction: discord.Interaction, user: discord.User, amount: int, attr: str, op: str):
+        if amount < 0 and op != "set":
+            return await interaction.followup.send("❌ Amount must be positive.")
+        await self._adjust(interaction, user, attr, op, amount)
 
     # ───────────────────────── HELP / STATS / INSPECT ──────────────────────
     @admin_group.command(name="help", description="Interactive admin manual")
@@ -418,25 +381,104 @@ class AdminCog(commands.Cog):
         await interaction.followup.send(embed=embed)
 
     # ───────────────────────────── GIVE commands ───────────────────────────
-    async def _currency_cmd(self, interaction: discord.Interaction, user: discord.User, amount: int, attr: str, op: str):
-        if amount < 0 and op != "set":
-            return await interaction.followup.send("❌ Amount must be positive.")
-        await self._adjust(interaction, user, attr, op, amount)
+    @give_group.command(name="faylen", description="Give Faylen to a user.")
+    @owner_only()
+    async def give_faylen(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "faylen", "give", amount)
+    
+    @give_group.command(name="virelite", description="Give Virelite to a user.")
+    @owner_only()
+    async def give_virelite(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "virelite", "give", amount)
 
-    # Dynamically create commands for each attribute & operation
-    def _register_money_cmd(group: app_commands.Group, name: str, attr: str, op: str):
-        async def _func(self, interaction: discord.Interaction, user: discord.User, amount: int):
-            await self._currency_cmd(interaction, user, amount, attr, op)
+    @give_group.command(name="fayrites", description="Give Fayrites to a user.")
+    @owner_only()
+    async def give_fayrites(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "fayrites", "give", amount)
 
-        _func.__name__ = f"{op}_{attr}"
-        decorator = owner_only()
-        group.command(name=name, description=f"{op.title()} {attr.replace('_',' ')}")(decorator(_func))
+    @give_group.command(name="fayrite-shards", description="Give Fayrite Shards to a user.")
+    @owner_only()
+    async def give_fayrite_shards(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "fayrite_shards", "give", amount)
 
-    for _attr in MODIFIABLE:
-        _register_money_cmd(give_group,   _attr, _attr, "give")
-        _register_money_cmd(remove_group, _attr, _attr, "remove")
-        _register_money_cmd(set_group,    _attr, _attr, "set")
+    @give_group.command(name="ethryl", description="Give Ethryl to a user.")
+    @owner_only()
+    async def give_ethryl(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "ethryl", "give", amount)
 
+    @give_group.command(name="remna", description="Give Remna to a user.")
+    @owner_only()
+    async def give_remna(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "remna", "give", amount)
+
+    @give_group.command(name="xp", description="Give XP to a user.")
+    @owner_only()
+    async def give_xp(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "xp", "give", amount)
+
+    @give_group.command(name="loot-chests", description="Give Loot Chests to a user.")
+    @owner_only()
+    async def give_loot_chests(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "loot_chests", "give", amount)
+
+    # ───────────────────────────── REMOVEcommands ──────────────────────────
+    @remove_group.command(name="faylen", description="Remove Faylen from a user.")
+    @owner_only()
+    async def remove_faylen(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "faylen", "remove", amount)
+
+    @remove_group.command(name="virelite", description="Remove Virelite from a user.")
+    @owner_only()
+    async def remove_virelite(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "virelite", "remove", amount)
+
+    @remove_group.command(name="fayrites", description="Remove Fayrites from a user.")
+    @owner_only()
+    async def remove_fayrites(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "fayrites", "remove", amount)
+
+    @remove_group.command(name="fayrite-shards", description="Remove Fayrite Shards from a user.")
+    @owner_only()
+    async def remove_fayrite_shards(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "fayrite_shards", "remove", amount)
+
+    @remove_group.command(name="ethryl", description="Remove Ethryl from a user.")
+    @owner_only()
+    async def remove_ethryl(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "ethryl", "remove", amount)
+
+    @remove_group.command(name="remna", description="Remove Remna from a user.")
+    @owner_only()
+    async def remove_remna(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "remna", "remove", amount)
+
+    @remove_group.command(name="xp", description="Remove XP from a user.")
+    @owner_only()
+    async def remove_xp(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "xp", "remove", amount)
+
+    @remove_group.command(name="loot-chests", description="Remove Loot Chests from a user.")
+    @owner_only()
+    async def remove_loot_chests(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "loot_chests", "remove", amount)
+
+    # ───────────────────────────── SET commands ──────────────────────────
+    @set_group.command(name="faylen", description="Set Faylen for a user.")
+    @owner_only()
+    async def set_faylen(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "faylen", "set", amount)
+
+    @set_group.command(name="virelite", description="Set Virelite for a user.")
+    @owner_only()
+    async def set_virelite(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "virelite", "set", amount)
+
+    @set_group.command(name="fayrites", description="Set Fayrites for a user.")
+    @owner_only()
+    async def set_fayrites(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "fayrites", "set", amount)
+
+    @set_group.command(name="fayrite-shards", description="Set Fayrite Shards for a user.")
+    @owner_only()
+    async def set_fayrite_shards(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "fayrite_shards", "set", amount)
+
+    @set_group.command(name="ethryl", description="Set Ethryl for a user.")
+    @owner_only()
+    async def set_ethryl(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "ethryl", "set", amount)
+
+    @set_group.command(name="remna", description="Set Remna for a user.")
+    @owner_only()
+    async def set_remna(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "remna", "set", amount)
+
+    @set_group.command(name="xp", description="Set XP for a user.")
+    @owner_only()
+    async def set_xp(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "xp", "set", amount)
+
+    @set_group.command(name="loot-chests", description="Set Loot Chests for a user.")
+    @owner_only()
+    async def set_loot_chests(self, interaction: discord.Interaction, user: discord.User, amount: int): await self._adjust(interaction, user, "loot_chests", "set", amount)
+    
     # ───────────────────────────── RESET commands ──────────────────────────
     @reset_group.command(name="daily", description="Reset a user's /daily cooldown")
     @owner_only()

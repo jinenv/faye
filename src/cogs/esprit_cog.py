@@ -18,9 +18,6 @@ from src.utils.transaction_logger import (
     log_limit_break,
     log_esprit_upgrade,
     log_esprit_dissolve,
-    log_esprit_search,
-    log_esprit_compare,
-    log_team_optimize,
 )
 from enum import Enum
 
@@ -700,7 +697,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 ),
                 ephemeral=True
             )
-            log_esprit_search(inter, query, results)
+            #log_esprit_search(inter, query, results)
 
         except Exception as e:
             await self._handle_error(inter, e)
@@ -746,7 +743,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 )
 
             await inter.followup.send(embed=embed, ephemeral=True)
-            log_esprit_compare(inter, a, b)
+            #log_esprit_compare(inter, a, b)
 
         except Exception as e:
             await self._handle_error(inter, e)
@@ -849,7 +846,7 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 color=discord.Color.green()
             )
             await inter.followup.send(embed=embed)
-            log_team_optimize(inter, best)
+            #log_team_optimize(inter, best)
         except Exception as e:
             await self._handle_error(inter, e)
 

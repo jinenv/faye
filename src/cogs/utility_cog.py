@@ -5,14 +5,12 @@ from discord import app_commands
 from datetime import datetime
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
+import random
 
 from src.database.db import get_session
 from src.database.models import User, UserEsprit
 from src.utils.logger import get_logger
 from src.utils.rate_limiter import RateLimiter
-from src.utils.progression_manager import ProgressionManager # Correctly import the class
-
-import random
 
 logger = get_logger(__name__)
 
@@ -30,13 +28,12 @@ class UtilityCog(commands.Cog, name="Utility"):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.limiter = RateLimiter(calls=5, period=20)
-        # --- FIX: Create an instance of the ProgressionManager ---
-        self.prog_manager = ProgressionManager(self.bot.config_manager)
+        # The ProgressionManager is no longer needed here.
+        self.progression_settings = self.bot.config_manager.get_config("data/config/progression_settings") or {}
 
     async def check_rate_limit(self, interaction: discord.Interaction) -> bool:
         if not await self.limiter.check(str(interaction.user.id)):
             wait = await self.limiter.get_cooldown(str(interaction.user.id)) or 10
-            # Use followup if the interaction is already deferred
             if interaction.response.is_done():
                 await interaction.followup.send(f"You're using commands too quickly! Please wait {wait}s.")
             else:
@@ -56,25 +53,23 @@ class UtilityCog(commands.Cog, name="Utility"):
                 if not user:
                     return await interaction.followup.send("❌ You need to `/start` first.")
 
-                config = self.bot.config_manager.get_config("data/config/progression_settings") or {}
-                player_max_level = config.get("progression", {}).get("player_max_level", 100)
-
+                prog_config = self.progression_settings.get("progression", {})
+                
                 embed = discord.Embed(
                     title=f"📘 {interaction.user.display_name}'s Profile",
                     description=random.choice(FLAVOR_QUOTES),
                     color=discord.Color.teal()
                 )
-                embed.add_field(name="Level", value=f"{user.level}/{user.level_cap}", inline=True)
+                embed.add_field(name="Level", value=f"**{user.level}** / {user.level_cap}", inline=True)
                 
-                # --- FIX: Call the prog_manager instance correctly ---
-                next_xp = self.prog_manager.get_player_xp_for_next_level(user.level)
-                embed.add_field(name="XP", value=f"{user.xp:,} / {next_xp:,}", inline=True)
+                next_xp = user.get_xp_for_next_level(prog_config)
+                embed.add_field(name="XP", value=f"{user.xp:,} / {next_xp:,}" if next_xp > 0 else "MAX", inline=True)
 
-                next_trial = self.prog_manager.get_next_trial_info(user.level)
+                next_trial = user.get_next_trial_info(self.progression_settings)
                 if next_trial:
                     embed.add_field(
-                        name="Next Trial Unlock",
-                        value=f"Level {next_trial['unlocks_at_level']} (Cap {next_trial['raises_cap_to']})",
+                        name="Next Trial",
+                        value=f"Unlocks at Level **{next_trial['unlocks_at_level']}**",
                         inline=True
                     )
 
@@ -85,7 +80,7 @@ class UtilityCog(commands.Cog, name="Utility"):
                 )
                 embed.add_field(name="Core Currencies", value=currency_text, inline=False)
 
-                # --- FIX: Optimized Team Query (Solves N+1 Problem) ---
+                # Optimized team query
                 team_ids = [eid for eid in [user.active_esprit_id, user.support1_esprit_id, user.support2_esprit_id] if eid]
                 team_esprits = {}
                 if team_ids:
@@ -101,9 +96,7 @@ class UtilityCog(commands.Cog, name="Utility"):
                     esprit_id = getattr(user, role_attr)
                     esprit = team_esprits.get(esprit_id)
                     if esprit and esprit.esprit_data:
-                        # Display UID and next trial level if relevant
-                        uid = str(esprit.id)[:6]
-                        team_list_str.append(f"**{role_name}:** {esprit.esprit_data.name} `Lv.{esprit.current_level}` (`{uid}`)")
+                        team_list_str.append(f"**{role_name}:** {esprit.esprit_data.name} `Lv.{esprit.current_level}`")
                     else:
                         team_list_str.append(f"**{role_name}:** _Empty_")
 
@@ -117,7 +110,6 @@ class UtilityCog(commands.Cog, name="Utility"):
 
     @app_commands.command(name="level", description="Check your current level and XP progression.")
     async def level(self, interaction: discord.Interaction):
-        # This command is largely redundant with /profile now, but keeping the logic corrected.
         await interaction.response.defer()
         try:
             if not await self.check_rate_limit(interaction):
@@ -127,14 +119,15 @@ class UtilityCog(commands.Cog, name="Utility"):
                 user = await session.get(User, str(interaction.user.id))
                 if not user:
                     return await interaction.followup.send("❌ You need to `/start` first.")
+                
+                prog_config = self.progression_settings.get("progression", {})
 
                 if user.level >= user.level_cap:
                     next_xp_disp = "MAX"
                     bar = "█" * 10
                     percent = 1.0
                 else:
-                    # --- FIX: Call the prog_manager instance correctly ---
-                    next_xp = self.prog_manager.get_player_xp_for_next_level(user.level)
+                    next_xp = user.get_xp_for_next_level(prog_config)
                     next_xp_disp = f"{next_xp:,}"
                     percent = user.xp / next_xp if next_xp > 0 else 1.0
                     blocks = int(percent * 10)
@@ -165,7 +158,6 @@ class UtilityCog(commands.Cog, name="Utility"):
             if hasattr(self.bot, 'start_time'):
                  uptime_str = discord.utils.format_dt(self.bot.start_time, "R")
 
-            # --- FIX: Modern, ORM-based queries ---
             async with get_session() as session:
                 user_count_res = await session.execute(select(func.count(User.user_id)))
                 user_count = user_count_res.scalar_one_or_none() or 0
@@ -185,7 +177,10 @@ class UtilityCog(commands.Cog, name="Utility"):
             embed.add_field(name="Total Users", value=f"{user_count:,}", inline=True)
             embed.add_field(name="Total Esprits", value=f"{esprit_count:,}", inline=True)
             embed.add_field(name="Developer", value=bot_info.get("developer_name", "Unknown"), inline=True)
-            embed.add_field(name="Website", value=f"[{bot_info.get('website_url', 'faye.bot')}]({bot_info.get('website_url', 'https://faye.bot')})", inline=False)
+            
+            website_url = bot_info.get('website_url', 'https://faye.bot')
+            embed.add_field(name="Website", value=f"[{website_url.replace('https://', '')}]({website_url})", inline=False)
+            
             embed.set_footer(text="Built with Python, discord.py, and SQLModel.")
             await interaction.followup.send(embed=embed)
 
