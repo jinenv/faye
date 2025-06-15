@@ -5,6 +5,7 @@ from discord import app_commands
 import random
 import io
 from sqlalchemy.future import select
+from sqlalchemy.exc import IntegrityError
 
 from src.database.db import get_session
 from src.database.models import User, UserEsprit, EspritData
@@ -19,10 +20,12 @@ class OnboardingCog(commands.Cog):
         self.bot = bot
         self.image_generator = ImageGenerator("assets")  # Or your image assets path
 
-        economy_settings = self.bot.config_manager.get_config("data/config/economy_settings") or {}
-        progression_settings = self.bot.config_manager.get_config("data/config/progression_settings") or {}
+        economy_settings = self.bot.config.get("economy_settings", {})
+        progression_settings = self.bot.config.get("progression_settings", {})
+
         self.STARTER_CURRENCIES = economy_settings.get("starter_currencies", {})
-        onboarding_settings = economy_settings.get("onboarding", {})
+        
+        onboarding_settings = progression_settings.get("onboarding", {})
         self.STARTER_RARITY = onboarding_settings.get("starter_esprit_rarity", "Epic")
         self.STARTER_LEVEL = onboarding_settings.get("starter_esprit_level", 1)
 
@@ -68,8 +71,12 @@ class OnboardingCog(commands.Cog):
     @app_commands.command(name="start", description="Begin your adventure and get your starting bonus.")
     async def start(self, interaction: discord.Interaction):
         await interaction.response.defer()  # PUBLIC, not ephemeral
+        
         try:
+            # The database session must wrap ALL database operations
             async with get_session() as session:
+                
+                # 1. Check if user exists
                 existing = await session.get(User, str(interaction.user.id))
                 if existing:
                     await interaction.followup.send(embed=discord.Embed(
@@ -79,9 +86,10 @@ class OnboardingCog(commands.Cog):
                     ))
                     return
 
-                # Pick starter esprit
+                # 2. If not, proceed to create the user and Esprit
                 stmt = select(EspritData).where(EspritData.rarity == self.STARTER_RARITY)
                 starter_pool = (await session.execute(stmt)).scalars().all()
+
                 if not starter_pool:
                     logger.error(f"CRITICAL: No {self.STARTER_RARITY}-tier Esprits found for the start command.")
                     await interaction.followup.send(embed=discord.Embed(
@@ -92,6 +100,8 @@ class OnboardingCog(commands.Cog):
                     return
 
                 chosen_esprit_data = random.choice(starter_pool)
+                
+                # Create the User object
                 new_user = User(
                     user_id=str(interaction.user.id),
                     username=interaction.user.display_name,
@@ -100,9 +110,9 @@ class OnboardingCog(commands.Cog):
                     **self.STARTER_CURRENCIES
                 )
                 session.add(new_user)
-                await session.flush()
+                await session.flush() # Flush to assign default values from the DB
 
-                # Create starter Esprit
+                # Create the UserEsprit object
                 new_user_esprit = UserEsprit(
                     owner_id=new_user.user_id, 
                     esprit_data_id=chosen_esprit_data.esprit_id, 
@@ -110,11 +120,17 @@ class OnboardingCog(commands.Cog):
                     current_level=self.STARTER_LEVEL,
                 )
                 session.add(new_user_esprit)
-                await session.flush()
+                await session.flush() # Flush to get the new_user_esprit.id
+
+                # Link the active esprit back to the user
                 new_user.active_esprit_id = new_user_esprit.id
                 session.add(new_user)
+                
+                # 3. Commit the entire transaction AT THE END
+                # This is where the IntegrityError would happen on a race condition
                 await session.commit()
 
+                # 4. Log and respond to the user ONLY after a successful commit
                 transaction_logger.log_new_user_registration(
                     interaction, new_user, chosen_esprit_data, self.STARTER_CURRENCIES
                 )
@@ -123,7 +139,6 @@ class OnboardingCog(commands.Cog):
                 currency_lines = [f"• **{v:,}** {k.replace('_', ' ').title()}" for k, v in self.STARTER_CURRENCIES.items() if v > 0]
                 flavor_line = random.choice(self.flavor_texts)
 
-                # --- Generate the Esprit card image ---
                 card_pil = await self.image_generator.render_esprit_card(chosen_esprit_data.model_dump())
                 with io.BytesIO() as buf:
                     card_pil.save(buf, "PNG")
@@ -135,28 +150,26 @@ class OnboardingCog(commands.Cog):
                         f"{flavor_line}\n\n"
                         f"**{interaction.user.mention}**, your journey begins now!\n"
                         f"\n> You receive a **{chosen_esprit_data.rarity}** Esprit: **{chosen_esprit_data.name}** (UID: `{uid_short}`)\n"
-                        f"\n> Claim your daily bonus, explore, and summon more Esprits!"
+                        f"\n> Claim your /daily bonus, explore, and summon more Esprits!"
                     ),
                     color=discord.Color.green()
                 )
                 if currency_lines:
-                    embed.add_field(
-                        name="🎁 Starting Resources",
-                        value="\n".join(currency_lines),
-                        inline=False
-                    )
-                embed.add_field(
-                    name="🌟 Your First Esprit", 
-                    value=f"Rarity: **{chosen_esprit_data.rarity}**\nLevel: **{self.STARTER_LEVEL}**\nClass: **{chosen_esprit_data.class_name}**",
-                    inline=False
-                )
+                    embed.add_field(name="🎁 Starting Resources", value="\n".join(currency_lines), inline=False)
+                embed.add_field(name="🌟 Your First Esprit", value=f"Rarity: **{chosen_esprit_data.rarity}**\nLevel: **{self.STARTER_LEVEL}**\nClass: **{chosen_esprit_data.class_name}**", inline=False)
                 embed.set_image(url="attachment://esprit_card.png")
-                embed.set_footer(
-                    text="Use /help to see all available commands and start your adventure!"
-                )
+                embed.set_footer(text="Use /help to see all available commands and start your adventure!")
 
                 await interaction.followup.send(embed=embed, file=file)
 
+        # The exception handling block is OUTSIDE the 'async with' block
+        except IntegrityError:
+            logger.warning(f"Handled IntegrityError for user {interaction.user.id}, likely a double-click on /start.")
+            await interaction.followup.send(embed=discord.Embed(
+                title="✨ Registration in Progress!",
+                description="It looks like your account is already being created. Please wait a moment and then try another command like `/inventory`.",
+                color=discord.Color.blue()
+            ))
         except Exception as e:
             logger.error(f"Error in start command for user {interaction.user.id}: {e}", exc_info=True)
             await interaction.followup.send(embed=discord.Embed(

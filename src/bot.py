@@ -1,9 +1,12 @@
+# src/bot.py
 import os
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+from datetime import datetime # Make sure datetime is imported
+
 from src.utils.logger import get_logger
-from src.utils.config_manager import ConfigManager
+from src.utils.config_manager import load_all_configs # Import the new function
 from src.database.db import create_db_and_tables
 from src.database.data_loader import EspritDataLoader
 
@@ -22,8 +25,9 @@ class FayeBot(commands.Bot):
         intents.message_content = True
         super().__init__(command_prefix="!", intents=intents)
 
-        # --- CREATE AND ATTACH THE CONFIG MANAGER ---
-        self.config_manager = ConfigManager()
+        # --- NEW: Load all configs at startup ---
+        self.config = load_all_configs()
+        self.start_time = datetime.utcnow() # Store bot start time
 
         self.initial_cogs = [
             "src.cogs.admin_cog",

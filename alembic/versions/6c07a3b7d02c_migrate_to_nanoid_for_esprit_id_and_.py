@@ -19,8 +19,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute("DELETE FROM user_esprits")
-    op.execute("DELETE FROM esprit_data")
+    pass
 
 def downgrade() -> None:
     pass

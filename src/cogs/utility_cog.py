@@ -1,4 +1,5 @@
 # src/cogs/utility_cog.py
+from logging import config
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -29,7 +30,7 @@ class UtilityCog(commands.Cog, name="Utility"):
         self.bot = bot
         self.limiter = RateLimiter(calls=5, period=20)
         # The ProgressionManager is no longer needed here.
-        self.progression_settings = self.bot.config_manager.get_config("data/config/progression_settings") or {}
+        self.progression_settings = self.bot.config.get("progression_settings", {})
 
     async def check_rate_limit(self, interaction: discord.Interaction) -> bool:
         if not await self.limiter.check(str(interaction.user.id)):
@@ -151,7 +152,7 @@ class UtilityCog(commands.Cog, name="Utility"):
     async def botinfo(self, interaction: discord.Interaction):
         await interaction.response.defer()
         try:
-            config = self.bot.config_manager.get_config("data/config/bot_settings") or {}
+            bot_info = self.bot.config.get("bot_settings", {}).get("bot_info", {})
             bot_info = config.get("bot_info", {})
             
             uptime_str = "Unknown"

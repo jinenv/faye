@@ -36,15 +36,21 @@ class EconomyCog(commands.Cog):
     """Handles player economy commands."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        economy_settings = self.bot.config_manager.get_config("data/config/economy_settings") or {}
-        self.DAILY_REWARDS = economy_settings.get("daily_rewards", {})
-        self.cooldowns = economy_settings.get("cooldowns", {})
-        economy_settings = economy_settings.get("economy", {})
-        self.SHARDS_PER_FAYRITE = economy_settings.get("shards_per_fayrite", 10)
-        self.general_limiter = RateLimiter(3, 20)
-        self.daily_limiter = RateLimiter(3, 600)
+    
+        # Access the already-loaded config dictionary from the bot
+        settings = self.bot.config.get("economy_settings", {})
+        bot_settings = self.bot.config.get("bot_settings", {})
+        
+        # Set attributes for the cog
+        self.DAILY_REWARDS = settings.get("daily_rewards", {})
+        self.SHARDS_PER_FAYRITE = settings.get("economy", {}).get("shards_per_fayrite", 10)
+        self.DAILY_COOLDOWN_HOURS = bot_settings.get("cooldowns", {}).get('daily_claim_hours', 22)
+        
+        # Rate limiters remain the same
+        self.general_limiter = RateLimiter(calls=3, period=10)
+        self.daily_limiter = RateLimiter(calls=1, period=5)
 
-        logger.info(f"✅ EconomyCog loaded. Daily rewards: {len(self.DAILY_REWARDS)} items.")
+        logger.info(f"✅ EconomyCog loaded with {len(self.DAILY_REWARDS)} daily reward items.")
 
     @app_commands.command(name="inventory", description="View your currencies and other items.")
     async def inventory(self, interaction: discord.Interaction):
@@ -86,7 +92,7 @@ class EconomyCog(commands.Cog):
             return await interaction.followup.send("You are trying to claim too frequently. Please wait.")
 
         async with get_session() as session:
-            user = await session.get(User, str(interaction.user.id))
+            user = await session.get(User, str(interaction.user.id), with_for_update=True)
             if not user:
                 return await interaction.followup.send("❌ You haven't started yet. Use `/start`.")
 
@@ -111,7 +117,7 @@ class EconomyCog(commands.Cog):
             user.last_daily_claim = now
             await session.commit()
 
-            transaction_logger.log_daily_claim(logger, interaction, self.DAILY_REWARDS)
+            transaction_logger.log_daily_claim(interaction, self.DAILY_REWARDS)
 
             reward_desc = "\n".join(
                 f"{CURRENCY_ICONS.get(c, '')} **{amount:,}** {c.replace('_', ' ').title()}"
@@ -139,7 +145,7 @@ class EconomyCog(commands.Cog):
             return await interaction.followup.send("❌ You can only craft Fayrites.")
 
         async with get_session() as session:
-            user = await session.get(User, str(interaction.user.id))
+            user = await session.get(User, str(interaction.user.id), with_for_update=True)
             if not user:
                 return await interaction.followup.send("❌ You need to `/start` first.")
 

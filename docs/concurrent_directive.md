@@ -1,84 +1,57 @@
-# Faye / Faye – Unified Directive & State Architecture
-**Document Version:** 4.0 (Post-Hardening)
-**Last Updated:** 2025-06-14
+Faye - Official Architectural Directive
+Document Version: 3.0 (Post-Hardening)
+Status: Production Ready
 
-This is the authoritative specification for every AI or human contributor. If new work contradicts this file, this file must be updated first.
+This is the single source of truth for the Faye bot's architecture. All new development must adhere to these principles to ensure the stability, maintainability, and scalability of the application.
 
----
-### 1 • Architectural Guarantees (The Faye Way)
-*These principles are the foundation of our codebase and must never be broken.*
+1. Core Architectural Guarantees
+These principles are non-negotiable and have been implemented across the codebase.
 
-- **G1. Modularity:** Features are encapsulated in Cogs (`src/cogs/`). Shared utilities reside in `src/utils/`. UI components like Views are organized in `src/views/` or within their respective cogs.
+G1. Modularity: Features are encapsulated in Cogs (src/cogs/). Shared, self-contained tools reside in src/utils/. UI components (discord.ui.View) are defined within the cogs that use them.
 
-- **G2. Single-Location Logic:** Core calculations and business logic (e.g., stat calculations, upgrade costs, level caps) **must** live on the database model classes in `src/database/models.py`. Cogs **must** call these model methods and not reimplement logic.
+G2. Single-Location Logic (The Model Layer is the Logic Layer): Core game calculations (e.g., stat growth, power calculation, upgrade costs, level caps) must be defined as methods on the database model classes in src/database/models.py. Cogs must not contain game logic; they only orchestrate calls to the models.
 
-- **G3. Config-Driven Values:** All tunable values, formulas, and parameters that affect game balance (e.g., rewards, costs, cooldowns, version numbers) **must** be defined in `data/config/game_settings.json`. Cogs will load these values at runtime via the central `ConfigManager`. **There must be no hardcoded magic numbers in the cogs.**
+G3. Centralized Configuration: All tunable game balance values (e.g., rewards, costs, cooldowns, chances) must be defined in .json files within the data/config/ directory. The bot loads these into a central bot.config dictionary at startup. There must be no hardcoded "magic numbers" in the cogs.
 
-- **G4. Explicit Transactional Logging:** All state-changing events (e.g., currency changes, item grants, esprit creation/destruction) **must** be logged to the dedicated `transactions.log` file. This is achieved by adding a function to `src/utils/transaction_logger.py` and calling it from the relevant cog *after* the database session is successfully committed.
+G4. Atomic & Safe Transactions: All database operations that modify data must be performed within a single async with get_session() as session: block. Any transaction that reads a value before writing it back (e.g., deducting currency) must use with_for_update=True on the initial session.get() or select() call to lock the row and prevent race conditions.
 
-- **G5. Universal Rate Limiting:** All user-facing application commands **must** be protected by a `RateLimiter` instance defined in their cog. This is a non-negotiable requirement to ensure bot stability and prevent user-side spam.
+G5. Structured Transactional Logging: All significant state-changing events (currency changes, item grants, summons, upgrades) must be logged as a JSON object to transactions.log. This is achieved by calling a dedicated function in src/utils/transaction_logger.py after the database transaction has been successfully committed.
 
-- **G6. Session Discipline:** Use one `AsyncSession` per command context via the `async with get_session():` context manager. The session object may be passed to helper functions but new sessions must not be created mid-command.
+G6. Universal Rate Limiting: All user-facing application commands must be protected by an instance of the RateLimiter utility to ensure bot stability and prevent abuse.
 
-- **G7. Heavy CPU Work in Executors:** Any process that is CPU-bound (e.g., complex image generation) **must** be run in an executor thread pool to keep the bot's event loop from blocking.
+G7. Distributed State for Scalability: Any feature requiring a cross-user or timed "lock" that must persist across bot restarts or multiple processes (e.g., preventing a user from having two summon commands active) must use a distributed, persistent key-value store like Redis. In-memory global variables (set, dict) are strictly prohibited for managing persistent or shared state.
 
----
-### 2 • Current System Status & Verified Accomplishments
+2. System Overview
+Entrypoint (run.py, src/bot.py): The application entrypoint. The FayeBot class initializes, loads all configurations into the bot.config attribute, establishes the database connection via create_db_and_tables, and loads all cogs from the src/cogs/ directory.
 
-The following cogs and systems have been reviewed, hardened, and confirmed to be in compliance with the architectural guarantees as of the last update:
+Database (src/database/): The data persistence layer.
 
-#### ✅ **Core Infrastructure**
-- **Logging:** A dual-logging system is in place. General bot logs are written to `bot.log`, while all economic and state-changing events are recorded in `transactions.log` via the `transaction_logger.py` utility.
-- **Configuration:** `ConfigManager` correctly serves as the single point of access for all game settings.
-- **Database:** `SQLModel` is correctly implemented with a central `get_session` manager.
+models.py: The single source of truth for the database schema (via SQLModel) and all associated game logic.
+db.py: Manages the database engine (SQLAlchemy) and session creation factory.
+data_loader.py: A utility for seeding the database with static data (e.g., EspritData) from .json files.
+Cogs (src/cogs/): The application's controllers. They handle user interactions and orchestrate the workflow:
 
-#### ✅ **Hardened Cogs**
-- **`admin_cog`**: The gold standard. Features explicit transactional logging for admin actions and correctly sources its data.
-- **`economy_cog`**: Fully rate-limited. All daily claims and crafting events are now recorded in the transaction log.
-- **`onboarding_cog`**: The new user `/start` transaction is logged in detail. Code has been refactored to be fully dynamic based on the `starter_currencies` config.
-- **`summon_cog`**: Now fully rate-limited. All summons (free and paid) are recorded in the transaction log. Esprit rarity pools are now cached to reduce database load.
-- **`esprit_cog`**: Fully rate-limited across all commands. All key transactions (`upgrade`, `limitbreak`, `dissolve`) are logged. Power calculations in the collection view are now consistent with all other commands, sourcing their formulas directly from the game config.
-- **`utility_cog`**: Fully rate-limited. All formerly hardcoded information is now correctly sourced from `game_settings.json`.
+Receive an interaction from Discord.
+Perform initial checks (e.g., rate limiting).
+Open a database session.
+Fetch the necessary data models from the database (using locking where appropriate).
+Call logic methods on those models, passing in configuration values from bot.config.
+Commit the transaction to save changes.
+Log the successful transaction.
+Format and send a response back to the user.
+Utilities (src/utils/): Shared, reusable tools for logging, rate-limiting, image generation, and other common tasks.
 
----
-### 3 • Key System Specifications
+3. Next Steps & Path to Production
+The codebase has been refactored and hardened. The architecture is now stable and consistent. The following are the high-level priorities for moving forward.
 
-#### **The Single Source of Truth**
-- **For Logic & Formulas:** The methods on the model classes in `src/database/models.py`.
-- **For Values & Parameters:** The configuration dictionaries within `data/config/game_settings.json`.
-- **For Documentation:** This `concurrent_directive.md` document.
+HIGH PRIORITY - Infrastructure:
 
-*Any file that contradicts these sources (e.g., `calculations.md`) is considered deprecated.*
+Implement Distributed Locking: Replace the temporary summon lock with a robust Redis-based implementation as mandated by G7. This is the final step to make the bot truly production-ready and scalable.
+MEDIUM PRIORITY - New Features:
 
----
-### 4 • Next Development Priorities
+Combat Cog: Begin development of the core gameplay loop (/explore, /trial, combat encounters). All new features must adhere strictly to the architectural guarantees outlined above.
+Economic Analysis: Use the data from transactions.log to analyze currency flow and balance the game economy by tuning the values in data/config/.
+LOW PRIORITY - Maintenance:
 
-With the core systems hardened, the development priorities are now focused on new gameplay features.
-
-#### **HIGH PRIORITY - Gameplay Loop**
-1.  **Combat System Implementation:**
-    - **Task:** Design and build the `combat_cog`. This includes turn-based logic, skill/ability systems, and combat rewards.
-    - **Action:** Ensure all combat rewards (XP, currency, items) are granted via methods that include transactional logging.
-2.  **Economic Balancing & Analysis:**
-    - **Task:** Analyze the `transactions.log` to tune the game economy.
-    - **Action:** Review the rates of currency generation (dailies, dissolving, combat) versus currency sinks (upgrading, limit breaking, summoning) to ensure a balanced and engaging player experience.
-
-#### **MEDIUM PRIORITY - Database & Polish**
-1.  **Database Migration: Remove `current_xp`**
-    - **Task:** The `current_xp` column on the `user_esprits` table is obsolete and must be removed.
-    - **Action:** Execute the Alembic migration process (`revision` -> `edit` -> `upgrade head`) to drop this column from the database schema.
-2.  **UI Consistency Pass:**
-    - **Task:** Perform a final pass on all bot embeds and messages.
-    - **Action:** Ensure consistent terminology ("Sigil," "Virelite"), clear formatting, and helpful error messages across the entire bot.
-
----
-### 5 • Pre-Merge & Deployment Checklist
-*A final check before any new feature branch is merged into production.*
-
-- [ ] **Guarantees Upheld:** The new code adheres to all principles in Section 1.
-- [ ] **Config Driven:** All new tunable values have been added to `game_settings.json`.
-- [ ] **Single-Location Logic:** New calculations are implemented on the data models in `models.py`.
-- [ ] **Transactional Logging:** All new state-changing actions are logged via `transaction_logger.py`.
-- [ ] **Rate-Limited:** All new user-facing commands are rate-limited.
-- [ ] **Alembic Vetted:** If the change required a database migration, the generated script has been manually reviewed and is reversible if possible.
-- [ ] **Successful Boot:** The bot starts without errors.
+Code Documentation: Add docstrings to public methods and classes where they are missing to improve maintainability.
+Dependency Updates: Periodically review and update libraries in requirements.txt.

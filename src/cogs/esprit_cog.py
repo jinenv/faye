@@ -1,7 +1,7 @@
 # src/cogs/esprit_cog.py
 import asyncio
 import traceback
-from typing import List, Optional, Dict, Set
+from typing import List, Literal, Optional, Dict, Set
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -40,6 +40,7 @@ class ConfirmationView(discord.ui.View):
         super().__init__(timeout=timeout)
         self.author_id = author_id
         self.value: Optional[bool] = None
+        self.result = False
 
     async def interaction_check(self, i: discord.Interaction) -> bool:
         if i.user.id != self.author_id:
@@ -50,6 +51,7 @@ class ConfirmationView(discord.ui.View):
     @discord.ui.button(label="Confirm", style=discord.ButtonStyle.danger)
     async def confirm(self, i: discord.Interaction, _):
         self.value = True
+        self.result = True
         self.stop()
         await i.response.edit_message(content="✅ Confirmed", view=None)
 
@@ -66,6 +68,7 @@ class BulkDissolveView(discord.ui.View):
         self.esprits = esprits[:MAX_BULK_OPERATIONS]
         self.author_id = author_id
         self.selected_ids: Set[str] = set()
+        self.value = False # To indicate confirmation
         self._refresh_options()
 
     def _rarity_emoji(self, r: str) -> str:
@@ -95,7 +98,8 @@ class BulkDissolveView(discord.ui.View):
 
     @discord.ui.select(
         placeholder="Select Esprits to dissolve…",
-        min_values=0, max_values=MAX_BULK_OPERATIONS
+        min_values=0, max_values=MAX_BULK_OPERATIONS,
+        row=0
     )
     async def select_menu(self, inter: discord.Interaction, select: discord.ui.Select):
         try:
@@ -108,52 +112,57 @@ class BulkDissolveView(discord.ui.View):
     @discord.ui.button(
         label="Dissolve Selected",
         style=discord.ButtonStyle.danger,
-        disabled=True
+        disabled=True,
+        row=1
     )
     async def dissolve_button(self, inter: discord.Interaction, _: discord.ui.Button):
         try:
             if not self.selected_ids:
-                return
-            confirm = ConfirmationView(self.author_id)
+                return await inter.response.send_message("You must select at least one Esprit.", ephemeral=True)
+
+            confirm_view = ConfirmationView(self.author_id)
             await inter.response.send_message(
                 embed=discord.Embed(
                     title="⚠️ Confirm Bulk Dissolve",
-                    description=f"Dissolve **{len(self.selected_ids)}** Esprit(s)?",
+                    description=f"Are you sure you want to dissolve **{len(self.selected_ids)}** Esprit(s)? This cannot be undone.",
                     color=discord.Color.red(),
                 ),
-                view=confirm,
+                view=confirm_view,
                 ephemeral=True,
             )
-            await confirm.wait()
-            if confirm.result:
+            await confirm_view.wait()
+            if confirm_view.value:
+                self.value = True
                 self.stop()
         except Exception as e:
             logger.error(f"Error in dissolve button: {e}")
+            await inter.followup.send("An error occurred during confirmation.", ephemeral=True)
 
     async def interaction_check(self, inter: discord.Interaction) -> bool:
         if inter.user.id != self.author_id:
-            await inter.response.send_message("Not your session.", ephemeral=True)
+            await inter.response.send_message("This is not your session.", ephemeral=True)
             return False
         return True
-    
+
 # ─── Collection View ────────────────────────────────────────────────────────
 
 class EnhancedCollectionView(discord.ui.View):
     def __init__(
         self,
+        bot: commands.Bot,
         esprits: List[UserEsprit],
         author_id: int,
-        power_cfg: Dict,
-        stat_cfg: Dict
     ):
         super().__init__(timeout=INTERACTION_TIMEOUT)
+        self.bot = bot
         self.author_id = author_id
         self.all_esprits = esprits
-        self.power_cfg = power_cfg
-        self.stat_cfg = stat_cfg
+        self.power_cfg = self.bot.config.get("combat_settings", {}).get("power_calculation", {})
+        self.stat_cfg = self.bot.config.get("combat_settings", {}).get("stat_calculation", {})
+        self.prog_cfg = self.bot.config.get("progression_settings", {}).get("progression", {})
         self.filtered = list(esprits)
         self.page = 0
-        self.sort_by = "name"
+        self.sort_by = "rarity" # Default sort
         self.filter_rarity: Optional[str] = None
         self.page_size = 10
         self._build_pages()
@@ -165,14 +174,17 @@ class EnhancedCollectionView(discord.ui.View):
             self.filtered = [e for e in self.all_esprits if e.esprit_data.rarity == self.filter_rarity]
         else:
             self.filtered = list(self.all_esprits)
+
         # Sort
         if self.sort_by == "name":
             self.filtered.sort(key=lambda e: e.esprit_data.name)
         elif self.sort_by == "level":
             self.filtered.sort(key=lambda e: e.current_level, reverse=True)
-        else:
+        elif self.sort_by == "power":
+             self.filtered.sort(key=lambda e: e.calculate_power(self.power_cfg, self.stat_cfg), reverse=True)
+        else: # Default to rarity
             order = {"Common":0,"Uncommon":1,"Rare":2,"Epic":3,"Celestial":4,"Supreme":5,"Deity":6}
-            self.filtered.sort(key=lambda e: order.get(e.esprit_data.rarity,0), reverse=True)
+            self.filtered.sort(key=lambda e: order.get(e.esprit_data.rarity, 0), reverse=True)
 
         # Build embeds
         self.pages: List[discord.Embed] = []
@@ -181,27 +193,28 @@ class EnhancedCollectionView(discord.ui.View):
             self.pages.append(
                 discord.Embed(
                     title="📦 Your Esprit Arsenal",
-                    description="No Esprits match these filters.",
+                    description="No Esprits match the current filters.",
                     color=discord.Color.light_grey()
                 )
             )
             return
 
-        total_power = sum(e.calculate_power(self.power_cfg, self.stat_cfg) for e in self.filtered)
+        total_power = sum(e.calculate_power(self.power_cfg, self.stat_cfg) for e in self.all_esprits)
         for i in range(0, total, self.page_size):
             chunk = self.filtered[i:i+self.page_size]
             em = discord.Embed(
                 title="📦 Your Esprit Arsenal",
                 description=(
-                    f"Total: **{total}** | Sigil Power: **{total_power:,}**\n"
-                    f"Page {i//self.page_size + 1}/{(total-1)//self.page_size +1}"
+                    f"Total Esprits: **{len(self.all_esprits)}** | Total Sigil Power: **{total_power:,}**\n"
+                    f"Showing: **{total}** (Page {i//self.page_size + 1}/{(total + self.page_size - 1)//self.page_size})"
                 ),
                 color=discord.Color.dark_gold()
             )
             for ue in chunk:
                 name = ue.esprit_data.name
                 lvl = ue.current_level
-                cap = ue.get_current_level_cap(self.bot.config_manager.get_config("data/config/progression_settings").get("progression", {}))
+                # This logic should be on the model, but for now we pass prog_cfg
+                cap = ue.get_level_cap(self.prog_cfg)
                 power = ue.calculate_power(self.power_cfg, self.stat_cfg)
                 rarity = ue.esprit_data.rarity
                 emoji = {"Common":"⚪","Uncommon":"🟢","Rare":"🔵","Epic":"🟣","Celestial":"🟡","Supreme":"🔴","Deity":"🌟"}.get(rarity,"❓")
@@ -213,8 +226,14 @@ class EnhancedCollectionView(discord.ui.View):
             self.pages.append(em)
 
     def _update_buttons(self):
-        for b in (self.first, self.prev, self.next, self.last):
-            b.disabled = False
+        # Check if pages exist
+        if not self.pages or len(self.pages) <= 1:
+            self.first.disabled = True
+            self.prev.disabled = True
+            self.next.disabled = True
+            self.last.disabled = True
+            return
+
         self.first.disabled = self.page == 0
         self.prev.disabled  = self.page == 0
         self.next.disabled  = self.page >= len(self.pages)-1
@@ -222,36 +241,49 @@ class EnhancedCollectionView(discord.ui.View):
 
     async def interaction_check(self, i: discord.Interaction) -> bool:
         if i.user.id != self.author_id:
-            await i.response.send_message("Not your view.", ephemeral=True)
+            await i.response.send_message("This is not your view.", ephemeral=True)
             return False
         return True
 
+    async def _update_view(self, i: discord.Interaction):
+        self._build_pages()
+        self._update_buttons()
+        await i.response.edit_message(embed=self.pages[self.page], view=self)
+
     @discord.ui.button(label="⏮️", style=discord.ButtonStyle.secondary)
     async def first(self, i: discord.Interaction, _):
-        self.page = 0; self._update_buttons(); await i.response.edit_message(embed=self.pages[self.page], view=self)
+        self.page = 0
+        await self._update_view(i)
+
     @discord.ui.button(label="◀️", style=discord.ButtonStyle.secondary)
     async def prev(self, i: discord.Interaction, _):
-        self.page -= 1; self._update_buttons(); await i.response.edit_message(embed=self.pages[self.page], view=self)
+        self.page = max(0, self.page - 1)
+        await self._update_view(i)
+
     @discord.ui.button(label="▶️", style=discord.ButtonStyle.secondary)
     async def next(self, i: discord.Interaction, _):
-        self.page += 1; self._update_buttons(); await i.response.edit_message(embed=self.pages[self.page], view=self)
+        self.page = min(len(self.pages) - 1, self.page + 1)
+        await self._update_view(i)
+
     @discord.ui.button(label="⏭️", style=discord.ButtonStyle.secondary)
     async def last(self, i: discord.Interaction, _):
-        self.page = len(self.pages)-1; self._update_buttons(); await i.response.edit_message(embed=self.pages[self.page], view=self)
+        self.page = len(self.pages)-1
+        await self._update_view(i)
 
     @discord.ui.select(
         placeholder="Sort by…",
         options=[
-            discord.SelectOption(label="Name",   value="name",   emoji="📝"),
+            discord.SelectOption(label="Rarity", value="rarity", emoji="💎", default=True),
+            discord.SelectOption(label="Power", value="power", emoji="💥"),
             discord.SelectOption(label="Level",  value="level",  emoji="📈"),
-            discord.SelectOption(label="Rarity", value="rarity", emoji="💎"),
-        ]
+            discord.SelectOption(label="Name",   value="name",   emoji="📝"),
+        ],
+        row=1
     )
     async def sort(self, i: discord.Interaction, sel: discord.ui.Select):
         self.sort_by = sel.values[0]
         self.page = 0
-        self._build_pages(); self._update_buttons()
-        await i.response.edit_message(embed=self.pages[self.page], view=self)
+        await self._update_view(i)
 
     @discord.ui.select(
         placeholder="Filter rarity…",
@@ -259,13 +291,13 @@ class EnhancedCollectionView(discord.ui.View):
             discord.SelectOption(label=r, value=r, emoji=e) for r,e in
             [("Common","⚪"),("Uncommon","🟢"),("Rare","🔵"),("Epic","🟣"),
              ("Celestial","🟡"),("Supreme","🔴"),("Deity","🌟")]
-        ]
+        ],
+        row=2
     )
     async def filter(self, i: discord.Interaction, sel: discord.ui.Select):
         self.filter_rarity = None if sel.values[0]=="all" else sel.values[0]
         self.page = 0
-        self._build_pages(); self._update_buttons()
-        await i.response.edit_message(embed=self.pages[self.page], view=self)
+        await self._update_view(i)
 
 # ─── Slash Commands Group ──────────────────────────────────────────────────
 
@@ -276,47 +308,37 @@ class EspritGroup(app_commands.Group, name="esprit"):
         self.bot = bot
         self.cache = CacheManager(default_ttl=CACHE_TTL)
         self.rate_limiter = RateLimiter(calls=5, period=60)
-        self.config_manager = bot.config_manager
         
-        self.combat_settings = self.config_manager.get_config('data/config/combat_settings') or {}
-        self.progression_settings = self.config_manager.get_config('data/config/progression_settings') or {}
+        self.combat_settings = self.bot.config.get('combat_settings', {})
+        self.progression_settings = self.bot.config.get('progression_settings', {})
 
     async def _handle_error(self, inter: discord.Interaction, error: Exception):
         err_id = id(error)
-        logger.error(f"[{err_id}] {error}", exc_info=True)
-        if not inter.response.is_done():
-            await inter.response.send_message(f"❌ Something went wrong (ID `{err_id}`).", ephemeral=True)
+        logger.error(f"[{err_id}] Unhandled error in EspritGroup: {error}", exc_info=True)
+        # Use followup if already deferred
+        if inter.response.is_done():
+            await inter.followup.send(f"❌ Something went wrong (ID `{err_id}`). The developers have been notified.", ephemeral=True)
         else:
-            await inter.followup.send(f"❌ Something went wrong (ID `{err_id}`).", ephemeral=True)
+            await inter.response.send_message(f"❌ Something went wrong (ID `{err_id}`). The developers have been notified.", ephemeral=True)
 
     async def _check_rl(self, inter: discord.Interaction) -> bool:
-        ok = await self.rate_limiter.check(str(inter.user.id))
-        if not ok:
+        if not await self.rate_limiter.check(str(inter.user.id)):
             wait = await self.rate_limiter.get_cooldown(str(inter.user.id))
-            await inter.followup.send(f"⏳ Slow down! Try again in {wait}s.", ephemeral=True)
-        return ok
-
-    async def _ensure_user(self, user_id: str):
-        async with get_session() as s:
-            if not await s.get(User, user_id):
-                s.add(User(user_id=user_id, username="Unknown"))
-                await s.commit()
+            await inter.followup.send(f"⏳ Slow down! This command is on cooldown. Try again in {wait}s.", ephemeral=True)
+            return False
+        return True
 
     async def _get_collection(self, user_id: str) -> List[UserEsprit]:
-        await self._ensure_user(user_id)
         async with get_session() as s:
             res = await s.execute(
                 select(UserEsprit)
                 .where(UserEsprit.owner_id==user_id)
-                .options(selectinload(UserEsprit.esprit_data))
+                .options(selectinload(UserEsprit.esprit_data), selectinload(UserEsprit.owner))
             )
             return res.scalars().all()
 
     async def _invalidate_cache(self, user_id: str):
-        try:
-            await self.cache.clear_pattern(f"user:{user_id}:")
-        except Exception as e:
-            logger.warning(f"Cache clear failed for {user_id}: {e}")
+        await self.cache.clear_pattern(f"user:{user_id}:collection")
 
     @app_commands.command(name="collection", description="Browse your collected Esprits.")
     async def collection(self, inter: discord.Interaction):
@@ -328,134 +350,25 @@ class EspritGroup(app_commands.Group, name="esprit"):
             if not esprits:
                 return await inter.followup.send(
                     embed=discord.Embed(
-                        title="🌱 No Esprits Yet",
-                        description="Use `/summon` to acquire your first companion!",
+                        title="🌱 Your Collection is Empty",
+                        description="Your journey is just beginning! Use `/summon` to acquire your first companion and start building your team.",
                         color=discord.Color.blue()
                     ), ephemeral=True
                 )
 
+            # Load necessary configs for the view
+            combat_cfg = self.config_manager.get_config('data/config/combat_settings') or {}
+            prog_cfg = self.config_manager.get_config('data/config/progression_settings') or {}
+
             view = EnhancedCollectionView(
-                esprits,
-                inter.user.id,
-                power_cfg=self.cfg.get("power_calculation", {}),
-                stat_cfg=self.cfg.get("stat_calculation", {})
+                bot=self.bot,
+                esprits=esprits,
+                author_id=inter.user.id,
+                power_cfg=combat_cfg.get("power_calculation", {}),
+                stat_cfg=combat_cfg.get("stat_calculation", {}),
+                prog_cfg=prog_cfg.get("progression", {})
             )
             await inter.followup.send(embed=view.pages[0], view=view, ephemeral=True)
-
-        except Exception as e:
-            await self._handle_error(inter, e)
-
-    @app_commands.command(name="details", description="Show full stats for one Esprit.")
-    @app_commands.describe(esprit_id="The ID from your collection.")
-    async def details(self, inter: discord.Interaction, esprit_id: str):
-        try:
-            await inter.response.defer(ephemeral=True)
-            if not await self._check_rl(inter): return
-
-            async with get_session() as s:
-                ue = await s.get(UserEsprit, esprit_id,
-                    options=[selectinload(UserEsprit.esprit_data), selectinload(UserEsprit.owner)]
-                )
-                if not ue or ue.owner_id != str(inter.user.id):
-                    return await inter.followup.send("❌ Not found or not yours.", ephemeral=True)
-
-            prog      = self.cfg.get("progression", {})
-            stat_cfg  = self.cfg.get("stat_calculation", {})
-            power_cfg = self.cfg.get("power_calculation", {})
-            lb_cfg    = self.cfg.get("limit_break_system", {})
-            up_cfg    = self.cfg.get("esprit_upgrade_system", {})
-
-            cap   = ue.get_current_level_cap(prog)
-            power = ue.calculate_power(power_cfg, stat_cfg)
-            hp    = ue.calculate_stat("hp", stat_cfg)
-            atk   = ue.calculate_stat("attack", stat_cfg)
-            df    = ue.calculate_stat("defense", stat_cfg)
-            spd   = ue.calculate_stat("speed", stat_cfg)
-            mr    = ue.calculate_stat("magic_resist", stat_cfg)
-            ed    = ue.esprit_data
-
-            embed = discord.Embed(
-                title=f"🔎 {ed.name} — Lv {ue.current_level}/{cap}",
-                description="“Every sigil tells a story…”",
-                color=discord.Color.purple()
-            )
-            embed.add_field(name="Power", value=f"💥 {power:,}", inline=True)
-            embed.add_field(name="HP", value=f"{hp:,}", inline=True)
-            embed.add_field(name="ATK", value=f"{atk:,}", inline=True)
-            embed.add_field(name="DEF", value=f"{df:,}", inline=True)
-            embed.add_field(name="SPD", value=f"{spd:,}", inline=True)
-            embed.add_field(name="MR",  value=f"{mr:,}", inline=True)
-
-            # Next upgrade or limit break
-            if ue.current_level < cap:
-                cost = eval(up_cfg.get("cost_formula","15+(lvl*8)"),{"lvl":ue.current_level})
-                embed.add_field(name="⚡ Next Upgrade", value=f"{cost:,} Virelite", inline=True)
-            else:
-                can = ue.can_limit_break(prog)
-                if can["can_break"]:
-                    c = ue.get_limit_break_cost(lb_cfg)
-                    embed.add_field(
-                        name="🔓 Limit Break",
-                        value=f"{c['remna']:,} Remna + {c['virelite']:,} Virelite",
-                        inline=True
-                    )
-                else:
-                    embed.add_field(name="🔒 Locked", value="Reach higher player level to unlock.", inline=True)
-
-            await inter.followup.send(embed=embed, ephemeral=True)
-
-        except Exception as e:
-            await self._handle_error(inter, e)
-
-    @app_commands.command(name="limitbreak", description="Break through an Esprit’s level cap.")
-    @app_commands.describe(esprit_id="ID of the Esprit to break.")
-    async def limitbreak(self, inter: discord.Interaction, esprit_id: str):
-        try:
-            await inter.response.defer(ephemeral=True)
-            if not await self._check_rl(inter): return
-
-            prog      = self.cfg.get("progression", {})
-            lb_cfg    = self.cfg.get("limit_break_system", {})
-            stat_cfg  = self.cfg.get("stat_calculation", {})
-            power_cfg = self.cfg.get("power_calculation", {})
-
-            if not lb_cfg.get("enabled", False):
-                return await inter.followup.send("❌ Limit breaks are disabled.", ephemeral=True)
-
-            async with get_session() as s:
-                user = await s.get(User, str(inter.user.id), with_for_update=True)
-                ue   = await s.get(UserEsprit, esprit_id, with_for_update=True,
-                    options=[selectinload(UserEsprit.esprit_data)]
-                )
-                if not ue or ue.owner_id != str(inter.user.id):
-                    return await inter.followup.send("❌ Not found or not yours.", ephemeral=True)
-
-                can = ue.can_limit_break(prog)
-                if not can["can_break"]:
-                    return await inter.followup.send(f"❌ {can['reason'].replace('_',' ').capitalize()}.", ephemeral=True)
-
-                cost = ue.get_limit_break_cost(lb_cfg)
-                if user.remna < cost["remna"] or user.virelite < cost["virelite"]:
-                    return await inter.followup.send("❌ Insufficient materials.", ephemeral=True)
-
-                old = ue.calculate_power(power_cfg, stat_cfg)
-                user.remna    -= cost["remna"]
-                user.virelite -= cost["virelite"]
-                ue.limit_breaks_performed += 1
-                ue.stat_boost_multiplier *= lb_cfg.get("compound_rate",1.1)
-                ue.current_hp = ue.calculate_stat("hp", stat_cfg)
-                await s.commit()
-
-            new_embed = discord.Embed(
-                title="🔓 LIMIT BREAK!",
-                description=f"Your **{ue.esprit_data.name}** has transcended its limits.",
-                color=discord.Color.gold()
-            )
-            new_embed.add_field(name="Power", value=f"{old:,} → **{ue.calculate_power(power_cfg, stat_cfg):,}**", inline=True)
-            new_embed.add_field(name="Total Breaks", value=str(ue.limit_breaks_performed), inline=True)
-            await inter.followup.send(embed=new_embed, ephemeral=True)
-            log_limit_break(inter, ue, cost)
-            await self._invalidate_cache(str(inter.user.id))
 
         except Exception as e:
             await self._handle_error(inter, e)
@@ -467,26 +380,26 @@ class EspritGroup(app_commands.Group, name="esprit"):
             await inter.response.defer(ephemeral=True)
             if not await self._check_rl(inter): return
 
-            prog      = self.cfg.get("progression", {})
-            up_cfg    = self.cfg.get("esprit_upgrade_system", {})
-            stat_cfg  = self.cfg.get("stat_calculation", {})
-            power_cfg = self.cfg.get("power_calculation", {})
-
-            if not up_cfg.get("enabled", True):
-                return await inter.followup.send("❌ Upgrades are disabled.", ephemeral=True)
+            prog_cfg = self.config_manager.get_config('data/config/progression_settings') or {}
+            combat_cfg = self.config_manager.get_config('data/config/combat_settings') or {}
+            up_cfg = combat_cfg.get("esprit_upgrade_system", {})
 
             async with get_session() as s:
+                # --- RACE CONDITION FIX: Lock user and esprit rows for this transaction ---
                 user = await s.get(User, str(inter.user.id), with_for_update=True)
-                ue   = await s.get(UserEsprit, esprit_id, with_for_update=True,
-                    options=[selectinload(UserEsprit.esprit_data)]
+                if not user:
+                    return await inter.followup.send("❌ You need to `/start` your journey first.", ephemeral=True)
+
+                ue = await s.get(UserEsprit, esprit_id, with_for_update=True,
+                    options=[selectinload(UserEsprit.esprit_data), selectinload(UserEsprit.owner)]
                 )
                 if not ue or ue.owner_id != str(inter.user.id):
-                    return await inter.followup.send("❌ Not found or not yours.", ephemeral=True)
+                    return await inter.followup.send("❌ Esprit not found or it does not belong to you.", ephemeral=True)
 
-                cap = ue.get_current_level_cap(prog)
+                cap = ue.get_level_cap(prog_cfg.get("progression", {}))
                 if ue.current_level >= cap:
                     return await inter.followup.send(
-                        f"❌ Already at cap ({cap}). Use `/esprit limitbreak` to raise it.",
+                        f"❌ **{ue.esprit_data.name}** is already at its current level cap ({cap}). Use `/esprit limitbreak` to raise it.",
                         ephemeral=True
                     )
 
@@ -496,360 +409,324 @@ class EspritGroup(app_commands.Group, name="esprit"):
                 else:
                     try:
                         n = int(levels)
-                        if not (1 <= n <= 10): raise ValueError()
+                        if not (1 <= n <= 10):
+                            return await inter.followup.send("❌ Level-up amount must be between 1 and 10, or 'max'.", ephemeral=True)
                         add = min(n, max_add)
-                    except:
-                        return await inter.followup.send("❌ Levels must be 1–10 or 'max'.", ephemeral=True)
+                    except ValueError:
+                        return await inter.followup.send("❌ Invalid amount. Please specify a number from 1-10 or 'max'.", ephemeral=True)
 
-                if add == 0:
-                    return await inter.followup.send("❌ No levels to add.", ephemeral=True)
+                if add <= 0:
+                    return await inter.followup.send(f"❌ **{ue.esprit_data.name}** is already at the level cap.", ephemeral=True)
 
-                cost_formula = up_cfg.get("cost_formula", "15+(lvl*8)")
+                # --- REVISED: Safe cost calculation ---
+                cost_formula = up_cfg.get("cost_formula", "15 + (current_level * 8)")
+                parts = cost_formula.replace(" ", "").split('+')
+                base_cost = int(parts[0])
+                level_part = parts[1].replace(")", "").split('*')
+                level_mult_str = level_part[1] if len(level_part) > 1 else '0'
+                level_mult = int(level_mult_str)
+
                 total_cost = sum(
-                    eval(cost_formula, {"lvl":lvl})
-                    for lvl in range(ue.current_level, ue.current_level+add)
+                    base_cost + (lvl * level_mult)
+                    for lvl in range(ue.current_level, ue.current_level + add)
                 )
+
                 if user.virelite < total_cost:
                     return await inter.followup.send(
-                        f"❌ Need {total_cost:,} Virelite (you have {user.virelite:,}).",
+                        f"❌ Not enough Virelite. You need **{total_cost:,}** but only have {user.virelite:,}.",
                         ephemeral=True
                     )
 
-                old_pow = ue.calculate_power(power_cfg, stat_cfg)
+                old_level = ue.current_level
+                old_pow = ue.calculate_power(combat_cfg.get("power_calculation", {}), combat_cfg.get("stat_calculation", {}))
+                
                 user.virelite -= total_cost
                 ue.current_level += add
-                ue.current_hp = ue.calculate_stat("hp", stat_cfg)
+                ue.current_hp = ue.calculate_stat("hp", combat_cfg.get("stat_calculation", {}))
+                
                 await s.commit()
+                # Refresh object to get latest data after commit
+                await s.refresh(ue)
+                await s.refresh(user)
 
-            new_pow = ue.calculate_power(power_cfg, stat_cfg)
+            new_pow = ue.calculate_power(combat_cfg.get("power_calculation", {}), combat_cfg.get("stat_calculation", {}))
             embed = discord.Embed(
                 title="⭐ Upgrade Complete!",
-                description=f"**{ue.esprit_data.name}** → Level **{ue.current_level}**",
+                description=f"**{ue.esprit_data.name}** has grown stronger!",
                 color=discord.Color.gold()
             )
-            embed.add_field(name="Levels Gained", value=f"+{add}")
-            embed.add_field(name="Virelite Spent", value=f"{total_cost:,}")
-            embed.add_field(name="Power", value=f"{old_pow:,} → **{new_pow:,}**")
+            embed.add_field(name="Level", value=f"{old_level} → **{ue.current_level}**", inline=True)
+            embed.add_field(name="Sigil Power", value=f"{old_pow:,} → **{new_pow:,}**", inline=True)
+            embed.add_field(name="Virelite Spent", value=f"{total_cost:,}", inline=False)
+            
             await inter.followup.send(embed=embed, ephemeral=True)
-            log_esprit_upgrade(inter, ue, old_pow, total_cost)
+            
+            # Log after successful transaction
+            log_esprit_upgrade(inter, ue, old_level, total_cost)
             await self._invalidate_cache(str(inter.user.id))
 
         except Exception as e:
             await self._handle_error(inter, e)
-
-    @app_commands.command(name="dissolve", description="Recycle Esprit(s) for resources.")
-    @app_commands.describe(
-        esprit_id="ID to dissolve (omit for bulk)",
-        multi="Use bulk mode",
-        rarity_filter="Filter in bulk"
-    )
-    async def dissolve(
-        self,
-        inter: discord.Interaction,
-        esprit_id: Optional[str] = None,
-        multi: bool = False,
-        rarity_filter: Optional[str] = None
-    ):
+            
+    @app_commands.command(name="limitbreak", description="Break an Esprit’s level cap to unlock greater power.")
+    @app_commands.describe(esprit_id="The ID of the Esprit to limit break.")
+    async def limitbreak(self, inter: discord.Interaction, esprit_id: str):
         try:
             await inter.response.defer(ephemeral=True)
             if not await self._check_rl(inter): return
 
-            rewards_cfg = self.cfg.get("dissolve_rewards", {})
+            prog_cfg = self.config_manager.get_config('data/config/progression_settings') or {}
+            combat_cfg = self.config_manager.get_config('data/config/combat_settings') or {}
+            lb_cfg = combat_cfg.get("limit_break_system", {})
 
-            # Bulk
+            async with get_session() as s:
+                # --- RACE CONDITION FIX: Lock user and esprit rows ---
+                user = await s.get(User, str(inter.user.id), with_for_update=True)
+                if not user:
+                    return await inter.followup.send("❌ You need to `/start` your journey first.", ephemeral=True)
+
+                ue = await s.get(UserEsprit, esprit_id, with_for_update=True,
+                    options=[selectinload(UserEsprit.esprit_data), selectinload(UserEsprit.owner)]
+                )
+                if not ue or ue.owner_id != str(inter.user.id):
+                    return await inter.followup.send("❌ Esprit not found or it does not belong to you.", ephemeral=True)
+
+                can_break_info = ue.can_limit_break(prog_cfg.get("progression", {}))
+                if not can_break_info["can_break"]:
+                    return await inter.followup.send(f"❌ Cannot limit break: {can_break_info['reason']}.", ephemeral=True)
+
+                cost = ue.get_limit_break_cost(lb_cfg)
+                if user.remna < cost["remna"] or user.virelite < cost["virelite"]:
+                    return await inter.followup.send(f"❌ Insufficient materials. You need **{cost['remna']:,} Remna** and **{cost['virelite']:,} Virelite**.", ephemeral=True)
+                
+                old_power = ue.calculate_power(combat_cfg.get("power_calculation", {}), combat_cfg.get("stat_calculation", {}))
+
+                user.remna -= cost["remna"]
+                user.virelite -= cost["virelite"]
+                ue.limit_breaks_performed += 1
+                ue.stat_boost_multiplier *= lb_cfg.get("compound_rate", 1.1)
+                
+                await s.commit()
+                await s.refresh(ue)
+                await s.refresh(user)
+            
+            new_power = ue.calculate_power(combat_cfg.get("power_calculation", {}), combat_cfg.get("stat_calculation", {}))
+            embed = discord.Embed(
+                title="🔓 LIMIT BREAK!",
+                description=f"**{ue.esprit_data.name}** has shattered its limits!",
+                color=discord.Color.gold()
+            )
+            embed.add_field(name="New Limit Breaks", value=f"{ue.limit_breaks_performed}", inline=True)
+            embed.add_field(name="Sigil Power", value=f"{old_power:,} → **{new_power:,}**", inline=True)
+            embed.add_field(name="Cost", value=f"{cost['remna']:,} Remna, {cost['virelite']:,} Virelite", inline=False)
+            await inter.followup.send(embed=embed, ephemeral=True)
+            
+            log_limit_break(inter, ue, cost)
+            await self._invalidate_cache(str(inter.user.id))
+            
+        except Exception as e:
+            await self._handle_error(inter, e)
+            
+    @app_commands.command(name="dissolve", description="Recycle one or more Esprits for resources.")
+    @app_commands.describe(
+        esprit_id="ID of a single Esprit to dissolve (omit for bulk mode).",
+        multi="Set to True to dissolve multiple Esprits at once.",
+        rarity_filter="[Bulk Mode] Only show Esprits of this rarity to dissolve."
+    )
+    async def dissolve(self, inter: discord.Interaction, esprit_id: Optional[str] = None, multi: bool = False, rarity_filter: Optional[Literal["Common", "Uncommon", "Rare"]] = None):
+        try:
+            await inter.response.defer(ephemeral=True)
+            if not await self._check_rl(inter): return
+
+            if multi and esprit_id:
+                return await inter.followup.send("❌ You cannot use `esprit_id` with `multi=True`.", ephemeral=True)
+            if not multi and not esprit_id:
+                return await inter.followup.send("❌ You must either provide an `esprit_id` or set `multi=True`.", ephemeral=True)
+
+            rewards_cfg = self.config_manager.get_config('data/config/economy_settings', {}).get("dissolve_rewards", {})
+
+            # Bulk Dissolve
             if multi:
-                valid = {"Common","Uncommon","Rare","Epic","Celestial","Supreme","Deity"}
-                if rarity_filter and rarity_filter not in valid:
-                    return await inter.followup.send("❌ Invalid rarity filter.", ephemeral=True)
-
                 async with get_session() as s:
                     user = await s.get(User, str(inter.user.id))
-                    protected = {
-                        user.active_esprit_id,
-                        user.support1_esprit_id,
-                        user.support2_esprit_id
-                    } - {None}
-                    stmt = select(UserEsprit).where(
-                        and_(
-                            UserEsprit.owner_id==str(inter.user.id),
-                            ~UserEsprit.id.in_(protected)
-                        )
+                    if not user:
+                         return await inter.followup.send("❌ You need to `/start` first.", ephemeral=True)
+                    
+                    team_ids = {user.active_esprit_id, user.support1_esprit_id, user.support2_esprit_id}
+                    
+                    query = select(UserEsprit).where(
+                        UserEsprit.owner_id == str(inter.user.id),
+                        UserEsprit.locked == False, # Cannot dissolve locked esprits
+                        ~UserEsprit.id.in_(team_ids) # Cannot dissolve team members
                     ).options(selectinload(UserEsprit.esprit_data))
+                    
                     if rarity_filter:
-                        stmt = stmt.where(UserEsprit.esprit_data.has(rarity=rarity_filter))
-                    esprits = (await s.execute(stmt)).scalars().all()
+                        query = query.join(EspritData).where(EspritData.rarity == rarity_filter)
+                        
+                    esprits = (await s.execute(query)).scalars().all()
 
                 if not esprits:
-                    return await inter.followup.send("❌ Nothing to dissolve.", ephemeral=True)
+                    return await inter.followup.send("❌ No dissolvable Esprits found with the specified filters.", ephemeral=True)
 
                 view = BulkDissolveView(esprits, inter.user.id)
                 await inter.followup.send(
                     embed=discord.Embed(
                         title="♻️ Bulk Dissolve",
-                        description="Select up to 10 Esprits to dissolve.",
+                        description=f"Select up to {MAX_BULK_OPERATIONS} Esprits to dissolve. Locked and team Esprits are not shown.",
                         color=discord.Color.orange()
                     ),
                     view=view, ephemeral=True
                 )
                 await view.wait()
-                if not view.value:
-                    return  # cancelled
-                ids = view.selected_ids
+
+                if not view.value or not view.selected_ids:
+                    return # Cancelled or nothing selected
+
+                ids_to_dissolve = view.selected_ids
+                dissolved_esprits = []
+                total_rewards = {"virelite": 0, "remna": 0}
 
                 async with get_session() as s:
+                    # --- RACE CONDITION FIX: Lock user row ---
                     user = await s.get(User, str(inter.user.id), with_for_update=True)
-                    stmt = select(UserEsprit).where(UserEsprit.id.in_(ids)).options(selectinload(UserEsprit.esprit_data))
-                    to_del = (await s.execute(stmt)).scalars().all()
-                    totals = {"virelite":0,"remna":0}
-                    for e in to_del:
-                        r = rewards_cfg.get(e.esprit_data.rarity, {})
-                        totals["virelite"] += r.get("virelite",0)
-                        totals["remna"]    += r.get("remna",0)
+                    
+                    # Fetch esprits to be deleted within the locked session
+                    stmt = select(UserEsprit).where(UserEsprit.id.in_(ids_to_dissolve)).options(selectinload(UserEsprit.esprit_data))
+                    to_delete = (await s.execute(stmt)).scalars().all()
+                    
+                    for e in to_delete:
+                        reward = rewards_cfg.get(e.esprit_data.rarity, {})
+                        total_rewards["virelite"] += reward.get("virelite", 0)
+                        total_rewards["remna"] += reward.get("remna", 0)
+                        dissolved_esprits.append(e) # For logging
                         await s.delete(e)
-                    user.virelite += totals["virelite"]
-                    user.remna     += totals["remna"]
+                        
+                    user.virelite += total_rewards["virelite"]
+                    user.remna += total_rewards["remna"]
                     await s.commit()
 
                 embed = discord.Embed(
                     title="♻️ Bulk Dissolve Complete",
-                    description=(
-                        f"Dissolved **{len(to_del)}** Esprits.\n"
-                        f"Rewards: {totals['virelite']:,} Virelite, {totals['remna']:,} Remna"
-                    ),
+                    description=f"Successfully dissolved **{len(dissolved_esprits)}** Esprits.",
                     color=discord.Color.green()
                 )
-                await inter.followup.send(embed=embed, ephemeral=True)
-                log_esprit_dissolve(inter, to_del, totals)
+                embed.add_field(name="Resources Gained", value=f"🔷 **{total_rewards['virelite']:,}** Virelite\n🌀 **{total_rewards['remna']:,}** Remna")
+                
+                # We need to edit the original message since we sent one for the view
+                await inter.edit_original_response(embed=embed, view=None)
+                log_esprit_dissolve(inter, dissolved_esprits, total_rewards)
                 await self._invalidate_cache(str(inter.user.id))
                 return
 
-            # Single
-            if not esprit_id:
-                return await inter.followup.send("❌ Provide an `esprit_id` or set `multi=True`.", ephemeral=True)
-
+            # Single Dissolve
             async with get_session() as s:
-                ue = await s.get(UserEsprit, esprit_id, options=[selectinload(UserEsprit.esprit_data)])
-                user = await s.get(User, str(inter.user.id))
-                if not ue or ue.owner_id != str(inter.user.id):
-                    return await inter.followup.send("❌ Not found or not yours.", ephemeral=True)
-                if esprit_id in {user.active_esprit_id, user.support1_esprit_id, user.support2_esprit_id}:
-                    return await inter.followup.send("❌ Cannot dissolve a team member.", ephemeral=True)
-
-            confirm = ConfirmationView(inter.user.id)
-            await inter.followup.send(
-                embed=discord.Embed(
-                    title="⚠️ Confirm Dissolve",
-                    description=f"Dissolve **{ue.esprit_data.name}** (Lv {ue.current_level})?",
-                    color=discord.Color.orange()
-                ),
-                view=confirm, ephemeral=True
-            )
-            await confirm.wait()
-            if not confirm.value:
-                return
-
-            async with get_session() as s:
+                # --- RACE CONDITION FIX: Lock user and esprit rows ---
                 user = await s.get(User, str(inter.user.id), with_for_update=True)
-                r = rewards_cfg.get(ue.esprit_data.rarity, {})
-                user.virelite += r.get("virelite",0)
-                user.remna     += r.get("remna",0)
+                if not user:
+                    return await inter.followup.send("❌ You need to `/start` first.", ephemeral=True)
+                
+                ue = await s.get(UserEsprit, esprit_id, with_for_update=True, options=[selectinload(UserEsprit.esprit_data)])
+                
+                if not ue or ue.owner_id != str(inter.user.id):
+                    return await inter.followup.send("❌ Esprit not found or it does not belong to you.", ephemeral=True)
+                if ue.id in {user.active_esprit_id, user.support1_esprit_id, user.support2_esprit_id}:
+                    return await inter.followup.send("❌ You cannot dissolve an Esprit that is part of your active team.", ephemeral=True)
+                if ue.locked:
+                    return await inter.followup.send("❌ This Esprit is locked. Unlock it before dissolving.", ephemeral=True)
+
+                confirm_view = ConfirmationView(inter.user.id)
+                await inter.followup.send(
+                    embed=discord.Embed(
+                        title="⚠️ Confirm Dissolve",
+                        description=f"Are you sure you want to dissolve **{ue.esprit_data.name}** (Lvl {ue.current_level})? This cannot be undone.",
+                        color=discord.Color.orange()
+                    ),
+                    view=confirm_view, ephemeral=True
+                )
+                await confirm_view.wait()
+
+                if not confirm_view.value:
+                    await inter.edit_original_response(content="❌ Dissolve cancelled.", embed=None, view=None)
+                    return
+
+                reward = rewards_cfg.get(ue.esprit_data.rarity, {})
+                virelite_gain = reward.get("virelite", 0)
+                remna_gain = reward.get("remna", 0)
+                
+                user.virelite += virelite_gain
+                user.remna += remna_gain
+                
+                dissolved_copy = ue # For logging
                 await s.delete(ue)
                 await s.commit()
 
             embed = discord.Embed(
-                title="♻️ Dissolved",
-                description=f"Received: **{r.get('virelite',0):,}** Virelite, **{r.get('remna',0):,}** Remna",
+                title="♻️ Dissolve Complete",
+                description=f"**{dissolved_copy.esprit_data.name}** was dissolved.",
                 color=discord.Color.green()
             )
-            await inter.followup.send(embed=embed, ephemeral=True)
-            log_esprit_dissolve(inter, [ue], r)
+            embed.add_field(name="Resources Gained", value=f"🔷 **{virelite_gain:,}** Virelite\n🌀 **{remna_gain:,}** Remna")
+            await inter.edit_original_response(embed=embed, view=None)
+            
+            log_esprit_dissolve(inter, [dissolved_copy], {"virelite": virelite_gain, "remna": remna_gain})
             await self._invalidate_cache(str(inter.user.id))
 
         except Exception as e:
             await self._handle_error(inter, e)
-
-    @app_commands.command(name="search", description="Search your Esprits by name.")
-    @app_commands.describe(query="Part of an Esprit’s name.")
-    async def search(self, inter: discord.Interaction, query: str):
-        try:
-            await inter.response.defer(ephemeral=True)
-            if not await self._check_rl(inter): return
-
-            esprits = await self._get_collection(str(inter.user.id))
-            results = [e for e in esprits if query.lower() in e.esprit_data.name.lower()][:25]
-            if not results:
-                return await inter.followup.send("❌ No matches found.", ephemeral=True)
-
-            prog      = self.cfg.get("progression", {})
-            stat_cfg  = self.cfg.get("stat_calculation", {})
-            power_cfg = self.cfg.get("power_calculation", {})
-            lines = []
-            for e in results:
-                cap = e.get_current_level_cap(prog)
-                p   = e.calculate_power(power_cfg, stat_cfg)
-                lines.append(f"`{e.id}` • {e.esprit_data.name} • Lv {e.current_level}/{cap} • Sigil {p:,}")
-
-            text = "\n".join(lines)
-            await inter.followup.send(
-                embed=discord.Embed(
-                    title=f"🔍 Search Results ({len(results)})",
-                    description=text[:4000] + ("…" if len(text)>4000 else "")
-                ),
-                ephemeral=True
-            )
-            #log_esprit_search(inter, query, results)
-
-        except Exception as e:
-            await self._handle_error(inter, e)
-
-    @app_commands.command(name="compare", description="Compare two Esprits’ stats.")
-    @app_commands.describe(esprit_a="First ID", esprit_b="Second ID")
-    async def compare(self, inter: discord.Interaction, esprit_a: str, esprit_b: str):
-        try:
-            await inter.response.defer(ephemeral=True)
-            if not await self._check_rl(inter): return
-            if esprit_a == esprit_b:
-                return await inter.followup.send("❌ Provide two different IDs.", ephemeral=True)
-
-            prog      = self.cfg.get("progression", {})
-            stat_cfg  = self.cfg.get("stat_calculation", {})
-            power_cfg = self.cfg.get("power_calculation", {})
-
-            async with get_session() as s:
-                rows = (await s.execute(
-                    select(UserEsprit)
-                    .where(UserEsprit.id.in_([esprit_a, esprit_b]))
-                    .options(selectinload(UserEsprit.esprit_data))
-                )).scalars().all()
-
-            if len(rows)!=2 or any(r.owner_id!=str(inter.user.id) for r in rows):
-                return await inter.followup.send("❌ Invalid IDs or not yours.", ephemeral=True)
-
-            a,b = {r.id:r for r in rows}[esprit_a], {r.id:r for r in rows}[esprit_b]
-            embed = discord.Embed(
-                title="⚖️ Esprit Comparison",
-                description="“Strength is measured in sigils.”",
-                color=discord.Color.dark_teal()
-            )
-            for ue in (a,b):
-                cap   = ue.get_current_level_cap(prog)
-                power = ue.calculate_power(power_cfg, stat_cfg)
-                rarity = ue.esprit_data.rarity
-                emoji = {"Common":"⚪","Uncommon":"🟢","Rare":"🔵","Epic":"🟣","Celestial":"🟡","Supreme":"🔴","Deity":"🌟"}.get(rarity,"❓")
-                embed.add_field(
-                    name=f"{emoji} {ue.esprit_data.name}",
-                    value=(f"Sigil: **{power:,}**\nLvl: **{ue.current_level}/{cap}**"),
-                    inline=False
-                )
-
-            await inter.followup.send(embed=embed, ephemeral=True)
-            #log_esprit_compare(inter, a, b)
-
-        except Exception as e:
-            await self._handle_error(inter, e)
-
-    @app_commands.command(name="team", description="View your combat team.")
-    async def team_view(self, inter: discord.Interaction):
-        try:
-            await inter.response.defer()  # public
-            if not await self._check_rl(inter): return
-
-            prog      = self.cfg.get("progression", {})
-            stat_cfg  = self.cfg.get("stat_calculation", {})
-            power_cfg = self.cfg.get("power_calculation", {})
-
-            async with get_session() as s:
-                user = await s.get(User, str(inter.user.id))
-                ids = [user.active_esprit_id, user.support1_esprit_id, user.support2_esprit_id]
-                valid = [i for i in ids if i]
-                rows  = (await s.execute(
-                    select(UserEsprit).where(UserEsprit.id.in_(valid))
-                    .options(selectinload(UserEsprit.esprit_data))
-                )).scalars().all()
-                m = {e.id:e for e in rows}
-
-            embed = discord.Embed(
-                title="🛡️ Your Combat Team",
-                description="“Forge your sigils into steel.”",
-                color=discord.Color.dark_green()
-            )
-            total = 0
-            labels = ["Leader","Support 1","Support 2"]
-            for lab, eid in zip(labels, ids):
-                if not eid or eid not in m:
-                    embed.add_field(name=lab, value="— *Empty Slot* —", inline=False)
-                else:
-                    ue = m[eid]
-                    p  = ue.calculate_power(power_cfg, stat_cfg)
-                    total += p
-                    embed.add_field(
-                        name=f"**{lab}:** {ue.esprit_data.name}",
-                        value=f"Lvl {ue.current_level} • Sigil {p:,}",
-                        inline=False
-                    )
-            embed.set_footer(text=f"Total Sigil Power: {total:,}")
-            await inter.followup.send(embed=embed)
-        except Exception as e:
-            await self._handle_error(inter, e)
-
-    @app_commands.command(name="team_set", description="Assign an Esprit to your team.")
-    @app_commands.describe(slot="Which slot", esprit_id="Esprit ID")
-    async def team_set(self, inter: discord.Interaction, slot: TeamSlot, esprit_id: str):
-        try:
-            await inter.response.defer(ephemeral=True)
-            if not await self._check_rl(inter): return
-
-            async with get_session() as s:
-                ue = await s.get(UserEsprit, esprit_id)
-                user = await s.get(User, str(inter.user.id))
-                if not ue or ue.owner_id != str(inter.user.id):
-                    return await inter.followup.send("❌ Not found or not yours.", ephemeral=True)
-                setattr(user, slot.value, esprit_id)
-                await s.commit()
-
-            await inter.followup.send(f"✅ {slot.name.title()} set to {ue.esprit_data.name}.", ephemeral=True)
-        except Exception as e:
-            await self._handle_error(inter, e)
-
-    @app_commands.command(name="team_optimize", description="Auto-optimize your top 3 Esprits.")
+            
+    @app_commands.command(name="team_optimize", description="Automatically equip your three strongest Esprits.")
     async def team_optimize(self, inter: discord.Interaction):
         try:
-            await inter.response.defer()  # public
+            await inter.response.defer() # Public command
             if not await self._check_rl(inter): return
 
-            stat_cfg  = self.cfg.get("stat_calculation", {})
-            power_cfg = self.cfg.get("power_calculation", {})
-
-            esprits = await self._get_collection(str(inter.user.id))
-            if len(esprits) < 3:
-                return await inter.followup.send("❌ Need at least 3 Esprits.", ephemeral=True)
-
-            # sort by power
-            def pwr(e): return e.calculate_power(power_cfg, stat_cfg)
-            best = sorted(esprits, key=pwr, reverse=True)[:3]
-
+            combat_cfg = self.config_manager.get_config('data/config/combat_settings') or {}
+            
             async with get_session() as s:
+                # --- RACE CONDITION FIX: Lock user row ---
                 user = await s.get(User, str(inter.user.id), with_for_update=True)
-                slots = ["active_esprit_id","support1_esprit_id","support2_esprit_id"]
-                for slot, ue in zip(slots, best):
-                    setattr(user, slot, ue.id)
+                if not user:
+                    return await inter.followup.send("❌ You need to `/start` first.", ephemeral=True)
+                
+                esprits = await self._get_collection(str(inter.user.id))
+                if len(esprits) < 3:
+                    return await inter.followup.send("❌ You need at least 3 Esprits to optimize your team.", ephemeral=True)
+
+                power_cfg=combat_cfg.get("power_calculation", {})
+                stat_cfg=combat_cfg.get("stat_calculation", {})
+
+                # Sort by power
+                esprits.sort(key=lambda e: e.calculate_power(power_cfg, stat_cfg), reverse=True)
+                
+                best_three = esprits[:3]
+                
+                user.active_esprit_id = best_three[0].id
+                user.support1_esprit_id = best_three[1].id
+                user.support2_esprit_id = best_three[2].id
+                
                 await s.commit()
 
-            lines = []
-            icons = ["👑","⚔️","⚔️"]
-            for icon, ue in zip(icons, best):
-                lines.append(f"{icon} {ue.esprit_data.name} • Sigil {pwr(ue):,}")
+                lines = []
+                icons = ["👑 Leader", "⚔️ Support 1", "🛡️ Support 2"]
+                total_power = 0
+                for icon, ue in zip(icons, best_three):
+                    power = ue.calculate_power(power_cfg, stat_cfg)
+                    total_power += power
+                    lines.append(f"**{icon}:** {ue.esprit_data.name} (Sigil: {power:,})")
+                
+                embed = discord.Embed(
+                    title="✅ Team Optimized!",
+                    description="Your strongest Esprits have been equipped.",
+                    color=discord.Color.green()
+                )
+                embed.add_field(name="New Team", value="\n".join(lines), inline=False)
+                embed.set_footer(text=f"Total Team Power: {total_power:,}")
+                
+                await inter.followup.send(embed=embed)
 
-            embed = discord.Embed(
-                title="✅ Team Optimized!",
-                description="\n".join(lines),
-                color=discord.Color.green()
-            )
-            await inter.followup.send(embed=embed)
-            #log_team_optimize(inter, best)
         except Exception as e:
             await self._handle_error(inter, e)
-
+            
 # ─── Cog Loader ──────────────────────────────────────────────────────────────
 
 class EspritCog(commands.Cog):
@@ -859,11 +736,11 @@ class EspritCog(commands.Cog):
 
     async def cog_load(self):
         self.bot.tree.add_command(self.group)
-        logger.info("✅ EspritCog loaded.")
+        logger.info("✅ EspritCog loaded and command group added to tree.")
 
     async def cog_unload(self):
         self.bot.tree.remove_command(self.group.name)
-        logger.info("🛑 EspritCog unloaded.")
+        logger.info("🛑 EspritCog unloaded and command group removed from tree.")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(EspritCog(bot))

@@ -5,6 +5,8 @@ from discord import app_commands
 from typing import Dict, Optional
 import random
 
+from sqlalchemy import select
+
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -209,16 +211,26 @@ class HelpView(discord.ui.View):
         await interaction.response.edit_message(embed=embed, view=self)
 
     async def show_bot_stats(self, interaction: discord.Interaction):
+        from src.database.db import get_session
+        from src.database.models import User, UserEsprit
+        from sqlalchemy import func
+
+        await interaction.response.defer(ephemeral=True) # Defer while we fetch from DB
+
+        async with get_session() as session:
+            user_count = await session.scalar(select(func.count(User.user_id))) or 0
+            esprit_count = await session.scalar(select(func.count(UserEsprit.id))) or 0
+
         embed = discord.Embed(
             title="📊 Live Faye Statistics",
             description="Real-time bot performance and game stats:",
             color=0x9B59B6
         )
         embed.add_field(name="🌍 Servers", value=f"{len(self.bot.guilds):,}", inline=True)
-        # TODO: Wire up real stats later
-        embed.add_field(name="👥 Players", value="Coming Soon", inline=True)
-        embed.add_field(name="🔮 Esprits Summoned", value="Coming Soon", inline=True)
-        await interaction.response.edit_message(embed=embed, view=self)
+        embed.add_field(name="👥 Players", value=f"{user_count:,}", inline=True)
+        embed.add_field(name="🔮 Esprits Owned", value=f"{esprit_count:,}", inline=True)
+
+        await interaction.edit_original_response(embed=embed, view=self)
 
 # --- Cog Definition ---
 
@@ -279,11 +291,12 @@ class HelpCog(commands.Cog, name="Help"):
                     {"cmd": "🔜 /marketplace", "desc": "Trade Esprits and items with other players."},
                 ],
                 "tips": [
-                    "**<:faylen_icon:ID> Faylen:** Universal currency for shops and trading.",
-                    "**<:fayrite_icon:ID> Fayrites:** The premium currency used for summoning.",
-                    "**<:ethryl_icon:ID> Ethryl:** Used for premium summons and special features.",
-                    "**<:virelite_icon:ID> Virelite:** Material used to level up your Esprits.",
-                    "**<:remna_icon:ID> Remna:** Resources used for crafting and limit breaks.",
+                    "💠 **Faylen:** Universal currency for shops and trading.",
+                    "🌀 **Remna:** Crafting material used for Limit Breaks.",
+                    "🔷 **Virelite:** The primary material for leveling up your Esprits.",
+                    "🔸 **Fayrite Shards:** Earned from gameplay. Use `/craft` to turn them into Fayrites!",
+                    "💎 **Fayrites:** The standard currency for the `/summon` command.",
+                    "🔶 **Ethryl:** A rare currency for premium banners and special events."
                 ]
             },
              "progression": {
@@ -293,8 +306,8 @@ class HelpCog(commands.Cog, name="Help"):
                 "commands": [
                     {"cmd": "🔜 /explore", "desc": "Embark on adventures to find rewards."},
                     {"cmd": "🔜 /tower", "desc": "Climb the tower to face powerful bosses."},
-                    {"cmd": "🔜 /profile", "desc": "View your complete player profile and stats."},
-                    {"cmd": "🔜 /level", "desc": "Check your current level and XP progress."},
+                    {"cmd": "! /profile", "desc": "View your complete player profile and stats."},
+                    {"cmd": "! /level", "desc": "Check your current level and XP progress."},
                 ],
                 "tips": [
                     "**/explore** is the main way to earn **Fayrite Shards** and **Remna**.",
