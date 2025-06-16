@@ -581,7 +581,7 @@
     "name": "Lyra",
     "description": "A noble spearbearer of radiant law, Lyra stands unshaken between the realm and the void.",
     "rarity": "Rare",
-    "visual_asset_path": "esprits/rare/lyra_the_ethrylguard.png",
+    "visual_asset_path": "esprits/rare/lyra_the_aetherguard.png",
     "base_hp": 130,
     "base_attack": 12,
     "base_defense": 10,

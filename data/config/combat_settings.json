@@ -1,7 +1,10 @@
 {
   "esprit_upgrade_system": {
     "enabled": true,
-    "cost_formula": "15 + (current_level * 8)",
+    "cost_formula": {
+      "base": 15,
+      "level_multiplier": 8
+    },
     "currency": "virelite"
   },
   "stat_calculation": {

@@ -2,7 +2,7 @@
 import logging
 import json
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Literal
 
 import discord
 
@@ -11,7 +11,6 @@ from src.utils.logger import get_transaction_logger
 
 # Get the dedicated logger instance once when the module is imported
 tx_logger = get_transaction_logger()
-
 
 def log_new_user_registration(
     interaction: discord.Interaction,
@@ -187,5 +186,39 @@ def log_esprit_dissolve(
             ],
             "rewards": rewards,
         },
+    }
+    tx_logger.info(json.dumps(log_data))
+
+def log_admin_adjustment(
+    interaction: discord.Interaction,
+    target_user: discord.User,
+    attribute: str,
+    operation: Literal["give", "remove", "set"],
+    amount: int,
+    old_value: int,
+    new_value: int
+):
+    """Logs an administrative adjustment to a user's account as a JSON object."""
+    admin_user = interaction.user
+    log_data = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "event_type": "admin_adjustment",
+        "user_id": str(target_user.id), # The user being affected
+        "username": target_user.display_name,
+        "details": {
+            "admin_user_id": str(admin_user.id),
+            "admin_username": admin_user.display_name,
+            "target": {
+                "user_id": str(target_user.id),
+                "username": target_user.display_name
+            },
+            "change": {
+                "attribute": attribute,
+                "operation": operation,
+                "amount": amount,
+                "old_value": old_value,
+                "new_value": new_value
+            }
+        }
     }
     tx_logger.info(json.dumps(log_data))
